@@ -32,9 +32,9 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.Authentication;
 
 /**
- * @author ananth Here Producer Plays the Role of Customer in Magnet Project
+ * @author ananth Here Producers Plays the Role of Customer in Magnet Project
  */
-@Entity
+@Entity(name = "Producers")
 @Table(name = "producers")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "producerType", discriminatorType = DiscriminatorType.STRING)

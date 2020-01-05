@@ -5,7 +5,7 @@ import javax.persistence.Table;
 
 import org.hbs.core.security.resource.IPath.ETemplate;
 
-@Entity
+@Entity(name = "Messages")
 @Table(name = "messages")
 public class V7Messages extends V7MessagesBase
 {

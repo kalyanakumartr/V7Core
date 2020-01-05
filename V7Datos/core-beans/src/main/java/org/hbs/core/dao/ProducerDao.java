@@ -17,13 +17,13 @@ public interface ProducerDao extends JpaRepository<Producers, String>
 
 	public List<Producers> findByProducerName(String producerName);
 
-	@Query("Select P From Producer P where P.producerName like %:producerName% ")
+	@Query("Select P From Producers P where P.producerName like %:producerName% ")
 	public List<Producers> findLikeProducerName(@Param("producerName") String producerName);
 
-	@Query("Select P.producerName From Producer P where P.producerName like %:producerName% ")
+	@Query("Select P.producerName From Producers P where P.producerName like %:producerName% ")
 	public Object[] checkProducerName(@Param("producerName") String producerName);
 
-	@Query("Select P From Producer P where P.status = :status")
+	@Query("Select P From Producers P where P.status = :status")
 	public List<Producers> findByStatus(@Param("status") Boolean status);
 
 }
