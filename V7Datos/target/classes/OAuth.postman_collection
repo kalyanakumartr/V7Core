@@ -1,0 +1,71 @@
+{
+	"id": "7bdaec31-f2e1-fbc4-49ce-e034caa0e66d",
+	"name": "OAuth",
+	"description": "",
+	"order": [
+		"84626de9-36f7-cfb4-684d-6bd5f8b341b6"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1575114396679,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "84626de9-36f7-cfb4-684d-6bd5f8b341b6",
+			"headers": "Authorization: Basic SEJTQVBQTElDQVRJT046S2FsYW1AMTUxMDMx\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Basic SEJTQVBQTElDQVRJT046S2FsYW1AMTUxMDMx",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8090/rezoom-oauth-server/oauth/token",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "password",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "ananth.malbal@gmail.com",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "test",
+					"description": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "basicAuth",
+			"helperAttributes": {
+				"id": "basic",
+				"username": "HBSAPPLICATION",
+				"password": "Kalam@151031",
+				"saveToRequest": true
+			},
+			"time": 1575170236343,
+			"name": "OAuthToken",
+			"description": "http://localhost:8090/rezoom-oauth-server/oauth/token",
+			"collectionId": "7bdaec31-f2e1-fbc4-49ce-e034caa0e66d",
+			"responses": []
+		}
+	]
+}
