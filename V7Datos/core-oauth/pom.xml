@@ -87,7 +87,7 @@
 	</dependencies>
 	<packaging>war</packaging>
 	<build>
-		<finalName>rezoom-oauth-server</finalName>
+		<finalName>core-oauth</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -21,7 +21,7 @@ import org.hbs.v7.extractor.event.service.GenericKafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan({ "org.hbs.rezoom.event.service" })
+@ComponentScan({ "org.hbs.v7.extractor.event.service" })
 public abstract class InBoxReaderBase implements InBoxReader
 {
 	private static final long	serialVersionUID	= 2428143934833300387L;

@@ -69,8 +69,8 @@ public class ServerUtilFactory implements IConstProperty
 
 	public enum MicroServices implements EnumInterface
 	{
-		UI("rezoom-ui", "8080"), Eureka("rezoom-eureka", "8090"), OAuth("rezoom-oauth", "8100"), Admin("rezoom-admin", "8200"), Sender("rezoom-sender", "8300"), View("rezoom-view",
-				"8400"), Extractor("rezoom-extractor", "8500");
+		UI("core-ui", "8080"), Eureka("core-eureka", "8090"), OAuth("core-oauth", "8100"), Admin("core-admin", "8200"), Sender("core-sender", "8300"), View("core-view",
+				"8400"), Extractor("core-extractor", "8500");
 
 		String	context;
 		String	port;
