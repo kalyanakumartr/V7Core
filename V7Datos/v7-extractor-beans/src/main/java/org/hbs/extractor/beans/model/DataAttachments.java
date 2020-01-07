@@ -25,7 +25,7 @@ public class DataAttachments extends CommonFileUpload
 	private static final long		serialVersionUID	= 3340835331638013651L;
 
 	protected IncomingData			incomingData;
-	protected IIncomingCoreData		coreData;
+	protected IIncomingCoreData		coreData; // Resume
 	protected EDataTrace			trace				= EDataTrace.YetToTrace;
 
 	public DataAttachments()

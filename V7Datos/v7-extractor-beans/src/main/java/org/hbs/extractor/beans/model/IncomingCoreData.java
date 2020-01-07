@@ -3,8 +3,9 @@ package org.hbs.extractor.beans.model;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
+@Entity(name="IncomingCoreData")
 @Table(name = "incoming_core_data")
+//Resume
 public class IncomingCoreData extends IncomingCoreDataBase
 {
 
