@@ -38,36 +38,43 @@ public abstract class InBoxReaderBase implements InBoxReader
 	{
 		try
 		{
-			Store store;
-			Properties props = new Properties();
-
-			Map<String, String[]> map = config.getSource().props();
-			props.setProperty("mail.host", config.getHostAddress());
-			props.setProperty("mail.port", config.getPort());
-			props.setProperty("mail.store.protocol", config.getProtocol());
-
-			/* Get the Session object for specific Mail Property. */
-			Session session = Session.getInstance(props, new Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication()
-				{
-					return new PasswordAuthentication(config.getUserName().trim(), config.getPassword());
-				}
-			});
-			/* Get a Store object that implements the specified protocol. */
-			store = session.getStore(config.getProtocol().trim());
-			/*
-			 * Connect to the current host using the specified Email id and Password.
-			 */
-			store.connect();
-			Folder[] folderArr = store.getDefaultFolder().list();
-			for (Folder folder : folderArr)
+			Store store = EmailConnectionHandler.getInstance().getStore(config.getProducerId() + config.getFromId());
+			if (store != null)
 			{
-				System.out.println(config.getFromId().trim() + " Inbox Connected :: Unread Message Count :: "+folder+" ---- " + folder.getUnreadMessageCount());
-				if (folder.getName().equalsIgnoreCase("inbox")) {
-					break;
-				}
+				return store;
 			}
-			return store;
+			else
+			{
+				Properties props = new Properties();
+				Map<String, String[]> map = config.getSource().props();
+				props.setProperty("mail.host", config.getHostAddress());
+				props.setProperty("mail.port", config.getPort());
+				props.setProperty("mail.store.protocol", config.getProtocol());
+				/* Get the Session object for specific Mail Property. */
+				Session session = Session.getInstance(props, new Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication()
+					{
+						return new PasswordAuthentication(config.getUserName().trim(), config.getPassword());
+					}
+				});
+				/* Get a Store object that implements the specified protocol. */
+				store = session.getStore(config.getProtocol().trim());
+				/*
+				 * Connect to the current host using the specified Email id and Password.
+				 */
+				store.connect();
+				Folder[] folderArr = store.getDefaultFolder().list();
+				for (Folder folder : folderArr)
+				{
+					System.out.println(config.getFromId().trim() + " Inbox Connected :: Unread Message Count :: " + folder + " ---- " + folder.getUnreadMessageCount());
+					if (folder.getName().equalsIgnoreCase("inbox"))
+					{
+						break;
+					}
+				} 
+				EmailConnectionHandler.getInstance().putStore(config.getProducerId() + config.getFromId(), store);
+				return EmailConnectionHandler.getInstance().getStore(config.getProducerId() + config.getFromId());
+			}
 		}
 		finally
 		{
