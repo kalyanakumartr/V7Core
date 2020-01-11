@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.core.security.resource.IPath.EMedia;
 import org.hbs.core.security.resource.IPath.EMediaMode;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.v7.extractor.action.core.InBoxReaderScheduler;
-import org.hbs.v7.extractor.event.service.GenericKafkaProducer;
 import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

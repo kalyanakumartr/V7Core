@@ -63,7 +63,7 @@ public class DataAttachments extends CommonFileUpload
 		this.trace = trace;
 	}
 
-	@ManyToOne(targetEntity = IncomingCoreDataBase.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = IncomingCoreData.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "_URN")
 	public IIncomingCoreData getCoreData()
 	{

@@ -13,11 +13,11 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.UIDFolder;
 
+import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.core.security.resource.IPath.EMedia;
 import org.hbs.core.security.resource.IPath.ETopic;
 import org.hbs.v7.extractor.action.core.InBoxReader;
-import org.hbs.v7.extractor.event.service.GenericKafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 

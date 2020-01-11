@@ -12,10 +12,10 @@ import javax.mail.search.ComparisonTerm;
 import javax.mail.search.ReceivedDateTerm;
 import javax.mail.search.SearchTerm;
 
+import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.core.util.CommonValidator;
-import org.hbs.v7.extractor.event.service.GenericKafkaProducer;
 import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

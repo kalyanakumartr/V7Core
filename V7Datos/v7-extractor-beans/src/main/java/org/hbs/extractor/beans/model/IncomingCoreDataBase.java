@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import org.hbs.core.beans.model.CommonBeanFields;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
 
 @MappedSuperclass
 public class IncomingCoreDataBase extends CommonBeanFields implements IIncomingCoreData
@@ -35,7 +37,7 @@ public class IncomingCoreDataBase extends CommonBeanFields implements IIncomingC
 	}
 
 	@Override
-	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, mappedBy = "_URN", cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, mappedBy = "coreData", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	public Set<DataAttachments> getAttachmentList()
 	{

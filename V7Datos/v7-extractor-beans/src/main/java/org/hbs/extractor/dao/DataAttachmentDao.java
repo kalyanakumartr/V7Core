@@ -8,12 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DataAttachmentDao extends CrudRepository<DataAttachments, String>
+public interface DataAttachmentDao extends CrudRepository<DataAttachments, Long>
 {
-	@Query("From DataAttachments where message.messageId = ?0")
-	List<DataAttachments> getByMessageId(final String messageId);
+	@Query("From DataAttachments where autoId = ?0")
+	List<DataAttachments> getByMessageId(final long autoId);
 
-	@Query("select count(*) from DataAttachments where message.messageId = ?0")
-	long countByMessageId(final String messageId);
+	@Query("select count(*) from DataAttachments where autoId = ?0")
+	long countByMessageId(final long autoId);
 
 }
