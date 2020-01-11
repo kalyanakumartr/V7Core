@@ -31,6 +31,7 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 	private static final long		serialVersionUID	= 8524114488133328911L;
 
 	protected String				incomingId;
+	protected String				_URN;
 	protected EMedia				media				= EMedia.Email;
 	protected String				candidateEmail;
 	protected String				subject				= "";
@@ -167,4 +168,14 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 		this.incomingId = incomingId;
 	}
 
+	@Column(name = "_URN")
+	public String get_URN()
+	{
+		return _URN;
+	}
+
+	public void set_URN(String _URN)
+	{
+		this._URN = _URN;
+	}
 }

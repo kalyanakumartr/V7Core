@@ -3,7 +3,7 @@ package org.hbs.extractor.beans.model;
 import java.io.Serializable;
 import java.util.Set;
 
-public interface IIncomingCoreData extends Serializable
+public interface ICoreData extends Serializable
 {
 
 	public String get_URN();

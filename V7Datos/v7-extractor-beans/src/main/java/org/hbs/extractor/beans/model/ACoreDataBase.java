@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -17,13 +16,13 @@ import org.hibernate.annotations.FetchMode;
 
 
 @MappedSuperclass
-public class IncomingCoreDataBase extends CommonBeanFields implements IIncomingCoreData
+public abstract class ACoreDataBase extends CommonBeanFields implements ICoreData
 {
 	private static final long		serialVersionUID	= 5357766946700135577L;
 	protected String				_URN;
 	protected Set<DataAttachments>	attachmentList		= new LinkedHashSet<DataAttachments>(0);
 
-	public IncomingCoreDataBase()
+	public ACoreDataBase()
 	{
 		super();
 	}
@@ -37,7 +36,7 @@ public class IncomingCoreDataBase extends CommonBeanFields implements IIncomingC
 	}
 
 	@Override
-	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, mappedBy = "coreData", cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, mappedBy = "_URN", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	public Set<DataAttachments> getAttachmentList()
 	{

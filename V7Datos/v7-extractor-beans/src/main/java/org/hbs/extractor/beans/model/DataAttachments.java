@@ -22,21 +22,15 @@ public class DataAttachments extends CommonFileUpload
 		AdditionalDocuments, MainDocument, YetToTrace
 	}
 
-	private static final long		serialVersionUID	= 3340835331638013651L;
+	private static final long	serialVersionUID	= 3340835331638013651L;
 
-	protected IncomingData			incomingData;
-	protected IIncomingCoreData		coreData; // Resume
-	protected EDataTrace			trace				= EDataTrace.YetToTrace;
+	protected IncomingData		incomingData;
+	protected String			_URN;										// Resume
+	protected EDataTrace		trace				= EDataTrace.YetToTrace;
 
 	public DataAttachments()
 	{
 		super();
-	}
-
-	public DataAttachments(IIncomingCoreData coreData)
-	{
-		super();
-		this.coreData = coreData;
 	}
 
 	@ManyToOne(targetEntity = IncomingData.class, fetch = FetchType.LAZY)
@@ -62,17 +56,17 @@ public class DataAttachments extends CommonFileUpload
 	{
 		this.trace = trace;
 	}
-
-	@ManyToOne(targetEntity = IncomingCoreData.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "_URN")
-	public IIncomingCoreData getCoreData()
+	
+	@Column(name = "_URN")
+	public String get_URN()
 	{
-		return coreData;
+		return _URN;
 	}
 
-	public void setCoreData(IIncomingCoreData coreData)
+	public void set_URN(String _URN)
 	{
-		this.coreData = coreData;
+		this._URN = _URN;
 	}
+
 
 }
