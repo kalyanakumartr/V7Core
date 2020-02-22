@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-public abstract class OAuth2ResourceServerConfigBase extends ResourceServerConfigurerAdapter implements IPath
+public abstract class OAuth2ResourceServerConfigBase extends ResourceServerConfigurerAdapter implements IPath, OAuth2Constants
 {
 	private static final long			serialVersionUID	= -177116146310386350L;
 
@@ -66,6 +66,7 @@ public abstract class OAuth2ResourceServerConfigBase extends ResourceServerConfi
 		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 		converter.setAccessTokenConverter(customAccessTokenConverter);
 		converter.setSigningKey(HBS_APPLICATION);
+
 		return converter;
 
 	}

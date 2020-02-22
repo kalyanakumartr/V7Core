@@ -1,4 +1,4 @@
-package org.hbs.core.security.resource;
+package org.hbs.security.resource;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;

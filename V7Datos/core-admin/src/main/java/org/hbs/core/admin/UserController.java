@@ -15,8 +15,6 @@ import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory.MicroServices;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +32,7 @@ public class UserController implements IUserController
 
 	private static final String	UTF8ENCODER			= "UTF-8";
 
-	private final Logger		logger				= LoggerFactory.getLogger(UserController.class);
+	//private final Logger		logger				= LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	UserBo						userBo;
@@ -44,17 +42,17 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("UserController addUser starts ::: ");
+			//logger.info("UserController addUser starts ::: ");
 			userFormBean.authToken = token;
 			userBo.saveUser(auth, userFormBean);
-			logger.info("addUser ends ::: ");
+			//logger.info("addUser ends ::: ");
 			return new ResponseEntity<>(userFormBean, HttpStatus.OK);
 		}
 		catch (Exception excep)
 		{
 			userFormBean.user = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController addUser ::: ", excep);
+			//logger.error("Exception in UserController addUser ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -64,7 +62,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("UserController blockUser starts ::: ", userFormBean.user.getUserId());
+			//logger.info("UserController blockUser starts ::: ", userFormBean.user.getUserId());
 			if (CommonValidator.isNotNullNotEmpty(userFormBean.user))
 			{
 				return new ResponseEntity<EnumInterface>(userBo.blockUser(auth, userFormBean), HttpStatus.OK);
@@ -76,7 +74,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController blockUser ::: ", excep);
+			//logger.error("Exception in UserController blockUser ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -86,7 +84,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("UserController deleteUser starts ::: ", userFormBean.user.getUserId());
+			//logger.info("UserController deleteUser starts ::: ", userFormBean.user.getUserId());
 			if (CommonValidator.isNotNullNotEmpty(userFormBean.user))
 			{
 				return new ResponseEntity<EnumInterface>(userBo.deleteUser(auth, userFormBean), HttpStatus.OK);
@@ -99,7 +97,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController deleteUser ::: ", excep);
+			//logger.error("Exception in UserController deleteUser ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -108,14 +106,31 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController getAllUsers ::: ");
+			//logger.info("Inside UserController getAllUsers ::: ");
 			return new ResponseEntity<List<Users>>(userBo.searchUser(auth, userFormBean), HttpStatus.OK);
 		}
 		catch (Exception e)
 		{
 			userFormBean = new UserFormBean();
 			userFormBean.messageCode = e.getMessage();
-			logger.error("Exception in UserController getAllUsers ::: ", e);
+			//logger.error("Exception in UserController getAllUsers ::: ", e);
+			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@Override
+	public ResponseEntity<?> getUserByEmailOrMobileOrUserId(Authentication auth, @RequestBody UserFormBean userFormBean)
+	{
+		try
+		{
+			//logger.info("Inside UserController getUserByEmailOrMobileOrUserId ::: ");
+			return new ResponseEntity<Users>(userBo.getUserByEmailOrMobileOrUserId(auth, userFormBean), HttpStatus.OK);
+		}
+		catch (Exception e)
+		{
+			userFormBean = new UserFormBean();
+			userFormBean.messageCode = e.getMessage();
+			//logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ", e);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -125,7 +140,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController getCities ::: ");
+			//logger.info("Inside UserController getCities ::: ");
 			return new ResponseEntity<>(userBo.getCityList(auth, userFormBean), HttpStatus.OK);
 		}
 		catch (Exception excep)
@@ -133,7 +148,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController getCities ::: ", excep);
+			//logger.error("Exception in UserController getCities ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -142,7 +157,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController getCountry ::: ");
+			//logger.info("Inside UserController getCountry ::: ");
 			return new ResponseEntity<>(userBo.getCountryList(auth, userFormBean), HttpStatus.OK);
 		}
 		catch (Exception excep)
@@ -150,7 +165,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController getCountry ::: ", excep);
+			//logger.error("Exception in UserController getCountry ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -160,7 +175,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController getStates ::: ");
+			//logger.info("Inside UserController getStates ::: ");
 			return new ResponseEntity<>(userBo.getStateList(auth, userFormBean), HttpStatus.OK);
 		}
 		catch (Exception excep)
@@ -168,7 +183,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController getStates ::: ", excep);
+			//logger.error("Exception in UserController getStates ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -178,7 +193,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("UserController getUser starts ::: ", userFormBean.user.getUserId());
+			//logger.info("UserController getUser starts ::: ", userFormBean.user.getUserId());
 			if (CommonValidator.isNotNullNotEmpty(userFormBean.user))
 			{
 				return new ResponseEntity<Users>(userBo.getUser(userFormBean), HttpStatus.OK);
@@ -191,7 +206,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController getUser ::: ", excep);
+			//logger.error("Exception in UserController getUser ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -201,7 +216,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController getUserByProducer ::: ");
+			//logger.info("Inside UserController getUserByProducer ::: ");
 			return new ResponseEntity<List<Users>>(userBo.getUserByProducer(auth), HttpStatus.OK);
 		}
 		catch (Exception excep)
@@ -210,7 +225,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController getUserByProducer ::: ", excep);
+			//logger.error("Exception in UserController getUserByProducer ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -220,7 +235,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController resendActivationLink ::: ");
+			//logger.info("Inside UserController resendActivationLink ::: ");
 			userFormBean.authToken = token;
 			return new ResponseEntity<>(userBo.resendActivationLink(auth, userFormBean), HttpStatus.OK);
 		}
@@ -228,7 +243,7 @@ public class UserController implements IUserController
 		{
 			userFormBean.user = null;
 			userFormBean.messageCode = e.getMessage();
-			logger.error("Exception in UserController resendActivationLink ::: ", e);
+			//logger.error("Exception in UserController resendActivationLink ::: ", e);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -238,7 +253,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController search ::: ");
+			//logger.info("Inside UserController search ::: ");
 			return new ResponseEntity<List<Users>>(userBo.searchUser(auth, userFormBean), HttpStatus.OK);
 		}
 		catch (Exception excep)
@@ -246,7 +261,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController search ::: ", excep);
+			//logger.error("Exception in UserController search ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -256,7 +271,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("Inside UserController updateUser ::: ");
+			//logger.info("Inside UserController updateUser ::: ");
 			if (CommonValidator.isNotNullNotEmpty(userFormBean, userFormBean.user))
 			{
 				userBo.updateUser(auth, userFormBean);
@@ -270,7 +285,7 @@ public class UserController implements IUserController
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
-			logger.error("Exception in UserController updateUser ::: ", excep);
+			//logger.error("Exception in UserController updateUser ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -280,7 +295,7 @@ public class UserController implements IUserController
 	{
 		try
 		{
-			logger.info("UserController validateUser starts :::");
+			//logger.info("UserController validateUser starts :::");
 			String redirectUri = null;
 			UserFormBean ufBean = userBo.validateUser(token);
 			EFormAction formAction = ESecurity.Token.getTokenAction(token);
@@ -306,7 +321,7 @@ public class UserController implements IUserController
 				default :
 					break;
 			}
-			logger.info("UserController validateUser ends ::: ", redirectUri);
+			//logger.info("UserController validateUser ends ::: ", redirectUri);
 			response.sendRedirect(redirectUri);
 
 		}
@@ -314,7 +329,7 @@ public class UserController implements IUserController
 		{
 			try
 			{
-				logger.error("InvalidKeyException in validateUser ::: ", excep);
+				//logger.error("InvalidKeyException in validateUser ::: ", excep);
 				response.sendRedirect(MicroServices.UI.getUrl(IPathAdmin.ERROR500) + "?errorMsg=" + URLEncoder.encode(excep.getMessage(), UTF8ENCODER));
 			}
 			catch (UnsupportedEncodingException e)
@@ -328,7 +343,7 @@ public class UserController implements IUserController
 		}
 		catch (IOException e)
 		{
-			logger.error("Exception in UserController validateUser ::: ", e);
+			//logger.error("Exception in UserController validateUser ::: ", e);
 			e.printStackTrace();
 		}
 	}

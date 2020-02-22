@@ -1,6 +1,7 @@
-package org.hbs.core.security.resource;
+package org.hbs.security.resource;
 
 import org.hbs.core.beans.path.IPathAdmin;
+import org.hbs.core.security.resource.OAuth2ResourceServerConfigBase;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;

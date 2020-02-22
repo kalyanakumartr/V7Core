@@ -1,4 +1,4 @@
-package org.hbs.core.security.resource;
+package org.hbs.security.resource;
 
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.IConstProperty;
@@ -35,5 +35,4 @@ public class WebMvcConfig implements WebMvcConfigurer, IConstProperty
 			registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 		}
 	}
-
 }

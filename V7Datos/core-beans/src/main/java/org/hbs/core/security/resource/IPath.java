@@ -131,7 +131,6 @@ public interface IPath extends IConstProperty
 		Administrator, Consumer, Dummy, Employee, Producer, SuperAdminRole;
 	}
 
-
 	public enum ETemplate implements EnumInterface
 	{
 		User_Create_Admin(100), //
@@ -192,13 +191,12 @@ public interface IPath extends IConstProperty
 
 	public static final String	PARENT_PRODUCER_ID			= "parentProducerId";
 
-	public String				HBS_APPLICATION				= "HBSApplication";
 	public String				HAS_AUTHORITY_SUPERADMIN	= "hasAuthority('SUPERADMIN')";
-	public String				HAS_AUTHORITY_ADMINISTRATOR	= "hasAuthority('ADMINISTRATOR')";
-	public String				HAS_AUTHORITY_SUPERVISOR	= "hasAuthority('SUPERVISOR')";
+	public String				HAS_AUTHORITY_ADMINISTRATOR	= "hasAuthority('ADMIN')";
+	public String				HAS_AUTHORITY_EMPLOYEE		= "hasAuthority('EMPLOYEE')";
 	public String				HAS_AUTHORITY_USER			= "hasAuthority('USER')";
-	public String				HAS_AUTHORITY_BOTH			= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERVISOR;
-	public String				HAS_ALL_AUTHORITY			= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERVISOR + " or " + HAS_AUTHORITY_USER;
+	public String				HAS_AUTHORITY_BOTH			= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE;
+	public String				HAS_ALL_AUTHORITY			= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE + " or " + HAS_AUTHORITY_USER;
 
 	public String				INTERNAL_TOPIC				= "InternalTopic";
 	public String				MESSAGES_TOPIC				= "ExternalTopic";

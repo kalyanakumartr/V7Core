@@ -98,13 +98,12 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 		UpdateProducer(UPDATE_CUSTOMER, ERole.Administrator), //
 		BlockProducer(BLOCK_CUSTOMER, ERole.Administrator), //
 		CheckProducerExist(CHECK_CUSTOMER_EXIST, ERole.Administrator), //
-
 		// GenerateOTP(GENERATE_OTP, ERole.Administrator, ERole.Employee, ERole.User), //
 		// ValidateOTP(VALIDATE_OTP, ERole.Administrator, ERole.Employee, ERole.User), //
 		// ChangePassword(CHANGE_PASSWORD, ERole.Administrator, ERole.Employee, ERole.User), //
 
 		PreSearchUser(PRESEARCH_USER, ERole.Administrator, ERole.Employee), //
-		GetActiveUser(GET_ACTIVE_USER, ERole.Administrator, ERole.Employee), //
+		GetActiveUser(GET_ACTIVE_USER,  ERole.Administrator, ERole.Employee, ERole.Consumer), //
 		SearchUser(SEARCH_USER, ERole.Administrator, ERole.Employee), //
 		SearchGroupUser(SEARCH_GROUP_USER, ERole.Administrator, ERole.Employee), //
 		PreAddUser(PREADD_USER, ERole.Administrator), //

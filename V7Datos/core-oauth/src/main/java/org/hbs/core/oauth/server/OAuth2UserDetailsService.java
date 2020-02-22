@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("userDetailsService")
 public class OAuth2UserDetailsService implements UserDetailsService
 {
 	@Autowired
 	UserDao userDao;
 
 	@Override
-	public IOAuth2UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException
+	public OAuth2UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException
 	{
 		IUsers user = userDao.findByEmailOrMobileOrUserId(userName);
 		if (user == null)

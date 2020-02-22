@@ -1,6 +1,8 @@
 package org.hbs.core.oauth.server;
 
+import org.hbs.core.security.resource.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -17,7 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements OAuth2Constants
 {
 	@Autowired
-	private OAuth2UserDetailsService hbsUserDetailsService;
+	@Qualifier("userDetailsService")
+	private OAuth2UserDetailsService userDetailsService;
 
 	@Override
 	@Order(Ordered.HIGHEST_PRECEDENCE)
@@ -36,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements O
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception
 	{
-		auth.userDetailsService(hbsUserDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -50,4 +53,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements O
 	{
 		return super.authenticationManagerBean();
 	}
+
 }

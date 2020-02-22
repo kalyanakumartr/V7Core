@@ -14,8 +14,6 @@ import org.hbs.core.security.resource.IPath.EReturn;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.IConstProperty.EWrap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProducerBoImpl implements ProducerBo, IErrorAdmin
 {
 	private static final long	serialVersionUID	= 6078462669851402422L;
-	private final Logger		logger				= LoggerFactory.getLogger(ProducerBoImpl.class);
+	//private final Logger		logger				= LoggerFactory.getLogger(ProducerBoImpl.class);
 
 	@Autowired
 	protected ProducerDao		producerDao;
@@ -83,7 +81,7 @@ public class ProducerBoImpl implements ProducerBo, IErrorAdmin
 	@Override
 	public EnumInterface deleteProducer(Authentication auth, ProducerFormBean cfBean) throws InvalidRequestException
 	{
-		logger.info("Inside ProducerBoImpl deleteProducer ::: ", cfBean.producer.getProducerId());
+		//logger.info("Inside ProducerBoImpl deleteProducer ::: ", cfBean.producer.getProducerId());
 		// producerDao.deleteById(cfBean.producer.getProducerId());
 		cfBean.repoProducer = producerDao.findByProducerId(cfBean.producer.getProducerId());
 		cfBean.repoProducer.setStatus(!cfBean.repoProducer.getStatus());// Negate Current Status

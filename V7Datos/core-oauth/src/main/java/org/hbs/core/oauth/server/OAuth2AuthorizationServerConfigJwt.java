@@ -1,6 +1,8 @@
 package org.hbs.core.oauth.server;
 
-import org.hbs.core.dao.RolesDao;
+import java.util.Arrays;
+
+import org.hbs.core.security.resource.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,8 @@ import org.springframework.security.oauth2.provider.approval.TokenStoreUserAppro
 import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -36,17 +40,12 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 	private UserApprovalHandler			userApprovalHandler;
 
 	@Autowired
-	private JwtAccessTokenConverter		jwtTokenEnhancer;
-
-	@Autowired
-	private OAuth2UserDetailsService	hbsUserDetailsService;
+	@Qualifier("userDetailsService")
+	private OAuth2UserDetailsService	userDetailsService; 
 
 	@Autowired
 	@Qualifier(AUTHENTICATION_MANAGER_BEAN)
 	private AuthenticationManager		authenticationManager;
-
-	@Autowired
-	RolesDao							rolesDao;
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception
@@ -57,7 +56,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 
 	@Override
 	public void configure(final ClientDetailsServiceConfigurer clients) throws Exception
-	{
+	{ // @formatter:off
 		clients.inMemory()//
 				.withClient(HBS_APPLICATION)//
 				.secret(new BCryptPasswordEncoder().encode(HBS_SECRET))//
@@ -65,17 +64,21 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 				// .authorities(ERole.Administrator.name().toUpperCase(),
 				// ERole.Supervisor.name().toUpperCase(), ERole.User.name().toUpperCase())//
 				.scopes(READ, WRITE, TRUST)//
-				.accessTokenValiditySeconds(300)//
+				.accessTokenValiditySeconds(THIRTY_DAYS)// For Testing And Development Set for 30
+														// Days
 				.refreshTokenValiditySeconds(THIRTY_DAYS);
-	}
+	} // @formatter:on
 
 	@Override
 	public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception
 	{
+		TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+		enhancerChain.setTokenEnhancers(Arrays.asList(customTokenEnhancer(), accessTokenConverter()));
+
 		endpoints.tokenStore(tokenStore())//
-				.tokenEnhancer(jwtTokenEnhancer)//
+				.tokenEnhancer(enhancerChain)//
 				.authenticationManager(authenticationManager)//
-				.userDetailsService(hbsUserDetailsService)//
+				.userDetailsService(userDetailsService)//
 				.userApprovalHandler(userApprovalHandler);
 	}
 
@@ -98,12 +101,11 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 	@Bean
 	protected JwtAccessTokenConverter accessTokenConverter()
 	{
-		/*
-		 * KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new
-		 * ClassPathResource("jwt.jks"), "mySecretKey".toCharArray()); JwtAccessTokenConverter
-		 * converter = new JwtAccessTokenConverter();
-		 * converter.setKeyPair(keyStoreKeyFactory.getKeyPair("jwt"));
-		 */
+		// KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new
+		// ClassPathResource("jwt.jks"), "mySecretKey".toCharArray());
+		// JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+		// converter.setKeyPair(keyStoreKeyFactory.getKeyPair("jwt"));
+
 		// -- for the simple demo purpose, used the secret for signing.
 		// -- for production, it is recommended to use public/private key pair
 		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
@@ -130,6 +132,12 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 		TokenApprovalStore store = new TokenApprovalStore();
 		store.setTokenStore(tokenStore);
 		return store;
+	}
+
+	@Bean
+	public TokenEnhancer customTokenEnhancer()
+	{
+		return new CustomTokenEnhancer();
 	}
 
 }

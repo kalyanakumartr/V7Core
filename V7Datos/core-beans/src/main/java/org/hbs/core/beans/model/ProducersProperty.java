@@ -67,7 +67,7 @@ public class ProducersProperty extends ProducersBase implements IProducersProper
 	}
 
 	@Id
-	@Column(name = "professionalId")
+	@Column(name = "autoId")
 	public String getAutoId()
 	{
 		return autoId;
