@@ -22,6 +22,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @MappedSuperclass
 public abstract class UsersBase extends CommonDateAndStatusFields implements IUsersBase
 {
@@ -57,6 +59,7 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	}
 
 	@Transient
+	@JsonIgnore
 	public Object getActiveProfile()
 	{
 		return activeProfile;
@@ -96,12 +99,14 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	}
 
 	@Column(name = "folderToken")
+	@JsonIgnore
 	public String getFolderToken()
 	{
 		return folderToken;
 	}
 
 	@Transient
+	@JsonIgnore
 	public IUserLog getLastLoginInformation()
 	{
 		if (CommonValidator.isSetFirstNotEmpty(userLogs))
@@ -112,12 +117,13 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	}
 
 	@Transient
+	@JsonIgnore
 	public String getLastLoginTime()
 	{
 		IUserLog userLog = getLastLoginInformation();
 		if (CommonValidator.isNotNullNotEmpty(userLog, this.country, this.country.country))
 		{
-			return EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(ServerUtilFactory.getInstance().getTimeZone(), this.country.country, userLog.getUserLoginTime(), EDate.YYYY_MM_DD_HH_MM_SS_24);
+			return EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(this.country.country, userLog.getUserLoginTime());
 		}
 		return "";
 	}
@@ -129,6 +135,7 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	}
 
 	@Column(name = "otp")
+	@JsonIgnore
 	public String getOtp()
 	{
 		return otp;
@@ -136,13 +143,15 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 
 	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "parentProducerId")
+	@JsonIgnore
 	public IProducers getParentProducer()
 	{
 		return parentProducer;
 	}
 
-	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY )
 	@JoinColumn(name = "producerId")
+	@JsonIgnore
 	public IProducers getProducer()
 	{
 		return producer;
@@ -156,12 +165,14 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	}
 
 	@Column(name = "token")
+	@JsonIgnore
 	public String getToken()
 	{
 		return token;
 	}
 
 	@Column(name = "tokenExpiryDate")
+	@JsonIgnore
 	public Timestamp getTokenExpiryDate()
 	{
 		return tokenExpiryDate;
@@ -183,6 +194,7 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	@Fetch(FetchMode.JOIN)
 	@Where(clause = "fetchBlock = true")
 	@OrderBy("userLoginTime DESC")
+	@JsonIgnore
 	public Set<IUserLog> getUserLogs()
 	{
 		return userLogs;
@@ -195,18 +207,21 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	}
 
 	@Column(name = "userPwd")
+	@JsonIgnore
 	public String getUserPwd()
 	{
 		return userPwd;
 	}
 
 	@Column(name = "userPwdModDate")
+	@JsonIgnore
 	public Timestamp getUserPwdModDate()
 	{
 		return userPwdModDate;
 	}
 
 	@Column(name = "userPwdModFlag")
+	@JsonIgnore
 	public Boolean getUserPwdModFlag()
 	{
 		return userPwdModFlag;

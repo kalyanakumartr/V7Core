@@ -29,6 +29,9 @@ public class OTPBoImpl implements OTPBo
 	GenericKafkaProducer		gKafkaProducer;
 
 	@Autowired
+	protected UserBo			userBo;
+	
+	@Autowired
 	protected UserDao			userDao;
 
 	@SuppressWarnings("unused")
@@ -38,7 +41,7 @@ public class OTPBoImpl implements OTPBo
 	@Override
 	public String generateOTP(OTPFormBean otpFormBean) throws InvalidKeyException
 	{
-		Users user = userDao.findByEmailOrMobileOrUserId(otpFormBean.user.getUserId());
+		Users user = userBo.getUserByEmailOrMobileOrUserId(otpFormBean.user.getUserId());
 		if (user == null)
 			throw new InvalidKeyException("Invalid user Id");
 		otpFormBean.user = user;

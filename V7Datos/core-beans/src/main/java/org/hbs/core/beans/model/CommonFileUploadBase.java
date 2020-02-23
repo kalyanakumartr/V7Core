@@ -10,7 +10,7 @@ import org.hbs.core.beans.model.IUsersBase.EResource;
 import org.springframework.web.multipart.MultipartFile;
 
 @MappedSuperclass
-public class CommonFileUploadBase extends CommonDateAndStatusFields implements IUploadImageOrDocuments
+public abstract class CommonFileUploadBase extends CommonDateAndStatusFields implements IUploadImageOrDocuments
 {
 
 	private static final long	serialVersionUID		= 8419978751136386549L;

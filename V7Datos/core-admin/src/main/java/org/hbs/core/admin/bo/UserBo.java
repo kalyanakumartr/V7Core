@@ -40,6 +40,6 @@ public interface UserBo extends Serializable
 
 	UserFormBean validateUser(String token) throws InvalidKeyException;
 
-	Users getUserByEmailOrMobileOrUserId(Authentication auth, UserFormBean ufBean);
+	Users getUserByEmailOrMobileOrUserId(String searchParam);
 
 }

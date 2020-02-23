@@ -12,4 +12,12 @@ public interface ICreatedModifiedUsers extends Serializable
 
 	public void setModifiedUser(IUsers modifiedUser);
 
+	public String getCreatedUserId();
+
+	public String getCreatedUserName();
+
+	public String getModifiedUserId();
+
+	public String getModifiedUserName();
+
 }

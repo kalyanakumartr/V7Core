@@ -80,13 +80,18 @@ public interface IConstProperty extends Serializable
 			_DF.setTimeZone(TimeZone.getTimeZone(timeZone.toUpperCase()));
 			return Timestamp.valueOf(_DF != null ? _DF.format(date) : "");
 		}
-
-		public String byTimeZone(String sourceTZ, String destinationTZ, Timestamp timeStamp, EDate eDate)
+		
+		public String byTimeZone(String destinationTZ, Timestamp timeStamp)
 		{
-			return byTimeZone(sourceTZ, destinationTZ, timeStamp.toString(), eDate);
+			return byTimeZone(ServerUtilFactory.getInstance().getTimeZone(), destinationTZ, timeStamp.toString());
 		}
 
-		public String byTimeZone(String sourceTZ, String destinationTZ, String date, EDate eDate)
+		public String byTimeZone(String sourceTZ, String destinationTZ, Timestamp timeStamp)
+		{
+			return byTimeZone(sourceTZ, destinationTZ, timeStamp.toString());
+		}
+
+		public String byTimeZone(String sourceTZ, String destinationTZ, String date)
 		{
 			if (date.indexOf(DOT) > 0)
 				date = date.substring(0, date.indexOf(DOT));

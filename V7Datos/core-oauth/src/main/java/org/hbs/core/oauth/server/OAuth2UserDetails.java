@@ -17,17 +17,27 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 
 	private static final long						serialVersionUID	= 7116369654223628650L;
 	private Collection<? extends GrantedAuthority>	authorities;
+	private String									countryId;
 	private String									password;
 	private String									username;
 	private String									fullName;
 	private String									producerId;
+	private String									producerName;
+	private String									parentProducerId;
+	private String									parentProducerName;
 
-	public OAuth2UserDetails(IUsers user)
+	public OAuth2UserDetails(IUsers user, String producerName, String parentProducerName)
 	{
 		this.username = user.getUserId();
 		this.password = user.getUserPwd();
+		this.countryId = user.getCountry().getCountry();
 		this.fullName = CommonValidator.isNullOrEmpty(user.getLastName()) ? "" : user.getLastName() + IConstProperty.COMMA_SPACE + user.getUserName();
+		//Dont Change Order
 		this.producerId = user.getProducer().getProducerId();
+		this.parentProducerId = user.getParentProducer().getProducerId();
+		
+		this.producerName = producerName;
+		this.parentProducerName = parentProducerName;
 		this.authorities = translate(user.getUserRoleses());
 	}
 
@@ -72,6 +82,46 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 	{
 		this.producerId = producerId;
 	}
+	
+	public String getProducerName()
+	{
+		return producerName;
+	}
+
+	public void setProducerName(String producerName)
+	{
+		this.producerName = producerName;
+	}
+
+	public String getParentProducerId()
+	{
+		return parentProducerId;
+	}
+
+	public void setParentProducerId(String parentProducerId)
+	{
+		this.parentProducerId = parentProducerId;
+	}
+
+	public String getParentProducerName()
+	{
+		return parentProducerName;
+	}
+
+	public void setParentProducerName(String parentProducerName)
+	{
+		this.parentProducerName = parentProducerName;
+	}
+
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
 
 	@Override
 	public String getUsername()
@@ -101,6 +151,16 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 	public boolean isEnabled()
 	{
 		return true;
+	}
+
+	public String getCountryId()
+	{
+		return countryId;
+	}
+
+	public void setCountryId(String countryId)
+	{
+		this.countryId = countryId;
 	}
 
 }

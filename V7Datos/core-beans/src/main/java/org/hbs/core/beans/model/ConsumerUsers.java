@@ -4,6 +4,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @DiscriminatorValue("Consumer")
 public class ConsumerUsers extends Users
@@ -18,6 +20,7 @@ public class ConsumerUsers extends Users
 	}
 
 	@Transient
+	@JsonIgnore
 	public String getBusinessKey()
 	{
 		return EKey.Auto();

@@ -17,8 +17,8 @@ public interface UserDao extends JpaRepository<Users, String>
 	@Query("select UM FROM UsersMedia UM where UM.users.employeeId = :employeeId")
 	List<UsersMedia> fetchMediaByEmployeeId(@Param("employeeId") String employeeId);
 
-	@Query("select M.users FROM UsersMedia M Where M.mediaType = 'Primary' AND (M.emailId = :loginBy OR M.mobileNo = :loginBy OR M.users.userId = :loginBy )")
-	Users findByEmailOrMobileOrUserId(@Param("loginBy") String emailOrMobileOrUserId);
+	@Query("select M.users, M.users.producer.producerName, M.users.parentProducer.producerName FROM UsersMedia M Where M.mediaType = 'Primary' AND (M.emailId = :loginBy OR M.mobileNo = :loginBy OR M.users.userId = :loginBy )")
+	Object findByEmailOrMobileOrUserId(@Param("loginBy") String emailOrMobileOrUserId);
 
 	@Query("select S FROM State S WHERE S.state Like %:stateName% AND S.country.country = :country AND S.status = true")
 	List<State> getStateList(@Param("stateName") String stateName, @Param("country") String country);

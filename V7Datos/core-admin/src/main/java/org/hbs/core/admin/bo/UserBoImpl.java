@@ -13,12 +13,14 @@ import org.hbs.core.beans.model.Users;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.dao.SequenceDao;
+import org.hbs.core.dao.UserDao;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +31,16 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 
 	private static final long	serialVersionUID	= 7255672818512788055L;
 
-	//private final Logger		logger				= LoggerFactory.getLogger(UserBoImpl.class);
+	// private final Logger logger = LoggerFactory.getLogger(UserBoImpl.class);
 
 	@Autowired
 	GenericKafkaProducer		gKafkaProducer;
 
 	@Autowired
 	private SequenceDao			sequenceDao;
+
+	@Autowired
+	private UserDao				userDao;
 
 	@Override
 	public EnumInterface blockUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException
@@ -44,7 +49,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		{
 			try
 			{
-				//logger.info("Inside UserBoImpl blockUser ::: ", ufBean.user.getUserId());
+				// logger.info("Inside UserBoImpl blockUser ::: ", ufBean.user.getUserId());
 				ufBean.repoUser.setStatus(!ufBean.user.getStatus());// Negate Current Status
 				ufBean.repoUser.modifiedUserInfo(auth);
 				userDao.save(ufBean.repoUser);
@@ -64,7 +69,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	@Override
 	public EnumInterface deleteUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException
 	{
-		//logger.info("Inside UserBoImpl deleteUser ::: ", ufBean.user.getUserId());
+		// logger.info("Inside UserBoImpl deleteUser ::: ", ufBean.user.getUserId());
 		userDao.deleteById(ufBean.user.getUserId());
 		return EReturn.Success;
 	}
@@ -83,7 +88,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 
 	private boolean isRecentlyUpdated(UserFormBean ufBean)
 	{
-		//logger.info("Inside UserBoImpl isRecentlyUpdated ::: ", ufBean.user.getUserId());
+		// logger.info("Inside UserBoImpl isRecentlyUpdated ::: ", ufBean.user.getUserId());
 		if (CommonValidator.isNotNullNotEmpty(ufBean.user))
 		{
 			Users user = userDao.getOne(ufBean.user.getEmployeeId());
@@ -104,7 +109,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	public EnumInterface saveUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException, InvalidKeyException
 	{
 
-		//logger.info("UserBoImpl saveUser starts ::: ");
+		// logger.info("UserBoImpl saveUser starts ::: ");
 		IUsersMedia uMedia = ufBean.user.getPrimaryMedia();
 		List<String> userNameList = userDao.checkUserNameEmailIdOrMobileNo(ufBean.user.getProducer().getProducerId(), uMedia.getEmailId(), uMedia.getMobileNo());
 		if (CommonValidator.isListFirstNotEmpty(userNameList))
@@ -156,12 +161,12 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		{
 			try
 			{
-				//logger.info("UserBoImpl updateUser starts ::: ");
+				// logger.info("UserBoImpl updateUser starts ::: ");
 				ufBean.updateRepoUser(auth);
 				userDao.save(ufBean.repoUser);
 
 				ufBean.messageCode = USER_UPDATED_SUCCESSFULLY;
-				//logger.info("UserBoImpl updateUser ends ::: ");
+				// logger.info("UserBoImpl updateUser ends ::: ");
 				return EReturn.Success;
 			}
 			finally
@@ -178,7 +183,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	{
 		if (CommonValidator.isNotNullNotEmpty(tokenKey))
 		{
-			//logger.info("Inside UserBoImpl validateUser ::: ");
+			// logger.info("Inside UserBoImpl validateUser ::: ");
 			UserFormBean ufBean = ESecurity.Token.validate(userDao, tokenKey, TOKEN_EXPIRY_DURATION);
 
 			if (CommonValidator.isNotNullNotEmpty(ufBean))
@@ -218,8 +223,20 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	}
 
 	@Override
-	public Users getUserByEmailOrMobileOrUserId(Authentication auth, UserFormBean ufBean)
+	public Users getUserByEmailOrMobileOrUserId(String searchParam)
 	{
-		return userDao.findByEmailOrMobileOrUserId(ufBean.searchParam);
+		Object object = userDao.findByEmailOrMobileOrUserId(searchParam);
+		if (object == null)
+		{
+			throw new UsernameNotFoundException("User Info " + searchParam + " not found");
+		}
+		Object[] userDetail = (Object[])object;
+		
+		Users user = (Users) userDetail[0];
+		user.setProducerId(user.getProducer().getProducerId());
+		user.setProducerName((String)userDetail[1]);
+		user.setParentProducerId(user.getParentProducer().getProducerId());
+		user.setParentProducerName((String)userDetail[2]);
+		return user;
 	}
 }

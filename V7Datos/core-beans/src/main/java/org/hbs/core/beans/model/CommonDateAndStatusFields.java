@@ -4,8 +4,11 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.hbs.core.util.IConstProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
 public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusFields, IConstProperty
@@ -58,9 +61,9 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 		this.createdDate = createdDate;
 	}
 
-	public void setCreatedDateByTimeZone(String createdDateByTimeZone)
+	public void setCreatedDateByTimeZone(String countryId)
 	{
-		this.createdDateByTimeZone = createdDateByTimeZone;
+		this.createdDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(countryId, createdDate);
 	}
 
 	public void setModifiedDate(Timestamp modifiedDate)
@@ -68,13 +71,26 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 		this.modifiedDate = modifiedDate;
 	}
 
-	public void setModifiedDateByTimeZone(String modifiedDateByTimeZone)
+	public void setModifiedDateByTimeZone(String countryId)
 	{
-		this.modifiedDateByTimeZone = modifiedDateByTimeZone;
+		this.modifiedDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(countryId, modifiedDate);;
 	}
 
 	public void setStatus(Boolean status)
 	{
 		this.status = status;
 	}
+
+	@Transient
+	public String getCreatedDateByTimeZone()
+	{
+		return createdDateByTimeZone;
+	}
+
+	@Transient
+	public String getModifiedDateByTimeZone()
+	{
+		return modifiedDateByTimeZone;
+	}
+
 }

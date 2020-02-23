@@ -19,6 +19,13 @@ public interface IPath extends IConstProperty
 		User;
 
 		Map<String, Object> details = null;
+		
+		public String getCountryId(Authentication auth)
+		{
+			if (details == null)
+				init(auth);
+			return (String) details.get(COUNTRY_ID);
+		}
 
 		public String getFullName(Authentication auth)
 		{
@@ -27,12 +34,28 @@ public interface IPath extends IConstProperty
 			return (String) details.get(USER_FULL_NAME);
 		}
 
+		public String getParentProducerId(Authentication auth)
+		{
+			if (details == null)
+				init(auth);
+
+			return (String) details.get(PARENT_PRODUCER_ID);
+		}
+
+		public String getParentProducerName(Authentication auth)
+		{
+			if (details == null)
+				init(auth);
+
+			return (String) details.get(PARENT_PRODUCER_NAME);
+		}
+
 		public Producers getParentProducer(Authentication auth)
 		{
 			if (details == null)
 				init(auth);
 
-			return new Producers((String) details.get(PARENT_PRODUCER_ID));
+			return new Producers((String) details.get(PARENT_PRODUCER_ID), (String) details.get(PARENT_PRODUCER_NAME));
 		}
 
 		public Producers getProducer(Authentication auth)
@@ -40,7 +63,7 @@ public interface IPath extends IConstProperty
 			if (details == null)
 				init(auth);
 
-			return new Producers((String) details.get(PRODUCER_ID));
+			return new Producers((String) details.get(PRODUCER_ID), (String) details.get(PRODUCER_NAME));
 		}
 
 		public String getProducerId(Authentication auth)
@@ -179,6 +202,8 @@ public interface IPath extends IConstProperty
 
 	public static final String	EMPLOYEE_ID					= "employeeId";
 
+	public static final String	COUNTRY_ID					= "countryId";
+
 	public static final String	ACCEPT						= "accept";
 
 	public static final String	AUTHORIZATION				= "authorization";
@@ -190,6 +215,8 @@ public interface IPath extends IConstProperty
 	public static final String	MEDIA_TYPE_ZIP				= "application/zip";
 
 	public static final String	PARENT_PRODUCER_ID			= "parentProducerId";
+
+	public static final String	PARENT_PRODUCER_NAME		= "parentProducerName";
 
 	public String				HAS_AUTHORITY_SUPERADMIN	= "hasAuthority('SUPERADMIN')";
 	public String				HAS_AUTHORITY_ADMINISTRATOR	= "hasAuthority('ADMIN')";

@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import org.hbs.core.util.ICRUDBean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -48,12 +49,14 @@ public class Country implements ICRUDBean, Comparable<Country>
 	}
 
 	@Column(name = "displayOrder")
+	@JsonIgnore
 	public int getDisplayOrder()
 	{
 		return displayOrder;
 	}
 
 	@Column(name = "status")
+	@JsonIgnore
 	public boolean isStatus()
 	{
 		return status;

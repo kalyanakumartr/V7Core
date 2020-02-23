@@ -2,6 +2,7 @@ package org.hbs.core.beans.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -44,7 +45,7 @@ public class ProducersAttachments extends CommonFileUpload implements IProducers
 		return documentStatus;
 	}
 
-	@ManyToOne(targetEntity = Producers.class)
+	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producerId", nullable = false)
 	public IProducers getProducer()
 	{

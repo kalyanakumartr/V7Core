@@ -15,6 +15,8 @@ import org.hbs.core.security.resource.IPath.EAuth;
 import org.hibernate.annotations.DiscriminatorOptions;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -46,6 +48,7 @@ public class Users extends CommonUsers
 	}
 
 	@Transient
+	@JsonIgnore
 	public String getBusinessKey(String... combination)
 	{
 		return EKey.Auto();

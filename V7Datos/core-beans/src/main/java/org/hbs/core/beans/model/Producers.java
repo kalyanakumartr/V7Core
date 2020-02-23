@@ -31,6 +31,9 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * @author ananth Here Producers Plays the Role of Customer in Magnet Project
  */
@@ -38,6 +41,7 @@ import org.springframework.security.core.Authentication;
 @Table(name = "producers")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "producerType", discriminatorType = DiscriminatorType.STRING)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 public class Producers extends CommonDateAndStatusFields implements IProducers, EBusinessKey
 {
 	private static final long			serialVersionUID		= -5798203939392344587L;
@@ -64,6 +68,13 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 	{
 		super();
 		this.producerId = producerId;
+	}
+	
+	public Producers(String producerId, String producerName)
+	{
+		super();
+		this.producerId = producerId;
+		this.producerName = producerName;
 	}
 
 	@Column(name = "primary")
@@ -109,6 +120,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 	}
 
 	@Transient
+	@JsonIgnore
 	public String getBusinessKey(String... combination)
 	{
 		return EKey.Auto();
@@ -122,6 +134,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 
 	@OneToMany(targetEntity = ProducersAttachments.class, fetch = FetchType.LAZY, mappedBy = "producer")
 	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	public Set<IProducersAttachments> getProducerAttachmentList()
 	{
 		return producerAttachmentList;
@@ -141,6 +154,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 	}
 
 	@Transient
+	@JsonIgnore
 	public IProducersProperty getProperty(EnumInterface media, String key)
 	{
 		List<IProducersProperty> iPPList = propertyList.stream().filter(p -> (p.getMedia() == media && p.getProperty().equals(key))).collect(Collectors.toList());
@@ -151,6 +165,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 	}
 
 	@Transient
+	@JsonIgnore
 	public List<IProducersProperty> getProperty(EnumInterface media)
 	{
 		return propertyList.stream().filter(p -> (p.getMedia() == media)).collect(Collectors.toList());
@@ -158,12 +173,14 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 
 	@OneToMany(targetEntity = ProducersProperty.class, fetch = FetchType.LAZY, mappedBy = "producer")
 	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	public Set<IProducersProperty> getPropertyList()
 	{
 		return propertyList;
 	}
 
 	@Transient
+	@JsonIgnore
 	public List<IProducersProperty> getPropertyList(EnumInterface media)
 	{
 		return propertyList.stream().filter(p -> p.getMedia() == media).collect(Collectors.toList());
@@ -223,6 +240,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 	}
 
 	@Embedded
+	@JsonIgnore
 	public CreatedModifiedUsers getByUser()
 	{
 		return byUser;

@@ -124,10 +124,15 @@ public class UserController implements IUserController
 		try
 		{
 			//logger.info("Inside UserController getUserByEmailOrMobileOrUserId ::: ");
-			return new ResponseEntity<Users>(userBo.getUserByEmailOrMobileOrUserId(auth, userFormBean), HttpStatus.OK);
+			Users users = userBo.getUserByEmailOrMobileOrUserId(userFormBean.searchParam);
+			users.setCreatedDateByTimeZone(users.getCountry().getCountry());
+			users.setModifiedDateByTimeZone(users.getCountry().getCountry());
+
+			return new ResponseEntity<Users>(users, HttpStatus.OK);
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			userFormBean = new UserFormBean();
 			userFormBean.messageCode = e.getMessage();
 			//logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ", e);

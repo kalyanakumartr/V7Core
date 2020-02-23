@@ -4,8 +4,12 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
+import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.IConstProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Embeddable
 public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUsers
@@ -34,17 +38,40 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 	@Override
 	@ManyToOne(targetEntity = Users.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "createdBy", nullable = true)
+	@JsonIgnore
 	public IUsers getCreatedUser()
 	{
 		return createdUser;
 	}
 
+	@Transient
+	public String getCreatedUserId()
+	{
+		return createdUser.getEmployeeId();
+	}
+	@Transient
+	public String getCreatedUserName()
+	{
+		return CommonValidator.isNullOrEmpty(createdUser.getLastName()) ? "" : createdUser.getLastName() + IConstProperty.COMMA_SPACE + createdUser.getUserName();
+	}
+
 	@Override
 	@ManyToOne(targetEntity = Users.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "modifiedBy", nullable = true)
+	@JsonIgnore
 	public IUsers getModifiedUser()
 	{
 		return modifiedUser;
+	}
+	@Transient
+	public String getModifiedUserId()
+	{
+		return modifiedUser.getEmployeeId();
+	}
+	@Transient
+	public String getModifiedUserName()
+	{
+		return CommonValidator.isNullOrEmpty(modifiedUser.getLastName()) ? "" : modifiedUser.getLastName() + IConstProperty.COMMA_SPACE + modifiedUser.getUserName();
 	}
 
 	@Override

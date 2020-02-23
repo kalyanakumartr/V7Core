@@ -18,6 +18,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @MappedSuperclass
 public abstract class CommonUsersBase extends UsersBase implements IUsers
 {
@@ -45,6 +47,7 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 	@OneToMany(targetEntity = UsersAddress.class, fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@Where(clause = "addressType = 'CommunicationAddress'")
+	@JsonIgnore
 	public Set<IUsersAddress> getAddressList()
 	{
 		return addressList;
@@ -67,12 +70,14 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 	@OneToMany(targetEntity = UsersAttachments.class, fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@Where(clause = "uploadDocumentForType = 'ProfileImage'")
+	@JsonIgnore
 	public Set<IUsersAttachments> getAttachmentList()
 	{
 		return attachmentList;
 	}
 
 	@Transient
+	@JsonIgnore
 	public IUsersMedia getPrimaryMedia()
 	{
 		if (primaryMedia == null && CommonValidator.isSetFirstNotEmpty(getMediaList()))
@@ -87,6 +92,7 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 	}
 
 	@Transient
+	@JsonIgnore
 	public IUsersAddress getCommunicationAddress()
 	{
 		if (communicationAddress == null && CommonValidator.isSetFirstNotEmpty(getAddressList()))
@@ -102,6 +108,7 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 
 	@OneToMany(targetEntity = UsersMedia.class, fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	public Set<IUsersMedia> getMediaList()
 	{
 		return mediaList;
@@ -110,6 +117,7 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 	@OneToMany(targetEntity = UserPortlets.class, fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@OrderBy("displayOrder ASC")
+	@JsonIgnore
 	public Set<IUserPortlets> getUserPorlets()
 	{
 		return userPorlets;
@@ -117,6 +125,7 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 
 	@OneToMany(targetEntity = UserRoles.class, fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	public Set<IUserRoles> getUserRoleses()
 	{
 		return userRoleses;

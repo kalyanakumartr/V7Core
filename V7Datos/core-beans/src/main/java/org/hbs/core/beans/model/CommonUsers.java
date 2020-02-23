@@ -13,13 +13,62 @@ import org.hbs.core.util.Masker;
 @MappedSuperclass
 public abstract class CommonUsers extends CommonUsersBase
 {
-	private static final long serialVersionUID = 5331946490137030437L;
+	private static final long	serialVersionUID	= 5331946490137030437L;
+
+	private String				producerId;
+	private String				producerName;
+	private String				parentProducerId;
+	private String				parentProducerName;
 
 	public CommonUsers()
 	{
 		super();
 	}
 
+	@Transient
+	public String getProducerId()
+	{
+		return producerId;
+	}
+
+	@Transient
+	public String getProducerName()
+	{
+		return producerName;
+	}
+
+	@Transient
+	public String getParentProducerId()
+	{
+		return parentProducerId;
+	}
+
+	@Transient
+	public String getParentProducerName()
+	{
+		return parentProducerName;
+	}
+	
+	public void setProducerId(String producerId)
+	{
+		this.producerId = producerId;
+	}
+
+	public void setProducerName(String producerName)
+	{
+		this.producerName = producerName;
+	}
+
+	public void setParentProducerId(String parentProducerId)
+	{
+		this.parentProducerId = parentProducerId;
+	}
+
+	public void setParentProducerName(String parentProducerName)
+	{
+		this.parentProducerName = parentProducerName;
+	}
+	
 	@Transient
 	public IUsersAddress getAddressToDisplay(AddressType addressType)
 	{

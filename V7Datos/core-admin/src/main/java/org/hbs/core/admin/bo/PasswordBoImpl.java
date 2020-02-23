@@ -28,6 +28,8 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 
 	@Autowired
 	GenericKafkaProducer		gKafkaProducer;
+	@Autowired
+	protected UserBo			userBo;
 
 	@Autowired
 	protected UserDao			userDao;
@@ -42,7 +44,7 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 	@Override
 	public EnumInterface changePassword(@RequestBody PasswordFormBean pfBean)
 	{
-		Users users = userDao.findByEmailOrMobileOrUserId(pfBean.userId);
+		Users users = userBo.getUserByEmailOrMobileOrUserId(pfBean.userId);
 		pfBean.otp.user = users;
 		try
 		{
@@ -101,7 +103,7 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 	@Override
 	public EnumInterface forgotPassword(@RequestBody UserFormBean ufBean)
 	{
-		Users users = userDao.findByEmailOrMobileOrUserId(ufBean.emailId);
+		Users users = userBo.getUserByEmailOrMobileOrUserId(ufBean.emailId);
 		if (users != null)
 		{
 			String token = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(users, EFormAction.ForgotPassword);
