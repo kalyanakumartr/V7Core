@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "79f02708-598a-4f6d-88a3-1a0fba5d12dc",
+		"name": "Rezoom-APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuthToken",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "HBSAPPLICATION",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Kalam@151031",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic SEJTQVBQTElDQVRJT046S2FsYW1AMTUxMDMx"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "ananth.malbal@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8090/core-oauth/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"core-oauth",
+						"oauth",
+						"token"
+					]
+				},
+				"description": "http://localhost:8090/rezoom-oauth-server/oauth/token"
+			},
+			"response": []
+		},
+		{
+			"name": "UserPreSearch",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODE3ODI4OTMsInVzZXJfbmFtZSI6IkFuYW50aC1JZCIsImF1dGhvcml0aWVzIjpbIkVNUExPWUVFIiwiQURNSU4iXSwianRpIjoiZDA0ZDkxOTEtYzVhZS00YWVhLTgyYjUtYTA1M2I5ZmZmNzgwIiwiY2xpZW50X2lkIjoiSEJTQVBQTElDQVRJT04iLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdfQ.lhlHjLxQXNY4kDRiexr8Ua9niQyYHTiNkBGbJcuZ1zs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "ananth.malbal@gmail.com",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/preSearchUser?Content-Type=application/json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"preSearchUser"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
