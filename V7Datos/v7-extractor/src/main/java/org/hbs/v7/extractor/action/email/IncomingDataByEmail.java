@@ -38,7 +38,6 @@ public class IncomingDataByEmail implements IPath
 
 	private final Logger		logger				= LoggerFactory.getLogger(IncomingDataByEmail.class);
 
-	
 	private IncomingDao			incomingDao;
 
 	@KafkaListener(topicPartitions = @TopicPartition(topic = ATTACHMENT_TOPIC, partitions = { "0" }), groupId = EMPLOYEE_ID, clientIdPrefix = "Email")
@@ -61,7 +60,8 @@ public class IncomingDataByEmail implements IPath
 					Address[] froms = uidMessage.message.getFrom();
 
 					String candidateEmailId = null;
-					//DataExtractor.getInstance(uidMessage.producerId).dataFramer(RegExFor.Email, Arrays.toString(froms));
+					// DataExtractor.getInstance(uidMessage.producerId).dataFramer(RegExFor.Email,
+					// Arrays.toString(froms));
 
 					if (CommonValidator.isNullOrEmpty(candidateEmailId))
 					{

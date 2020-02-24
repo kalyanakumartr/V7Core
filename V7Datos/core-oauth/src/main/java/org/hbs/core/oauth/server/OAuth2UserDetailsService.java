@@ -21,7 +21,7 @@ public class OAuth2UserDetailsService implements UserDetailsService
 		{
 			throw new UsernameNotFoundException("Login Info " + userName + " not found");
 		}
-		Object[] userDetail = (Object[])object;
+		Object[] userDetail = (Object[]) object;
 		return new OAuth2UserDetails((Users) userDetail[0], (String) userDetail[1], (String) userDetail[2]);
 	}
 }

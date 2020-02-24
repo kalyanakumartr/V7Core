@@ -32,10 +32,10 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 		this.password = user.getUserPwd();
 		this.countryId = user.getCountry().getCountry();
 		this.fullName = CommonValidator.isNullOrEmpty(user.getLastName()) ? "" : user.getLastName() + IConstProperty.COMMA_SPACE + user.getUserName();
-		//Dont Change Order
+		// Dont Change Order
 		this.producerId = user.getProducer().getProducerId();
 		this.parentProducerId = user.getParentProducer().getProducerId();
-		
+
 		this.producerName = producerName;
 		this.parentProducerName = parentProducerName;
 		this.authorities = translate(user.getUserRoleses());
@@ -82,7 +82,7 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 	{
 		this.producerId = producerId;
 	}
-	
+
 	public String getProducerName()
 	{
 		return producerName;

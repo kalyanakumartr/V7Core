@@ -85,107 +85,133 @@ public class ConfigurationEmail extends ConfigurationBase
 		super();
 	}
 
-	public String getProtocol() {
+	public String getProtocol()
+	{
 		return protocol;
 	}
 
-	public void setProtocol(String protocol) {
+	public void setProtocol(String protocol)
+	{
 		this.protocol = protocol;
 	}
 
-	public String getSocketFactory() {
+	public String getSocketFactory()
+	{
 		return socketFactory;
 	}
 
-	public void setSocketFactory(String socketFactory) {
+	public void setSocketFactory(String socketFactory)
+	{
 		this.socketFactory = socketFactory;
 	}
 
-	public String getFallBack() {
+	public String getFallBack()
+	{
 		return fallBack;
 	}
 
-	public void setFallBack(String fallBack) {
+	public void setFallBack(String fallBack)
+	{
 		this.fallBack = fallBack;
 	}
 
-	public String getEnablessl() {
+	public String getEnablessl()
+	{
 		return enablessl;
 	}
 
-	public void setEnablessl(String enablessl) {
+	public void setEnablessl(String enablessl)
+	{
 		this.enablessl = enablessl;
 	}
 
-	public String getHostAddress() {
+	public String getHostAddress()
+	{
 		return hostAddress;
 	}
 
-	public void setHostAddress(String hostAddress) {
+	public void setHostAddress(String hostAddress)
+	{
 		this.hostAddress = hostAddress;
 	}
 
-	public String getUserName() {
+	public String getUserName()
+	{
 		return userName;
 	}
 
-	public void setUserName(String userName) {
+	public void setUserName(String userName)
+	{
 		this.userName = userName;
 	}
 
-	public String getPassword() {
+	public String getPassword()
+	{
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password)
+	{
 		this.password = password;
 	}
 
-	public String getPort() {
+	public String getPort()
+	{
 		return port;
 	}
 
-	public void setPort(String port) {
+	public void setPort(String port)
+	{
 		this.port = port;
 	}
 
-	public String getTtls() {
+	public String getTtls()
+	{
 		return ttls;
 	}
 
-	public void setTtls(String ttls) {
+	public void setTtls(String ttls)
+	{
 		this.ttls = ttls;
 	}
 
-	public String getDebug() {
+	public String getDebug()
+	{
 		return debug;
 	}
 
-	public void setDebug(String debug) {
+	public void setDebug(String debug)
+	{
 		this.debug = debug;
 	}
 
-	public String getFromId() {
+	public String getFromId()
+	{
 		return fromId;
 	}
 
-	public void setFromId(String fromId) {
+	public void setFromId(String fromId)
+	{
 		this.fromId = fromId;
 	}
 
-	public String getFromName() {
+	public String getFromName()
+	{
 		return fromName;
 	}
 
-	public void setFromName(String fromName) {
+	public void setFromName(String fromName)
+	{
 		this.fromName = fromName;
 	}
 
-	public EmailChannel getSource() {
+	public EmailChannel getSource()
+	{
 		return source;
 	}
 
-	public void setSource(EmailChannel source) {
+	public void setSource(EmailChannel source)
+	{
 		this.source = source;
 	}
 }

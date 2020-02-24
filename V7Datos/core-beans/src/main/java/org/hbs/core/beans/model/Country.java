@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "country")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Country implements ICRUDBean, Comparable<Country>
 {
 

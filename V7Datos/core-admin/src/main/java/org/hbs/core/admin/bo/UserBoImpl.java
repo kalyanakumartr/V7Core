@@ -230,13 +230,13 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		{
 			throw new UsernameNotFoundException("User Info " + searchParam + " not found");
 		}
-		Object[] userDetail = (Object[])object;
-		
+		Object[] userDetail = (Object[]) object;
+
 		Users user = (Users) userDetail[0];
 		user.setProducerId(user.getProducer().getProducerId());
-		user.setProducerName((String)userDetail[1]);
+		user.setProducerName((String) userDetail[1]);
 		user.setParentProducerId(user.getParentProducer().getProducerId());
-		user.setParentProducerName((String)userDetail[2]);
+		user.setParentProducerName((String) userDetail[2]);
 		return user;
 	}
 }

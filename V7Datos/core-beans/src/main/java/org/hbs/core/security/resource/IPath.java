@@ -19,7 +19,7 @@ public interface IPath extends IConstProperty
 		User;
 
 		Map<String, Object> details = null;
-		
+
 		public String getCountryId(Authentication auth)
 		{
 			if (details == null)

@@ -49,6 +49,7 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 	{
 		return createdUser.getEmployeeId();
 	}
+
 	@Transient
 	public String getCreatedUserName()
 	{
@@ -63,11 +64,13 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 	{
 		return modifiedUser;
 	}
+
 	@Transient
 	public String getModifiedUserId()
 	{
 		return modifiedUser.getEmployeeId();
 	}
+
 	@Transient
 	public String getModifiedUserName()
 	{

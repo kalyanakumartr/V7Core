@@ -7,7 +7,7 @@ public interface IOAuth2UserDetails extends UserDetails
 	public String getFullName();
 
 	public String getProducerId();
-	
+
 	public String getProducerName();
 
 	public void setProducerName(String producerName);

@@ -25,7 +25,7 @@ public interface IUserController extends IPathAdmin
 	@RequestMapping(value = GET_ACTIVE_USER, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize(HAS_ALL_AUTHORITY)
 	public ResponseEntity<?> getUserByEmailOrMobileOrUserId(Authentication auth, @RequestBody UserFormBean userFormBean);
-	
+
 	@PostMapping
 	@RequestMapping(value = PRESEARCH_USER, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize(HAS_ALL_AUTHORITY)

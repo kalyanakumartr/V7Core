@@ -41,7 +41,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "producers")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "producerType", discriminatorType = DiscriminatorType.STRING)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Producers extends CommonDateAndStatusFields implements IProducers, EBusinessKey
 {
 	private static final long			serialVersionUID		= -5798203939392344587L;
@@ -69,7 +69,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 		super();
 		this.producerId = producerId;
 	}
-	
+
 	public Producers(String producerId, String producerName)
 	{
 		super();

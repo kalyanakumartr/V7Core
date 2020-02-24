@@ -8,8 +8,6 @@ import javax.persistence.Transient;
 
 import org.hbs.core.util.IConstProperty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @MappedSuperclass
 public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusFields, IConstProperty
 {
@@ -73,7 +71,8 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 
 	public void setModifiedDateByTimeZone(String countryId)
 	{
-		this.modifiedDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(countryId, modifiedDate);;
+		this.modifiedDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(countryId, modifiedDate);
+		;
 	}
 
 	public void setStatus(Boolean status)

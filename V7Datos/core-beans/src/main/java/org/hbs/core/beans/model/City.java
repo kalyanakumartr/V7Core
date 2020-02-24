@@ -10,7 +10,6 @@ import javax.persistence.Table;
 
 import org.hbs.core.util.ICRUDBean;
 
-
 @Entity
 @Table(name = "city")
 public class City implements ICRUDBean, Comparable<City>

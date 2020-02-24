@@ -37,7 +37,7 @@ public class InBoxReaderIMAP extends InBoxReaderBase
 		if (CommonValidator.isNotNullNotEmpty(iConfig))
 		{
 			ConfigurationEmail config = (ConfigurationEmail) iConfig;
-			this.gKafkaProducer=gKafkaProducer;
+			this.gKafkaProducer = gKafkaProducer;
 			Store store = null;
 			IMAPFolder imapFolder = null;
 			try

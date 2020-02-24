@@ -8,9 +8,9 @@ public class ProducerFormBean extends APIStatus
 
 	private static final long	serialVersionUID	= 5862342185767193951L;
 
-	public Producers		producer			= new Producers();
+	public Producers			producer			= new Producers();
 
-	public Producers		repoProducer;
+	public Producers			repoProducer;
 
 	public void updateRepoProducer(Authentication auth)
 	{

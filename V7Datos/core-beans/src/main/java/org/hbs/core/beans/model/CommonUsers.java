@@ -48,7 +48,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	{
 		return parentProducerName;
 	}
-	
+
 	public void setProducerId(String producerId)
 	{
 		this.producerId = producerId;
@@ -68,7 +68,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	{
 		this.parentProducerName = parentProducerName;
 	}
-	
+
 	@Transient
 	public IUsersAddress getAddressToDisplay(AddressType addressType)
 	{

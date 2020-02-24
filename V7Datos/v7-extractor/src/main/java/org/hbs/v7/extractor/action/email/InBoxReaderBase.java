@@ -71,7 +71,7 @@ public abstract class InBoxReaderBase implements InBoxReader
 					{
 						break;
 					}
-				} 
+				}
 				EmailConnectionHandler.getInstance().putStore(config.getProducerId() + config.getFromId(), store);
 				return EmailConnectionHandler.getInstance().getStore(config.getProducerId() + config.getFromId());
 			}
@@ -85,10 +85,15 @@ public abstract class InBoxReaderBase implements InBoxReader
 	{
 		for (Message message : messages)
 		{
-			try {
-			//gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, "producerId : "+producerId+" UIDFolder : "+ _UIDFolder.toString()+" Message :"+ message.toString());
-			gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, new UIDMimeMessage(producerId, _UIDFolder, message));
-			}catch(Exception ex) {
+			try
+			{
+				// gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, "producerId :
+				// "+producerId+" UIDFolder : "+ _UIDFolder.toString()+" Message :"+
+				// message.toString());
+				gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, new UIDMimeMessage(producerId, _UIDFolder, message));
+			}
+			catch (Exception ex)
+			{
 				ex.printStackTrace();
 				throw ex;
 			}

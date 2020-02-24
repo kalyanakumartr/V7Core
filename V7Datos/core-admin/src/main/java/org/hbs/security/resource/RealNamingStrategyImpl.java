@@ -9,7 +9,7 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 public class RealNamingStrategyImpl extends org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy implements Serializable
 {
 
-	private static final long serialVersionUID = -7411911273774329653L;
+	private static final long								serialVersionUID	= -7411911273774329653L;
 	public static final PhysicalNamingStrategyStandardImpl	INSTANCE			= new PhysicalNamingStrategyStandardImpl();
 
 	@Override

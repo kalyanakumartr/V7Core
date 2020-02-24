@@ -26,7 +26,7 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 
 	@Autowired
 	ExtractorBo					extractorBo;
-	
+
 	@Autowired
 	GenericKafkaProducer		gKafkaProducer;
 
@@ -40,7 +40,7 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 			{
 				isRunning = true;
 				List<IConfiguration> configList = extractorBo.getConfigurationList(EMedia.Email, EMediaMode.Internal);
-				System.out.println("gKafkaProducer :" +gKafkaProducer);
+				System.out.println("gKafkaProducer :" + gKafkaProducer);
 				if (CommonValidator.isListFirstNotEmpty(configList))
 				{
 					ExecutorService executor = Executors.newFixedThreadPool(configList.size());
@@ -56,7 +56,7 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 								try
 								{
 									System.out.println("Started By " + config.getFromId() + " at " + new Date());
-									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel(config,gKafkaProducer);
+									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel(config, gKafkaProducer);
 								}
 								catch (Exception e)
 								{

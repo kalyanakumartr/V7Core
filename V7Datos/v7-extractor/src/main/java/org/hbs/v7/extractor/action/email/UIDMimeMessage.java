@@ -18,7 +18,7 @@ public class UIDMimeMessage extends AttachmentInfo
 	public UIDMimeMessage(String producerId, UIDFolder _UIDFolder, Message message) throws MessagingException
 	{
 		super();
-		//this.uniqueId = _UIDFolder.getUID(message) + "";
+		// this.uniqueId = _UIDFolder.getUID(message) + "";
 		this.message = message;
 		this.producerId = producerId;
 	}

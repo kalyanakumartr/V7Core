@@ -17,7 +17,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.hbs.core.util.CommonValidator;
-import org.hbs.core.util.ServerUtilFactory;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
@@ -149,7 +148,7 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 		return parentProducer;
 	}
 
-	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY )
+	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producerId")
 	@JsonIgnore
 	public IProducers getProducer()

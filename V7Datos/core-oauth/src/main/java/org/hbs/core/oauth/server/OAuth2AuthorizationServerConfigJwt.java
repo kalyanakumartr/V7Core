@@ -41,7 +41,7 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 
 	@Autowired
 	@Qualifier("userDetailsService")
-	private OAuth2UserDetailsService	userDetailsService; 
+	private OAuth2UserDetailsService	userDetailsService;
 
 	@Autowired
 	@Qualifier(AUTHENTICATION_MANAGER_BEAN)

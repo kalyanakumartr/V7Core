@@ -16,5 +16,5 @@ public interface ICommonDateAndStatusFields extends Serializable
 	public void setModifiedDate(Timestamp modifiedDate);
 
 	public void setStatus(Boolean status);
-	
+
 }

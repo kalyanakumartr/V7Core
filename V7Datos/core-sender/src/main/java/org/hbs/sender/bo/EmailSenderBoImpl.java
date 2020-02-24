@@ -51,7 +51,7 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 	String						applicationPhysicalPaths;
 
 	@Autowired
-	EmailAttachmentDao				attachmentDao;
+	EmailAttachmentDao			attachmentDao;
 
 	@Value("${attachement.folder}")
 	String						attachmentFolder;

@@ -8,12 +8,12 @@ import org.hbs.core.security.resource.IPath;
 public class AdminConsumer implements IPath
 {
 
-	private static final long	serialVersionUID	= -3892033320967613405L;
-	//private final Logger		logger				= LoggerFactory.getLogger(AdminConsumer.class);
+	private static final long serialVersionUID = -3892033320967613405L;
+	// private final Logger logger = LoggerFactory.getLogger(AdminConsumer.class);
 
 	// @KafkaListener(topics = MESSAGES_TOPIC, groupId = EMPLOYEE_ID)
 	public void consume(String message) throws IOException
 	{
-		//logger.info(String.format("#### -> Consumed message -> %s", message));
+		// logger.info(String.format("#### -> Consumed message -> %s", message));
 	}
 }

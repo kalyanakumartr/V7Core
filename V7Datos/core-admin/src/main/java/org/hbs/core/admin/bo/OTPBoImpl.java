@@ -30,7 +30,7 @@ public class OTPBoImpl implements OTPBo
 
 	@Autowired
 	protected UserBo			userBo;
-	
+
 	@Autowired
 	protected UserDao			userDao;
 

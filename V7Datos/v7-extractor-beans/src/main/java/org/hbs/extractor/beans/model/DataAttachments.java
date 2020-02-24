@@ -56,7 +56,7 @@ public class DataAttachments extends CommonFileUpload
 	{
 		this.trace = trace;
 	}
-	
+
 	@Column(name = "_URN")
 	public String get_URN()
 	{
@@ -67,6 +67,5 @@ public class DataAttachments extends CommonFileUpload
 	{
 		this._URN = _URN;
 	}
-
 
 }

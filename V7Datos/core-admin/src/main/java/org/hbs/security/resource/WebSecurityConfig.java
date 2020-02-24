@@ -17,7 +17,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
 	{
 		web.ignoring().mvcMatchers(FORGOT_PASSWORD, RESET_PASSWORD, VALIDATE_USER + SLASH_STARS, GENERATE_OTP, VALIDATE_OTP, CHANGE_PASSWORD);
 	}
-	
+
 	@Bean
 	public ServerUtilFactory getServerUtilFactory()
 	{
