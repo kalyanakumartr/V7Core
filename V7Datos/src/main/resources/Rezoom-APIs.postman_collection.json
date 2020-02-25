@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "79f02708-598a-4f6d-88a3-1a0fba5d12dc",
+		"_postman_id": "c9635a29-7428-4c0e-801e-cb19e7c7f40c",
 		"name": "Rezoom-APIs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -124,6 +124,144 @@
 							"key": "Content-Type",
 							"value": "application/json"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchCountry",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTExMjU2MCwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiJiNGYyYmJiOC0wODJjLTQ0NTgtODFhMi1iY2JjM2MwMTU1NzgiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.7Io78zEFTDdM-cC4trCxRiIUfgx7eE7oc0b7borFTGI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"searchParam\":\"Asia/Calcutta\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/searchCountry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"searchCountry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchState",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTExMjU2MCwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiJiNGYyYmJiOC0wODJjLTQ0NTgtODFhMi1iY2JjM2MwMTU1NzgiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.7Io78zEFTDdM-cC4trCxRiIUfgx7eE7oc0b7borFTGI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"searchParam\":\"Andhra\",\n\t\"country\":\"Asia/Kolkata\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/searchState",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"searchState"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchCity",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTExMjU2MCwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiJiNGYyYmJiOC0wODJjLTQ0NTgtODFhMi1iY2JjM2MwMTU1NzgiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.7Io78zEFTDdM-cC4trCxRiIUfgx7eE7oc0b7borFTGI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"searchParam\":\"sore\",\n\t\"state\":\"Karnataka\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/searchCity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"searchCity"
 					]
 				}
 			},
