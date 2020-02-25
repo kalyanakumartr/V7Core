@@ -65,7 +65,7 @@ public abstract class UserBoComboBoxImpl implements UserBo, IErrorAdmin, IPath
 
 		for (Country country : countryList)
 		{
-			_LBList.add(new LabelValueBean(country, country.getCountryName(), country.getCountry(), country.getCountry()));
+			_LBList.add(new LabelValueBean(country.getCountry(), country.getCountryName()));
 		}
 		// logger.info("UserBoComboBoxImpl getCountryList ends :::", _LBList.size());
 		return _LBList;
@@ -75,26 +75,34 @@ public abstract class UserBoComboBoxImpl implements UserBo, IErrorAdmin, IPath
 	public List<LabelValueBean> getStateList(Authentication auth, UserFormBean userFormBean)
 	{
 
-		// logger.info("UserBoComboBoxImpl getStateList starts:::", userFormBean.searchParam);
-		List<State> stateList = new ArrayList<State>();
-		List<LabelValueBean> _LBList = new ArrayList<LabelValueBean>();
-		if (CommonValidator.isNotNullNotEmpty(userFormBean.searchParam))
+		try
 		{
-			stateList = stateDao.getStateList(EWrap.Percent.enclose(userFormBean.searchParam), userFormBean.country);
-		}
-		else
-		{
-			stateList = stateDao.getStateList(userFormBean.country);
-		}
+			// logger.info("UserBoComboBoxImpl getStateList starts:::", userFormBean.searchParam);
+			List<State> stateList = new ArrayList<State>();
+			List<LabelValueBean> _LBList = new ArrayList<LabelValueBean>();
+			if (CommonValidator.isNotNullNotEmpty(userFormBean.searchParam))
+			{
+				stateList = stateDao.getStateList(userFormBean.country, EWrap.Percent.enclose(userFormBean.searchParam));
+			}
+			else
+			{
+				stateList = stateDao.getStateList(userFormBean.country);
+			}
 
-		Collections.sort(stateList);
+			Collections.sort(stateList);
 
-		for (State state : stateList)
-		{
-			_LBList.add(new LabelValueBean(state, state.getState(), state.getState()));
+			for (State state : stateList)
+			{
+				_LBList.add(new LabelValueBean(state.getState(), state.getState()));
+			}
+			// logger.info("UserBoComboBoxImpl getStateList ends :::", _LBList.size());
+			return _LBList;
 		}
-		// logger.info("UserBoComboBoxImpl getStateList ends :::", _LBList.size());
-		return _LBList;
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -116,7 +124,7 @@ public abstract class UserBoComboBoxImpl implements UserBo, IErrorAdmin, IPath
 
 		for (City city : cityList)
 		{
-			_LBList.add(new LabelValueBean(city, city.getCity() + EWrap.Brace.enclose(city.getState()), city.getZipCode()));
+			_LBList.add(new LabelValueBean(city.getCity(), city.getCity()));
 		}
 		// logger.info("UserBoComboBoxImpl getCityList ends :::", _LBList.size());
 		return _LBList;

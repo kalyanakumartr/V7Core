@@ -114,6 +114,9 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 		DeleteUser(DELETE_USER, ERole.Administrator), //
 		GetAllUsers(GET_ALL_USERS, ERole.Administrator, ERole.Employee), //
 		GetUsersByProducer(GET_USER_BY_CUSTID, ERole.Administrator, ERole.Employee),
+		SearchCountry(SEARCH_COUNTRY, ERole.Administrator, ERole.Employee, ERole.Consumer), //
+		SearchStates(SEARCH_STATE, ERole.Administrator, ERole.Employee, ERole.Consumer), //
+		SearchCities(SEARCH_CITY, ERole.Administrator, ERole.Employee, ERole.Consumer), //
 		// ValidateUser(VALIDATE_USER),
 
 		// Group

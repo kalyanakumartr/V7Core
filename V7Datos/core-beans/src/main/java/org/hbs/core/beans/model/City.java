@@ -10,6 +10,8 @@ import javax.persistence.Table;
 
 import org.hbs.core.util.ICRUDBean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "city")
 public class City implements ICRUDBean, Comparable<City>
@@ -17,7 +19,6 @@ public class City implements ICRUDBean, Comparable<City>
 
 	private static final long	serialVersionUID	= 3432894599006955455L;
 
-	private String				autoId;
 	private String				city;
 	private State				state;
 	private String				zipCode;
@@ -28,13 +29,8 @@ public class City implements ICRUDBean, Comparable<City>
 		super();
 	}
 
+	
 	@Id
-	@Column(name = "autoId")
-	public String getAutoId()
-	{
-		return autoId;
-	}
-
 	@Column(name = "city")
 	public String getCity()
 	{
@@ -43,12 +39,14 @@ public class City implements ICRUDBean, Comparable<City>
 
 	@ManyToOne(targetEntity = State.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "state")
+	@JsonIgnore
 	public State getState()
 	{
 		return state;
 	}
 
 	@Column(name = "status")
+	@JsonIgnore
 	public boolean isStatus()
 	{
 		return status;
@@ -58,11 +56,6 @@ public class City implements ICRUDBean, Comparable<City>
 	public String getZipCode()
 	{
 		return zipCode;
-	}
-
-	public void setAutoId(String autoId)
-	{
-		this.autoId = autoId;
 	}
 
 	public void setCity(String city)

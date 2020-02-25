@@ -12,8 +12,6 @@ public class LabelValueBean implements java.io.Serializable
 	private static final long	serialVersionUID	= -2065628036344367528L;
 	private String				value;
 	private String				label;
-	private String				key;
-	private String				code;
 
 	public enum ELabelValue implements EnumInterface
 	{
@@ -60,23 +58,6 @@ public class LabelValueBean implements java.io.Serializable
 		this.label = label;
 	}
 
-	public LabelValueBean(Object value, String label, String key)
-	{
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		this.value = gson.toJson(value);
-		this.label = label;
-		this.key = key;
-	}
-
-	public LabelValueBean(Object value, String label, String key, String countryCode)
-	{
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		this.value = gson.toJson(value);
-		this.label = label;
-		this.key = key;
-		this.code = countryCode;
-	}
-
 	/**
 	 * @return the label
 	 */
@@ -109,26 +90,6 @@ public class LabelValueBean implements java.io.Serializable
 	public void setValue(String value)
 	{
 		this.value = value;
-	}
-
-	public String getKey()
-	{
-		return key;
-	}
-
-	public void setKey(String key)
-	{
-		this.key = key;
-	}
-
-	public String getCode()
-	{
-		return code;
-	}
-
-	public void setCode(String code)
-	{
-		this.code = code;
 	}
 
 }
