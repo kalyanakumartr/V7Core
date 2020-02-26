@@ -106,8 +106,8 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 		Users users = userBo.getUserByEmailOrMobileOrUserId(ufBean.emailId);
 		if (users != null)
 		{
-			String token = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(users, EFormAction.ForgotPassword);
-			ufBean.tokenURL = token;
+//			String token = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(users, EFormAction.ForgotPassword);
+//			ufBean.tokenURL = token;
 			ufBean.user = users;
 			userDao.save(users);
 

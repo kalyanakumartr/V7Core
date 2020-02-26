@@ -18,8 +18,8 @@ public interface IUserController extends IPathAdmin
 {
 	@PostMapping
 	@RequestMapping(value = ADD_USER, produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize(HAS_AUTHORITY_ADMINISTRATOR)
-	public ResponseEntity<?> addUser(Authentication auth, String token, UserFormBean ufBean);
+	@PreAuthorize(HAS_AUTHORITY_SUPERADMIN_OR_ADMIN)
+	public ResponseEntity<?> addUser(Authentication auth, UserFormBean ufBean);
 
 	@PostMapping
 	@RequestMapping(value = GET_ACTIVE_USER, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,11 +78,11 @@ public interface IUserController extends IPathAdmin
 	@GetMapping
 	@RequestMapping(value = GET_USER_BY_CUSTID, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize(HAS_ALL_AUTHORITY)
-	public ResponseEntity<?> getUserByProducer(Authentication auth);
+	public ResponseEntity<?> getUserListByProducer(Authentication auth);
 
 	@PostMapping
 	@RequestMapping(value = RESEND_ACTIVATION_LINK, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize(HAS_AUTHORITY_BOTH)
-	public ResponseEntity<?> resendActivationLink(Authentication auth, String token, UserFormBean userFormBean);
+	public ResponseEntity<?> resendActivationLink(Authentication auth, UserFormBean userFormBean);
 
 }

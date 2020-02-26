@@ -2,6 +2,7 @@ package org.hbs.core.oauth.server;
 
 import org.hbs.core.beans.model.Users;
 import org.hbs.core.dao.UserDao;
+import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,7 @@ public class OAuth2UserDetailsService implements UserDetailsService
 	@Override
 	public OAuth2UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException
 	{
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>_DomainURL>>>>>>>>>>>>>>>>>>>>>>>> " + ServerUtilFactory.getInstance().getDomainURL());
 		Object object = userDao.findByEmailOrMobileOrUserId(userName);
 		if (object == null)
 		{

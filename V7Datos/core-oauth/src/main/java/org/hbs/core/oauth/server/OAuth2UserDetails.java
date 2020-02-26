@@ -39,6 +39,7 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 		this.producerName = producerName;
 		this.parentProducerName = parentProducerName;
 		this.authorities = translate(user.getUserRoleses());
+		
 	}
 
 	private Collection<? extends GrantedAuthority> translate(Set<IUserRoles> userRoles)

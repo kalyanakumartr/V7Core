@@ -1,6 +1,7 @@
 package org.hbs.core.security.resource;
 
 import org.hbs.core.util.CommonValidator;
+import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -69,5 +70,12 @@ public abstract class OAuth2ResourceServerConfigBase extends ResourceServerConfi
 
 		return converter;
 
+	}
+	
+	//DoNOT remove this initialization
+	@Bean
+	public ServerUtilFactory getServerUtilFactory()
+	{
+		return ServerUtilFactory.getInstance();
 	}
 }

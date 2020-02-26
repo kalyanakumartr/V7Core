@@ -26,7 +26,7 @@ public interface UserBo extends Serializable
 
 	Users getUser(UserFormBean ufBean) throws InvalidRequestException;
 
-	List<Users> getUserByProducer(Authentication auth);
+	List<Users> getUserListByProducer(Authentication auth);
 
 	Collection<LabelValueBean> getUsersBySearchParam(Authentication auth, UserFormBean gmfBean);
 

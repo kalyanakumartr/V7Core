@@ -1,8 +1,6 @@
 package org.hbs.security.resource;
 
 import org.hbs.core.beans.path.IPathAdmin;
-import org.hbs.core.util.ServerUtilFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,12 +14,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
 	public void configure(WebSecurity web) throws Exception
 	{
 		web.ignoring().mvcMatchers(FORGOT_PASSWORD, RESET_PASSWORD, VALIDATE_USER + SLASH_STARS, GENERATE_OTP, VALIDATE_OTP, CHANGE_PASSWORD);
-	}
-
-	@Bean
-	public ServerUtilFactory getServerUtilFactory()
-	{
-		return ServerUtilFactory.getInstance();
 	}
 
 }

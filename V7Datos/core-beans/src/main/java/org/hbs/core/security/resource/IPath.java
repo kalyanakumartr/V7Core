@@ -194,39 +194,40 @@ public interface IPath extends IConstProperty
 		}
 	}
 
-	public static final String	USER_FULL_NAME				= "userFullName";
+	public static final String	USER_FULL_NAME						= "userFullName";
 
-	public static final String	PRODUCER_NAME				= "producerName";
+	public static final String	PRODUCER_NAME						= "producerName";
 
-	public static final String	PRODUCER_ID					= "producerId";
+	public static final String	PRODUCER_ID							= "producerId";
 
-	public static final String	EMPLOYEE_ID					= "employeeId";
+	public static final String	EMPLOYEE_ID							= "employeeId";
 
-	public static final String	COUNTRY_ID					= "countryId";
+	public static final String	COUNTRY_ID							= "countryId";
 
-	public static final String	ACCEPT						= "accept";
+	public static final String	ACCEPT								= "accept";
 
-	public static final String	AUTHORIZATION				= "authorization";
+	public static final String	AUTHORIZATION						= "authorization";
 
-	public static final String	CONTENT_TYPE				= "Content-Type";
+	public static final String	CONTENT_TYPE						= "Content-Type";
 
-	public static final String	USER_NAME					= "userName";
+	public static final String	USER_NAME							= "userName";
 
-	public static final String	MEDIA_TYPE_ZIP				= "application/zip";
+	public static final String	MEDIA_TYPE_ZIP						= "application/zip";
 
-	public static final String	PARENT_PRODUCER_ID			= "parentProducerId";
+	public static final String	PARENT_PRODUCER_ID					= "parentProducerId";
 
-	public static final String	PARENT_PRODUCER_NAME		= "parentProducerName";
+	public static final String	PARENT_PRODUCER_NAME				= "parentProducerName";
 
-	public String				HAS_AUTHORITY_SUPERADMIN	= "hasAuthority('SUPERADMIN')";
-	public String				HAS_AUTHORITY_ADMINISTRATOR	= "hasAuthority('ADMIN')";
-	public String				HAS_AUTHORITY_EMPLOYEE		= "hasAuthority('EMPLOYEE')";
-	public String				HAS_AUTHORITY_USER			= "hasAuthority('USER')";
-	public String				HAS_AUTHORITY_BOTH			= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE;
-	public String				HAS_ALL_AUTHORITY			= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE + " or " + HAS_AUTHORITY_USER;
+	public String				HAS_AUTHORITY_SUPERADMIN			= "hasAuthority('SUPERADMIN')";
+	public String				HAS_AUTHORITY_ADMINISTRATOR			= "hasAuthority('ADMIN')";
+	public String				HAS_AUTHORITY_EMPLOYEE				= "hasAuthority('EMPLOYEE')";
+	public String				HAS_AUTHORITY_USER					= "hasAuthority('USER')";
+	public String				HAS_AUTHORITY_SUPERADMIN_OR_ADMIN	= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERADMIN;
+	public String				HAS_AUTHORITY_BOTH					= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE;
+	public String				HAS_ALL_AUTHORITY					= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE + " or " + HAS_AUTHORITY_USER;
 
-	public String				INTERNAL_TOPIC				= "InternalTopic";
-	public String				MESSAGES_TOPIC				= "ExternalTopic";
-	public String				ATTACHMENT_TOPIC			= "AttachmentTopic";
+	public String				INTERNAL_TOPIC						= "InternalTopic";
+	public String				MESSAGES_TOPIC						= "ExternalTopic";
+	public String				ATTACHMENT_TOPIC					= "AttachmentTopic";
 
 }

@@ -16,7 +16,6 @@ public class UserFormBean extends APIStatus
 	public String				country;
 	public String				state;
 	public String				media				= EMedia.Email.name();
-	public String				authToken;
 	public String				roleName;
 
 	public UserFormBean()
