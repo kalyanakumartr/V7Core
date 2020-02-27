@@ -78,14 +78,14 @@
 			"response": []
 		},
 		{
-			"name": "UserPreSearch",
+			"name": "GetActiveUser",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODE3ODI4OTMsInVzZXJfbmFtZSI6IkFuYW50aC1JZCIsImF1dGhvcml0aWVzIjpbIkVNUExPWUVFIiwiQURNSU4iXSwianRpIjoiZDA0ZDkxOTEtYzVhZS00YWVhLTgyYjUtYTA1M2I5ZmZmNzgwIiwiY2xpZW50X2lkIjoiSEJTQVBQTElDQVRJT04iLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdfQ.lhlHjLxQXNY4kDRiexr8Ua9niQyYHTiNkBGbJcuZ1zs",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTIwMjAxMSwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiI1MDgwYWYxNC0wNWQ5LTQ0ZDEtODkwYy01YmVkZGExNjMwNzMiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.wfO4uKdTUmXue1s_8Ng8882uMxb6XDWR9IB0iohULWo",
 							"type": "string"
 						}
 					]
@@ -101,7 +101,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "ananth.malbal@gmail.com",
+					"raw": "{\r\n\t\"searchParam\":\"ananth.malbal@gmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -109,21 +109,18 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8100/core-admin/preSearchUser?Content-Type=application/json",
+					"raw": "http://127.0.0.1:8100/core-admin/getActiveUser",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
 					"port": "8100",
 					"path": [
 						"core-admin",
-						"preSearchUser"
-					],
-					"query": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
+						"getActiveUser"
 					]
 				}
 			},
@@ -262,6 +259,44 @@
 					"path": [
 						"core-admin",
 						"searchCity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserByProducer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnRQcm9kdWNlck5hbWUiOiJFZHVUZWwgQWNhZGVteSIsInVzZXJfbmFtZSI6IkFuYW50aC1JZCIsInByb2R1Y2VyTmFtZSI6IkVkdVRlbCBBY2FkZW15IiwidXNlckZ1bGxOYW1lIjoiQmFsYXN1YnJhbWFuaWFuLCBBbmFudGgiLCJ1c2VyTmFtZSI6IkFuYW50aC1JZCIsImF1dGhvcml0aWVzIjpbIkVNUExPWUVFIiwiQURNSU4iXSwiY291bnRyeUlkIjoiQXNpYS9Lb2xrYXRhIiwiY2xpZW50X2lkIjoiSEJTQVBQTElDQVRJT04iLCJwYXJlbnRQcm9kdWNlcklkIjoiUFJEMDAwMDAxIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIiwidHJ1c3QiXSwicHJvZHVjZXJJZCI6IlBSRDAwMDAwMSIsImV4cCI6MTU4NTI4Njc4MywianRpIjoiYmNmYzcwOTMtYzQ0OS00OGI4LWIwMDUtNjI0MTQwZmUwZTAwIn0.Xp6HqqQ5WGevXl_mlng3Mt3VM4OAm9_sx1RRGPVv_KA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8100/core-admin/getUserByProducer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"getUserByProducer"
 					]
 				}
 			},
