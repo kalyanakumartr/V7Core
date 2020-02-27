@@ -1,8 +1,9 @@
 package org.hbs.core.admin;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hbs.core.admin.bo.UserBo;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.Users;
+import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory;
@@ -98,38 +100,11 @@ public class UserController implements IUserController
 		}
 	}
 
-	public ResponseEntity<?> getAllUsers(Authentication auth, @RequestBody UserFormBean userFormBean)
-	{
-		try
-		{
-			// logger.info("Inside UserController getAllUsers ::: ");
-			List<Users> userList = userBo.searchUser(auth, userFormBean);
-			if (CommonValidator.isListFirstNotEmpty(userList)) {
-				for(Users users : userList)
-				{
-					users.setCreatedDateByTimeZone(users.getCountry().getCountry());
-					users.setModifiedDateByTimeZone(users.getCountry().getCountry());
-				}
-				return new ResponseEntity<List<Users>>(userList, HttpStatus.OK);
-			}
-			else
-				return new ResponseEntity<List<Users>>(new ArrayList<Users>(0), HttpStatus.OK);
-		}
-		catch (Exception e)
-		{
-			userFormBean = new UserFormBean();
-			userFormBean.messageCode = e.getMessage();
-			// logger.error("Exception in UserController getAllUsers ::: ", e);
-			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
-		}
-	}
-
 	@Override
 	public ResponseEntity<?> getUserByEmailOrMobileOrUserId(Authentication auth, @RequestBody UserFormBean userFormBean)
 	{
 		try
 		{
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>_DomainURL>>>>>>>>>>>>>>>>>>>>>>>> " + ServerUtilFactory.getInstance().getDomainURL());
 			// logger.info("Inside UserController getUserByEmailOrMobileOrUserId ::: ");
 			Users users = userBo.getUserByEmailOrMobileOrUserId(userFormBean.searchParam);
 			users.setCreatedDateByTimeZone(users.getCountry().getCountry());
@@ -304,10 +279,11 @@ public class UserController implements IUserController
 	@Override
 	public void validateUser(@PathVariable("token") String token, HttpServletResponse response)
 	{
+		String redirectUri = "";
 		try
 		{
 			// logger.info("UserController validateUser starts :::");
-			String redirectUri = null;
+
 			UserFormBean ufBean = userBo.validateUser(token);
 			EFormAction formAction = ESecurity.Token.getTokenAction(token);
 			if (EFormAction.PasswordChanged.name().equals(ufBean.messageCode))
@@ -317,45 +293,52 @@ public class UserController implements IUserController
 
 			switch ( formAction )
 			{
-//				case ForgotPassword :
-//					redirectUri = MicroServices.UI.getUrl(IPathAdmin.RESET_PASSWORD) + URLEncoder.encode(token, UTF8ENCODER);
-//					break;
-//				case Verify :
-//					redirectUri = MicroServices.UI.getUrl(IPathAdmin.CHANGE_PASSWORD) + URLEncoder.encode(token, UTF8ENCODER);
-//					break;
-//				case PasswordChanged :
-//					redirectUri = MicroServices.UI.getUrl(IPathAdmin.PASSWORD_CHANGED) + URLEncoder.encode(token, UTF8ENCODER);
-//					break;
-//				case TokenExpired :
-//					redirectUri = MicroServices.UI.getUrl(IPathAdmin.TOKEN_EXPIRED) + URLEncoder.encode(token, UTF8ENCODER);
-//					break;
+				case ForgotPassword :
+					redirectUri = ServerUtilFactory.getInstance().getDomainURL(IPathAdmin.RESET_PASSWORD);
+					break;
+				case Verify :
+					redirectUri = ServerUtilFactory.getInstance().getDomainURL(IPathAdmin.CHANGE_PASSWORD);
+					break;
+				case PasswordChanged :
+					redirectUri = ServerUtilFactory.getInstance().getDomainURL(IPathAdmin.PASSWORD_CHANGED);
+					break;
+				case TokenExpired :
+					redirectUri = ServerUtilFactory.getInstance().getDomainURL(IPathAdmin.TOKEN_EXPIRED);
+					break;
 				default :
 					break;
 			}
 			// logger.info("UserController validateUser ends ::: ", redirectUri);
-			response.sendRedirect(redirectUri);
+			redirectUri = redirectUri + URLEncoder.encode(token, UTF8ENCODER);
 
 		}
 		catch (InvalidKeyException excep)
 		{
-//			try
-//			{
-//				// logger.error("InvalidKeyException in validateUser ::: ", excep);
-//				response.sendRedirect(MicroServices.UI.getUrl(IPathAdmin.ERROR500) + "?errorMsg=" + URLEncoder.encode(excep.getMessage(), UTF8ENCODER));
-//			}
-//			catch (UnsupportedEncodingException e)
-//			{
-//				e.printStackTrace();
-//			}
-//			catch (IOException e)
-//			{
-//				e.printStackTrace();
-//			}
+			try
+			{
+				// logger.error("InvalidKeyException in validateUser ::: ", excep);
+				redirectUri = ServerUtilFactory.getInstance().getDomainURL(IPathAdmin.ERROR500) + "?errorMsg=" + URLEncoder.encode(excep.getMessage(), UTF8ENCODER);
+			}
+			catch (UnsupportedEncodingException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		catch (IOException e)
 		{
 			// logger.error("Exception in UserController validateUser ::: ", e);
 			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				response.sendRedirect(redirectUri);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@ package org.hbs.core.admin.bo;
 import java.security.InvalidKeyException;
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.kafka.common.errors.InvalidRequestException;
@@ -75,13 +76,30 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	@Override
 	public Users getUser(UserFormBean ufBean) throws InvalidRequestException
 	{
-		return userDao.getOne(ufBean.user.getEmployeeId());
+		Users users = userDao.getOne(ufBean.user.getEmployeeId());
+		if (CommonValidator.isNotNullNotEmpty(users))
+		{
+			users.setCreatedDateByTimeZone(users.getCountry().getCountry());
+			users.setModifiedDateByTimeZone(users.getCountry().getCountry());
+		}
+		return users;
 	}
 
 	@Override
 	public List<Users> getUserListByProducer(Authentication auth) throws InvalidRequestException
 	{
-		return userDao.findByProducerId(EAuth.User.getProducerId(auth));
+		List<Users> userList = userDao.findByProducerId(EAuth.User.getProducerId(auth));
+		if (CommonValidator.isListFirstNotEmpty(userList))
+		{
+			for (Users users : userList)
+			{
+				users.setCreatedDateByTimeZone(users.getCountry().getCountry());
+				users.setModifiedDateByTimeZone(users.getCountry().getCountry());
+			}
+			return userList;
+		}
+		else
+			return new ArrayList<Users>(0);
 	}
 
 	private boolean isRecentlyUpdated(UserFormBean ufBean)
@@ -114,7 +132,8 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		{
 			ufBean.user.createdUserProducerInfo(auth);
 
-			//ufBean.tokenURL = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(ufBean.user, EFormAction.Verify);
+			// ufBean.tokenURL = ServerUtilFactory._DomainUrl +
+			// ESecurity.Token.generate(ufBean.user, EFormAction.Verify);
 
 			ufBean.user.setUserId("USR" + sequenceDao.getPrimaryKey(Users.class.getSimpleName()));
 			ufBean.user.setStatus(false);
@@ -146,7 +165,19 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	@Override
 	public List<Users> searchUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException
 	{
-		return userDao.searchUser(ufBean.searchParam);
+		// logger.info("Inside UserController getAllUsers ::: ");
+		List<Users> userList = userDao.searchUser(ufBean.searchParam);
+		if (CommonValidator.isListFirstNotEmpty(userList))
+		{
+			for (Users users : userList)
+			{
+				users.setCreatedDateByTimeZone(users.getCountry().getCountry());
+				users.setModifiedDateByTimeZone(users.getCountry().getCountry());
+			}
+			return userList;
+		}
+		else
+			return new ArrayList<Users>(0);
 	}
 
 	@Override
@@ -193,7 +224,8 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	public EnumInterface resendActivationLink(Authentication auth, UserFormBean ufBean)
 	{
 		ufBean.user = getUser(ufBean);
-		//ufBean.tokenURL = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(ufBean.user, EFormAction.Verify);
+		// ufBean.tokenURL = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(ufBean.user,
+		// EFormAction.Verify);
 		ufBean.user.setModifiedDate(new Timestamp(System.currentTimeMillis()));
 		ufBean.user.setStatus(false);
 		userDao.save(ufBean.user);

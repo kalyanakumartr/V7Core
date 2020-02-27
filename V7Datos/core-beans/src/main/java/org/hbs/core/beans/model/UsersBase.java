@@ -47,7 +47,7 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	protected Timestamp			userPwdModDate;
 	protected Boolean			userPwdModFlag;
 	protected EUserStatus		userStatus			= EUserStatus.Pending;
-	protected EUserType			userType			= EUserType.User;
+	protected EUserType			userType			= EUserType.Employee;
 	protected Set<IUserLog>		userLogs			= new LinkedHashSet<IUserLog>(0);
 
 	protected Object			activeProfile;

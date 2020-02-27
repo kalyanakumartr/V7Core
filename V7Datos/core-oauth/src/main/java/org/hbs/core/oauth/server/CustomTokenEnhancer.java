@@ -20,7 +20,13 @@ public class CustomTokenEnhancer implements TokenEnhancer, IPath
 		OAuth2UserDetails user = (OAuth2UserDetails) authentication.getPrincipal();
 		final Map<String, Object> additionalInfo = new HashMap<>();
 
+		additionalInfo.put(USER_NAME, user.getUsername());
+		additionalInfo.put(COUNTRY_ID, user.getCountryId());
 		additionalInfo.put(USER_FULL_NAME, user.getFullName());
+		additionalInfo.put(PRODUCER_ID, user.getProducerId());
+		additionalInfo.put(PRODUCER_NAME, user.getProducerName());
+		additionalInfo.put(PARENT_PRODUCER_ID, user.getParentProducerId());
+		additionalInfo.put(PARENT_PRODUCER_NAME, user.getParentProducerName());
 
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 

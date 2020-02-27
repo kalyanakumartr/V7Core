@@ -53,6 +53,11 @@ public class ServerUtilFactory implements IConstProperty
 	{
 		return serverTZ;
 	}
+	
+	public String getDomainURL(String requestPath)
+	{
+		return getDomainURL() + requestPath;
+	}
 
 	public String getDomainURL()
 	{

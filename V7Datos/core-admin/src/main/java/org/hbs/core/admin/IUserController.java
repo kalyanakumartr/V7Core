@@ -71,11 +71,6 @@ public interface IUserController extends IPathAdmin
 	ResponseEntity<?> getCities(Authentication auth, UserFormBean userFormBean);
 
 	@GetMapping
-	@RequestMapping(value = GET_ALL_USERS, produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize(HAS_ALL_AUTHORITY)
-	public ResponseEntity<?> getAllUsers(Authentication auth, UserFormBean userFormBean);
-
-	@GetMapping
 	@RequestMapping(value = GET_USER_BY_CUSTID, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize(HAS_ALL_AUTHORITY)
 	public ResponseEntity<?> getUserListByProducer(Authentication auth);

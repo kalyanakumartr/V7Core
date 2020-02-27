@@ -21,7 +21,7 @@ public interface IUsersBase extends EBusinessKey, ICRUDBean, ICommonDateAndStatu
 
 	public enum EUserType implements EnumInterface
 	{
-		User, Employee, Consumer, Producer;
+		Employee, Consumer, Producer;
 	}
 
 	public enum EGender implements EnumInterface

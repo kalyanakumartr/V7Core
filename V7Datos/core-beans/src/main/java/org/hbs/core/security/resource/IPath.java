@@ -218,16 +218,16 @@ public interface IPath extends IConstProperty
 
 	public static final String	PARENT_PRODUCER_NAME				= "parentProducerName";
 
-	public String				HAS_AUTHORITY_SUPERADMIN			= "hasAuthority('SUPERADMIN')";
-	public String				HAS_AUTHORITY_ADMINISTRATOR			= "hasAuthority('ADMIN')";
-	public String				HAS_AUTHORITY_EMPLOYEE				= "hasAuthority('EMPLOYEE')";
-	public String				HAS_AUTHORITY_USER					= "hasAuthority('USER')";
-	public String				HAS_AUTHORITY_SUPERADMIN_OR_ADMIN	= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERADMIN;
-	public String				HAS_AUTHORITY_BOTH					= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE;
-	public String				HAS_ALL_AUTHORITY					= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE + " or " + HAS_AUTHORITY_USER;
+	public static final String	HAS_AUTHORITY_SUPERADMIN			= "hasAuthority('SUPERADMIN')";
+	public static final String	HAS_AUTHORITY_ADMINISTRATOR			= "hasAuthority('ADMIN')";
+	public static final String	HAS_AUTHORITY_EMPLOYEE				= "hasAuthority('EMPLOYEE')";
+	public static final String	HAS_AUTHORITY_USER					= "hasAuthority('USER')";
+	public static final String	HAS_AUTHORITY_SUPERADMIN_OR_ADMIN	= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERADMIN;
+	public static final String	HAS_AUTHORITY_BOTH					= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE;
+	public static final String	HAS_ALL_AUTHORITY					= HAS_AUTHORITY_SUPERADMIN + " or " + HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE + " or " + HAS_AUTHORITY_USER;
 
-	public String				INTERNAL_TOPIC						= "InternalTopic";
-	public String				MESSAGES_TOPIC						= "ExternalTopic";
-	public String				ATTACHMENT_TOPIC					= "AttachmentTopic";
+	public static final String	INTERNAL_TOPIC						= "InternalTopic";
+	public static final String	MESSAGES_TOPIC						= "ExternalTopic";
+	public static final String	ATTACHMENT_TOPIC					= "AttachmentTopic";
 
 }
