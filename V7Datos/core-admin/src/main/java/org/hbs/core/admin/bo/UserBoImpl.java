@@ -17,6 +17,7 @@ import org.hbs.core.dao.SequenceDao;
 import org.hbs.core.dao.UserDao;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
+import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -74,7 +75,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	}
 
 	@Override
-	public Users getUser(UserFormBean ufBean) throws InvalidRequestException
+	public Users getUser(UserFormBean ufBean) throws InvalidRequestException//
 	{
 		Users users = userDao.getOne(ufBean.user.getEmployeeId());
 		if (CommonValidator.isNotNullNotEmpty(users))
@@ -86,7 +87,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	}
 
 	@Override
-	public List<Users> getUserListByProducer(Authentication auth) throws InvalidRequestException
+	public List<Users> getUserListByProducer(Authentication auth) throws InvalidRequestException//
 	{
 		List<Users> userList = userDao.findByProducerId(EAuth.User.getProducerId(auth));
 		if (CommonValidator.isListFirstNotEmpty(userList))
@@ -132,8 +133,8 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		{
 			ufBean.user.createdUserProducerInfo(auth);
 
-			// ufBean.tokenURL = ServerUtilFactory._DomainUrl +
-			// ESecurity.Token.generate(ufBean.user, EFormAction.Verify);
+			ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL();
+			ESecurity.Token.generate(ufBean.user, EFormAction.Verify);
 
 			ufBean.user.setUserId("USR" + sequenceDao.getPrimaryKey(Users.class.getSimpleName()));
 			ufBean.user.setStatus(false);
@@ -221,11 +222,10 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	}
 
 	@Override
-	public EnumInterface resendActivationLink(Authentication auth, UserFormBean ufBean)
+	public EnumInterface resendActivationLink(Authentication auth, UserFormBean ufBean)//
 	{
 		ufBean.user = getUser(ufBean);
-		// ufBean.tokenURL = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(ufBean.user,
-		// EFormAction.Verify);
+		ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL(ESecurity.Token.generate(ufBean.user, EFormAction.Verify));
 		ufBean.user.setModifiedDate(new Timestamp(System.currentTimeMillis()));
 		ufBean.user.setStatus(false);
 		userDao.save(ufBean.user);
@@ -233,9 +233,12 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		{
 			try
 			{
-				gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.User_Create_Admin, ufBean);
-				gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.User_Create_Employee, ufBean);
-				gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS, ETemplate.SMS_Create_Employee, ufBean);
+				// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
+				// ETemplate.User_Create_Admin, ufBean);
+				// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
+				// ETemplate.User_Create_Employee, ufBean);
+				// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
+				// ETemplate.SMS_Create_Employee, ufBean);
 
 				ufBean.messageCode = ACTIVATION_LINK_SENT_SUCCESSFULLY;
 				return EReturn.Success;
@@ -250,7 +253,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	}
 
 	@Override
-	public Users getUserByEmailOrMobileOrUserId(String searchParam)
+	public Users getUserByEmailOrMobileOrUserId(String searchParam)//
 	{
 		Object object = userDao.findByEmailOrMobileOrUserId(searchParam);
 		if (object == null)

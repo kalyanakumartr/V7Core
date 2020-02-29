@@ -69,6 +69,7 @@ public class UserController implements IUserController
 		}
 		catch (Exception excep)
 		{
+			excep.printStackTrace();
 			userFormBean.user = null;
 			userFormBean.repoUser = null;
 			userFormBean.messageCode = excep.getMessage();
@@ -101,7 +102,7 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> getUserByEmailOrMobileOrUserId(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> getUserByEmailOrMobileOrUserId(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
 		{
@@ -123,7 +124,7 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> getCities(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> getCities(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
 		{
@@ -140,7 +141,7 @@ public class UserController implements IUserController
 		}
 	}
 
-	public ResponseEntity<?> getCountry(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> getCountry(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
 		{
@@ -158,7 +159,7 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> getStates(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> getStates(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
 		{
@@ -176,7 +177,7 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> getUser(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> getUser(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
 		{
@@ -199,7 +200,7 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> getUserListByProducer(Authentication auth)
+	public ResponseEntity<?> getUserListByProducer(Authentication auth)//
 	{
 		try
 		{
@@ -218,7 +219,7 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> resendActivationLink(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> resendActivationLink(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
 		{

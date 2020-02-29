@@ -10,6 +10,8 @@ import org.springframework.core.env.Environment;
 public class ServerUtilFactory implements IConstProperty
 {
 
+	private static final String DOMAIN_URL = "_DomainURL";
+	private static final String DEV = "dev";
 	private static final long			serialVersionUID	= 7653346655071987488L;
 	private static ServerUtilFactory	serverUtilFactory	= null;
 	private String						serverTZ			= null;
@@ -53,16 +55,22 @@ public class ServerUtilFactory implements IConstProperty
 	{
 		return serverTZ;
 	}
-	
-	public String getDomainURL(String requestPath)
+
+	public String getDomainURL(String... requestPath)
 	{
-		return getDomainURL() + requestPath;
+		String finalPath = "";
+		
+		for (String rPath : requestPath)
+		{
+			finalPath += rPath;
+		}
+		return getDomainURL() + finalPath;
 	}
 
 	public String getDomainURL()
 	{
-		
-		if (env.getActiveProfiles()[0].equals("dev"))
+
+		if (env.getActiveProfiles()[0].equals(DEV))
 		{
 			if (hostname == null)
 				hostname = "localhost";
@@ -72,12 +80,12 @@ public class ServerUtilFactory implements IConstProperty
 		}
 		else
 		{
-			if(env.getProperty("_DomainURL") == null )
+			if (env.getProperty(DOMAIN_URL) == null)
 			{
 				System.out.println("WARNING : ********************For Production Environment, add '_DomainURL' in OS enviroment********************");
 				return "ERROR";
 			}
-			return env.getProperty("_DomainURL") ;
+			return env.getProperty(DOMAIN_URL);
 		}
 	}
 }
