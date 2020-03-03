@@ -2,7 +2,6 @@ package org.hbs.core.admin.bo;
 
 import java.security.InvalidKeyException;
 import java.sql.Timestamp;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -41,6 +41,9 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 
 	@Autowired
 	private UserDao				userDao;
+	
+	@Value("${admin.update.delay.in.seconds:120}") // 2 minutes default update
+	private int updateDelay ;
 
 	@Override
 	public EnumInterface blockUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException
@@ -108,10 +111,10 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		// logger.info("Inside UserBoImpl isRecentlyUpdated ::: ", ufBean.user.getUserId());
 		if (CommonValidator.isNotNullNotEmpty(ufBean.user))
 		{
-			Users user = userDao.getOne(ufBean.user.getEmployeeId());
+			Users user = userDao.findById(ufBean.user.getEmployeeId()).get();
 			if (CommonValidator.isNotNullNotEmpty(user))
 			{
-				if (ChronoUnit.NANOS.between(ufBean.user.getModifiedDate().toLocalDateTime(), user.getModifiedDate().toLocalDateTime()) == 0)
+				if ((System.currentTimeMillis() - user.getModifiedDate().getTime()) > (updateDelay * 1000))
 				{
 					ufBean.repoUser = user;
 					return true;

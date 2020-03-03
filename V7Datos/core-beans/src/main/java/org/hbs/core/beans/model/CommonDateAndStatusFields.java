@@ -72,7 +72,6 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 	public void setModifiedDateByTimeZone(String countryId)
 	{
 		this.modifiedDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(countryId, modifiedDate);
-		;
 	}
 
 	public void setStatus(Boolean status)
