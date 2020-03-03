@@ -30,7 +30,7 @@ public interface UserBo extends Serializable
 
 	Collection<LabelValueBean> getUsersBySearchParam(Authentication auth, UserFormBean gmfBean);
 
-	EnumInterface resendActivationLink(Authentication auth, UserFormBean userFormBean);
+	EnumInterface resendActivationLink(Authentication auth, UserFormBean userFormBean) throws InvalidKeyException;
 
 	EnumInterface saveUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException, InvalidKeyException;
 

@@ -17,6 +17,7 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 
 	private static final long						serialVersionUID	= 7116369654223628650L;
 	private Collection<? extends GrantedAuthority>	authorities;
+	private String									employeeId;
 	private String									countryId;
 	private String									password;
 	private String									username;
@@ -28,6 +29,7 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 
 	public OAuth2UserDetails(IUsers user, String producerName, String parentProducerName)
 	{
+		this.employeeId = user.getEmployeeId();
 		this.username = user.getUserId();
 		this.password = user.getUserPwd();
 		this.countryId = user.getCountry().getCountry();
@@ -162,6 +164,16 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 	public void setCountryId(String countryId)
 	{
 		this.countryId = countryId;
+	}
+	@Override
+	public String getEmployeeId()
+	{
+		return employeeId;
+	}
+
+	public void setEmployeeId(String employeeId)
+	{
+		this.employeeId = employeeId;
 	}
 
 }

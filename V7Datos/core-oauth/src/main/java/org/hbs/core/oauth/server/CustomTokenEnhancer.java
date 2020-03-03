@@ -21,6 +21,7 @@ public class CustomTokenEnhancer implements TokenEnhancer, IPath
 		final Map<String, Object> additionalInfo = new HashMap<>();
 
 		additionalInfo.put(USER_NAME, user.getUsername());
+		additionalInfo.put(EMPLOYEE_ID, user.getEmployeeId());
 		additionalInfo.put(COUNTRY_ID, user.getCountryId());
 		additionalInfo.put(USER_FULL_NAME, user.getFullName());
 		additionalInfo.put(PRODUCER_ID, user.getProducerId());

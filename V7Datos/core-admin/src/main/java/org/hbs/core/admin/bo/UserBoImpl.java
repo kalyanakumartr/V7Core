@@ -1,7 +1,6 @@
 package org.hbs.core.admin.bo;
 
 import java.security.InvalidKeyException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +40,9 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 
 	@Autowired
 	private UserDao				userDao;
-	
+
 	@Value("${admin.update.delay.in.seconds:120}") // 2 minutes default update
-	private int updateDelay ;
+	private int					updateDelay;
 
 	@Override
 	public EnumInterface blockUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException
@@ -80,13 +79,13 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	@Override
 	public Users getUser(UserFormBean ufBean) throws InvalidRequestException//
 	{
-		Users users = userDao.getOne(ufBean.user.getEmployeeId());
-		if (CommonValidator.isNotNullNotEmpty(users))
+		Users user = userDao.findById(ufBean.user.getEmployeeId()).get();
+		if (CommonValidator.isNotNullNotEmpty(user))
 		{
-			users.setCreatedDateByTimeZone(users.getCountry().getCountry());
-			users.setModifiedDateByTimeZone(users.getCountry().getCountry());
+			user.setCreatedDateByTimeZone(user.getCountry().getCountry());
+			user.setModifiedDateByTimeZone(user.getCountry().getCountry());
 		}
-		return users;
+		return user;
 	}
 
 	@Override
@@ -225,34 +224,40 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	}
 
 	@Override
-	public EnumInterface resendActivationLink(Authentication auth, UserFormBean ufBean)//
+	public EnumInterface resendActivationLink(Authentication auth, UserFormBean ufBean) throws InvalidKeyException//
 	{
-		ufBean.user = getUser(ufBean);
-		ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL(ESecurity.Token.generate(ufBean.user, EFormAction.Verify));
-		ufBean.user.setModifiedDate(new Timestamp(System.currentTimeMillis()));
-		ufBean.user.setStatus(false);
-		userDao.save(ufBean.user);
-		if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
-		{
-			try
-			{
-				// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
-				// ETemplate.User_Create_Admin, ufBean);
-				// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
-				// ETemplate.User_Create_Employee, ufBean);
-				// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
-				// ETemplate.SMS_Create_Employee, ufBean);
 
-				ufBean.messageCode = ACTIVATION_LINK_SENT_SUCCESSFULLY;
-				return EReturn.Success;
-			}
-			finally
+		try
+		{
+			if (isRecentlyUpdated(ufBean))
 			{
-				ufBean.tokenURL = null;
-				ufBean.user = null;
+				ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL(ESecurity.Token.generate(ufBean.repoUser, EFormAction.Verify));
+				ufBean.repoUser.modifiedUserInfo(auth);
+				ufBean.repoUser.setStatus(false);
+				userDao.save(ufBean.repoUser);
+				if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
+				{
+
+					// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
+					// ETemplate.User_Create_Admin, ufBean);
+					// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
+					// ETemplate.User_Create_Employee, ufBean);
+					// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
+					// ETemplate.SMS_Create_Employee, ufBean);
+
+					ufBean.messageCode = ACTIVATION_LINK_SENT_SUCCESSFULLY;
+				}
 			}
+			else
+				throw new InvalidKeyException(ACTIVATION_LINK_SENT_RECENTLY);
+		}
+		finally
+		{
+			ufBean.tokenURL = null;
+			ufBean.repoUser = null;
 		}
 		return EReturn.Success;
+
 	}
 
 	@Override

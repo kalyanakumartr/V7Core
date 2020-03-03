@@ -24,6 +24,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author AnanthMalBal
+ */
+/**
+ * @author AnanthMalBal
+ */
 @RestController
 public class UserController implements IUserController
 {
@@ -56,7 +62,7 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> blockUser(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> blockUser(Authentication auth, @RequestBody UserFormBean userFormBean) //
 	{
 		try
 		{
@@ -78,8 +84,11 @@ public class UserController implements IUserController
 		}
 	}
 
+	/**
+	 * NOT Yet Implemented...
+	 */
 	@Override
-	public ResponseEntity<?> deleteUser(Authentication auth, @RequestBody UserFormBean userFormBean)
+	public ResponseEntity<?> deleteUser(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
 		{
@@ -113,12 +122,11 @@ public class UserController implements IUserController
 
 			return new ResponseEntity<Users>(users, HttpStatus.OK);
 		}
-		catch (Exception e)
+		catch (Exception excep)
 		{
-			e.printStackTrace();
 			userFormBean = new UserFormBean();
-			userFormBean.messageCode = e.getMessage();
-			// logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ", e);
+			userFormBean.messageCode = excep.getMessage();
+			// logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -224,12 +232,13 @@ public class UserController implements IUserController
 		try
 		{
 			// logger.info("Inside UserController resendActivationLink ::: ");
-			return new ResponseEntity<>(userBo.resendActivationLink(auth, userFormBean), HttpStatus.OK);
+			userBo.resendActivationLink(auth, userFormBean);
+			return new ResponseEntity<>(userFormBean.messageCode, HttpStatus.OK);
 		}
-		catch (Exception e)
+		catch (Exception excep)
 		{
 			userFormBean.user = null;
-			userFormBean.messageCode = e.getMessage();
+			userFormBean.messageCode = ACTIVATION_LINK_SENT_FAILED;
 			// logger.error("Exception in UserController resendActivationLink ::: ", e);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
@@ -318,7 +327,8 @@ public class UserController implements IUserController
 			try
 			{
 				// logger.error("InvalidKeyException in validateUser ::: ", excep);
-				redirectUri = ServerUtilFactory.getInstance().getDomainURL(IPathAdmin.ERROR500) + "?errorMsg=" + URLEncoder.encode(excep.getMessage(), UTF8ENCODER);
+				redirectUri = ServerUtilFactory.getInstance().getDomainURL(IPathAdmin.ERROR500);
+				redirectUri += "?errorMsg=" + URLEncoder.encode(excep.getMessage(), UTF8ENCODER);
 			}
 			catch (UnsupportedEncodingException e)
 			{

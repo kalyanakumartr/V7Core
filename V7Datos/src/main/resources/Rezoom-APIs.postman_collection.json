@@ -95,8 +95,8 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -109,13 +109,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8100/core-admin/getActiveUser",
+					"raw": "http://localhost:8100/core-admin/getActiveUser",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8100",
 					"path": [
@@ -196,7 +193,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"searchParam\":\"Andhra\",\n\t\"country\":\"Asia/Kolkata\"\n}",
+					"raw": "{\n\t\"searchParam\":\"\",\n\t\"country\":\"Asia/Kolkata\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -242,7 +239,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"searchParam\":\"sore\",\n\t\"state\":\"Karnataka\"\n}",
+					"raw": "{\n\t\"searchParam\":\"\",\n\t\"state\":\"Karnataka\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -297,6 +294,144 @@
 					"path": [
 						"core-admin",
 						"getUserByProducer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ResendActivationLink",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTIwMjAxMSwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiI1MDgwYWYxNC0wNWQ5LTQ0ZDEtODkwYy01YmVkZGExNjMwNzMiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.wfO4uKdTUmXue1s_8Ng8882uMxb6XDWR9IB0iohULWo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"user\":\r\n\t{\r\n\t\t\"employeeId\": \"USR1513438024799\"\r\n\t}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/resendActivationLink",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"resendActivationLink"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BlockUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnRQcm9kdWNlck5hbWUiOiJFZHVUZWwgQWNhZGVteSIsInVzZXJfbmFtZSI6IkFuYW50aC1JZCIsInByb2R1Y2VyTmFtZSI6IkVkdVRlbCBBY2FkZW15IiwidXNlckZ1bGxOYW1lIjoiQmFsYXN1YnJhbWFuaWFuLCBBbmFudGgiLCJlbXBsb3llZUlkIjoiVVNSMTUxMzQzODAyNDc5OSIsInVzZXJOYW1lIjoiQW5hbnRoLUlkIiwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJjb3VudHJ5SWQiOiJBc2lhL0tvbGthdGEiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiIsInBhcmVudFByb2R1Y2VySWQiOiJQUkQwMDAwMDEiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJwcm9kdWNlcklkIjoiUFJEMDAwMDAxIiwiZXhwIjoxNTg1ODQ2NjQyLCJqdGkiOiIwNDM2OGM4Ny01ZDUyLTQwZDMtYmRlZC1lMDdhNjgzZjA3ZTkifQ._kdTPLncBGNOSPjj-JHXPt5oIf80gmoT7sNuuvvzjGk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"user\":{\r\n\t\t\"employeeId\": \"USR1513438024799\"\r\n\t}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/blockUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"blockUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTIwMjAxMSwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiI1MDgwYWYxNC0wNWQ5LTQ0ZDEtODkwYy01YmVkZGExNjMwNzMiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.wfO4uKdTUmXue1s_8Ng8882uMxb6XDWR9IB0iohULWo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"searchParam\":\"ananth.malbal@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/searchUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"searchUser"
 					]
 				}
 			},

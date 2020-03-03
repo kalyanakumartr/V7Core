@@ -4,19 +4,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface IOAuth2UserDetails extends UserDetails
 {
+	public String getEmployeeId();
+
 	public String getFullName();
+	
+	public String getParentProducerId();
+
+	public String getParentProducerName();
 
 	public String getProducerId();
 
 	public String getProducerName();
 
-	public void setProducerName(String producerName);
-
-	public String getParentProducerId();
+	public void setEmployeeId(String employeeId);
+	
+	public void setProducerId(String producerId);
 
 	public void setParentProducerId(String parentProducerId);
 
-	public String getParentProducerName();
-
 	public void setParentProducerName(String parentProducerName);
+
+	public void setProducerName(String producerName);
 }

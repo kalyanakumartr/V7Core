@@ -31,6 +31,8 @@ public interface IErrorAdmin extends Serializable
 	public String	USER_BLOCKED_SUCCESSFULLY				= "user.blocked.successfully";
 	public String	USER_CREATED_SUCCESSFULLY				= "user.created.successfully";
 	public String	ACTIVATION_LINK_SENT_SUCCESSFULLY		= "activation.link.sent.successfully";
+	public String	ACTIVATION_LINK_SENT_FAILED				= "activation.link.sent.failed";
+	public String	ACTIVATION_LINK_SENT_RECENTLY			= "activation.link.sent.recently";
 	public String	USER_DATA_UPDATED_RECENTLY				= "user.data.updated.recently";
 	public String	USER_NOT_FOUND							= "user.not.found";
 	public String	USER_TOKEN_KEY_GENERATE_ISSUE			= "user.key.generate.issue";

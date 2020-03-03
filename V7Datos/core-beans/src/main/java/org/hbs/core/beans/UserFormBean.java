@@ -32,6 +32,7 @@ public class UserFormBean extends APIStatus
 
 	public void updateRepoUser(Authentication auth)
 	{
+		user.modifiedUserInfo(auth);
 	}
 
 }
