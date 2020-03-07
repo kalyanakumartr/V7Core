@@ -2,6 +2,8 @@ package org.hbs.core.dao;
 
 import java.security.InvalidKeyException;
 
+import org.hbs.core.beans.model.Sequence;
+import org.hbs.core.util.CommonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +15,14 @@ public class SequenceDaoImpl implements SequenceDao
 	@Autowired
 	PrimaryDao					primaryDao;
 
-	public long getPrimaryKey(String keyName) throws InvalidKeyException
+	public String getPrimaryKey(String keyName, String producerId) throws InvalidKeyException
 	{
-		long primaryId = primaryDao.findBySequenceKey(keyName);
-		if (primaryId > 0L)
+		Sequence sequence = primaryDao.findBySequenceKey(keyName, producerId);
+		if (CommonValidator.isNotNullNotEmpty(sequence) && sequence.getSequenceId() > 0L)
 		{
-			primaryId = primaryId + 1;
-			primaryDao.updateSequenceIdByOne(primaryId, keyName);
-			return primaryId;
+			sequence.setSequenceId(sequence.getSequenceId() + 1);
+			primaryDao.save(sequence);
+			return sequence.getPrepend() + sequence.getSequenceId();
 		}
 		throw new InvalidKeyException("Sequence Id NOT received for " + keyName);
 	}

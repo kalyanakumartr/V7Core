@@ -22,14 +22,16 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @MappedSuperclass
 public abstract class UsersBase extends CommonDateAndStatusFields implements IUsersBase
 {
 	private static final long	serialVersionUID	= -3501049714698273199L;
 	protected Country			country;
-	protected IProducers		producer;
-	protected IProducers		parentProducer;
+	protected Producers			producer;
+	protected Producers			parentProducer;
 	protected String			dateOfJoin;
 	protected String			dob;
 	protected String			employeeId;
@@ -143,15 +145,17 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "parentProducerId")
 	@JsonIgnore
-	public IProducers getParentProducer()
+	public Producers getParentProducer()
 	{
 		return parentProducer;
 	}
 
 	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producerId")
+	@JsonDeserialize(as = Producers.class)
 	@JsonIgnore
-	public IProducers getProducer()
+	@JsonManagedReference
+	public Producers getProducer()
 	{
 		return producer;
 	}
@@ -286,13 +290,13 @@ public abstract class UsersBase extends CommonDateAndStatusFields implements IUs
 		this.otp = otp;
 	}
 
-	public void setParentProducer(IProducers parentProducer)
+	public void setParentProducer(Producers parentProducer)
 	{
 		this.parentProducer = parentProducer;
 	}
 
 	@Override
-	public void setProducer(IProducers producer)
+	public void setProducer(Producers producer)
 	{
 		this.producer = producer;
 	}

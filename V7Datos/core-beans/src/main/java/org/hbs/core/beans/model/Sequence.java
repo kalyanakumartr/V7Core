@@ -16,7 +16,9 @@ public class Sequence implements ICRUDBean
 {
 	private static final long	serialVersionUID	= 1696926036927427862L;
 
-	protected IProducers		producer;
+	private long				autoId;
+	private String				prepend;
+	private IProducers			producer;
 	private long				sequenceId;
 	private String				sequenceKey;
 
@@ -32,6 +34,19 @@ public class Sequence implements ICRUDBean
 		this.sequenceKey = sequenceKey;
 	}
 
+	@Id
+	@JoinColumn(name = "autoId")
+	public long getAutoId()
+	{
+		return autoId;
+	}
+
+	@JoinColumn(name = "prepend")
+	public String getPrepend()
+	{
+		return prepend;
+	}
+
 	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producerId")
 	public IProducers getProducer()
@@ -39,7 +54,6 @@ public class Sequence implements ICRUDBean
 		return producer;
 	}
 
-	@Id
 	@Column(name = "sequenceId")
 	public long getSequenceId()
 	{
@@ -50,6 +64,16 @@ public class Sequence implements ICRUDBean
 	public String getSequenceKey()
 	{
 		return sequenceKey;
+	}
+
+	public void setAutoId(long autoId)
+	{
+		this.autoId = autoId;
+	}
+
+	public void setPrepend(String prepend)
+	{
+		this.prepend = prepend;
 	}
 
 	public void setProducer(IProducers producer)

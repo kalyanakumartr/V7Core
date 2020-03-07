@@ -5,5 +5,5 @@ import java.security.InvalidKeyException;
 
 public interface SequenceDao extends Serializable
 {
-	long getPrimaryKey(String keyName) throws InvalidKeyException;
+	String getPrimaryKey(String keyName, String producerId) throws InvalidKeyException;
 }

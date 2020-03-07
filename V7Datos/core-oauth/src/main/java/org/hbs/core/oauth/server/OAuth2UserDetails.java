@@ -3,10 +3,11 @@ package org.hbs.core.oauth.server;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.hbs.core.beans.model.IUserRoles;
 import org.hbs.core.beans.model.IUsers;
+import org.hbs.core.beans.model.IUsers.EUsers;
+import org.hbs.core.security.resource.IPath.ERole;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.IConstProperty;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,16 +41,22 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 
 		this.producerName = producerName;
 		this.parentProducerName = parentProducerName;
-		this.authorities = translate(user.getUserRoleses());
-		
+		this.authorities = translate(user);
+
 	}
 
-	private Collection<? extends GrantedAuthority> translate(Set<IUserRoles> userRoles)
+	private Collection<? extends GrantedAuthority> translate(IUsers user)
 	{
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		for (IUserRoles uRole : userRoles)
+
+		if (CommonValidator.isEqual(user.getUserId(),EUsers.SuperAdmin))
+			authorities.add(new SimpleGrantedAuthority(ERole.SuperAdminRole.name().toUpperCase()));
+		else
 		{
-			authorities.add(new SimpleGrantedAuthority(uRole.getRoles().getRoleId().toUpperCase()));
+			for (IUserRoles uRole : user.getUserRoleses())
+			{
+				authorities.add(new SimpleGrantedAuthority(uRole.getRoles().getRoleId().toUpperCase()));
+			}
 		}
 		return authorities;
 	}
@@ -165,6 +172,7 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 	{
 		this.countryId = countryId;
 	}
+
 	@Override
 	public String getEmployeeId()
 	{

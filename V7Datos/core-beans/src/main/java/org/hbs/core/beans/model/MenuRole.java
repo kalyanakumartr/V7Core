@@ -23,7 +23,7 @@ public class MenuRole implements IProducersBase, ICRUDBean
 
 	protected int				autoId;
 
-	protected IProducers		producer;
+	protected Producers		producer;
 
 	protected IRoles			roles;
 
@@ -49,7 +49,7 @@ public class MenuRole implements IProducersBase, ICRUDBean
 
 	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producerId")
-	public IProducers getProducer()
+	public Producers getProducer()
 	{
 		return producer;
 	}
@@ -71,7 +71,7 @@ public class MenuRole implements IProducersBase, ICRUDBean
 		this.autoId = autoId;
 	}
 
-	public void setProducer(IProducers producer)
+	public void setProducer(Producers producer)
 	{
 		this.producer = producer;
 	}

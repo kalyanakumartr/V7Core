@@ -6,10 +6,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @Table(name = "usersmedia")
+// @JsonTypeName("UsersMedia")
 public class UsersMedia extends CommunicationMedia implements IUsersMedia
 {
 	private static final long	serialVersionUID	= -6038542520518993638L;
@@ -38,6 +40,7 @@ public class UsersMedia extends CommunicationMedia implements IUsersMedia
 	@ManyToOne(targetEntity = Users.class)
 	@JoinColumn(name = "employeeId", nullable = false)
 	@JsonDeserialize(as = Users.class)
+	@JsonBackReference
 	public IUsers getUsers()
 	{
 		return users;

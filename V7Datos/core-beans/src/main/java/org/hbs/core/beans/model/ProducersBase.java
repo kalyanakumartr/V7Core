@@ -11,17 +11,17 @@ public abstract class ProducersBase extends CommonDateAndStatusFields implements
 
 	private static final long	serialVersionUID	= -2975176593095463958L;
 
-	protected IProducers		producer;
+	protected Producers		producer;
 
 	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producerId")
-	public IProducers getProducer()
+	public Producers getProducer()
 	{
 		return producer;
 	}
 
 	@Override
-	public void setProducer(IProducers producer)
+	public void setProducer(Producers producer)
 	{
 		this.producer = producer;
 	}

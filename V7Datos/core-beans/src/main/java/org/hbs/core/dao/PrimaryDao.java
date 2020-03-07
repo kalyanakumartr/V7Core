@@ -1,18 +1,15 @@
 package org.hbs.core.dao;
 
 import org.hbs.core.beans.model.Sequence;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PrimaryDao extends CrudRepository<Sequence, String>
 {
-	@Query("select sequenceId from Sequence where tablename = ?0")
-	long findBySequenceKey(String sequencekey);
+	@Query("select S from Sequence S where S.sequenceKey = :sequenceKey AND S.producer.producerId = :producerId")
+	Sequence findBySequenceKey(@Param("sequenceKey") String sequencekey, @Param("producerId") String producerId);
 
-	@Modifying
-	@Query("update Sequence set sequenceId = ?0 where sequenceKey = ?1")
-	void updateSequenceIdByOne(long sequenceId, String sequencekey);
 }

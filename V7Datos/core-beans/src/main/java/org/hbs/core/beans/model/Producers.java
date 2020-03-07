@@ -31,6 +31,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -194,6 +195,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 
 	@ManyToOne(targetEntity = ProducerUsers.class)
 	@JoinColumn(name = "employeeId", nullable = false)
+	@JsonBackReference
 	public IUsers getUsers()
 	{
 		return users;

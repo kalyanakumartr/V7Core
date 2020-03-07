@@ -30,6 +30,7 @@ public interface IErrorAdmin extends Serializable
 	public String	USER_ALREADY_EXISTS						= "user.already.exists";
 	public String	USER_BLOCKED_SUCCESSFULLY				= "user.blocked.successfully";
 	public String	USER_CREATED_SUCCESSFULLY				= "user.created.successfully";
+	public String	USER_CREATED_FAILED						= "user.created.failed";
 	public String	ACTIVATION_LINK_SENT_SUCCESSFULLY		= "activation.link.sent.successfully";
 	public String	ACTIVATION_LINK_SENT_FAILED				= "activation.link.sent.failed";
 	public String	ACTIVATION_LINK_SENT_RECENTLY			= "activation.link.sent.recently";

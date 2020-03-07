@@ -32,7 +32,15 @@ public class UserFormBean extends APIStatus
 
 	public void updateRepoUser(Authentication auth)
 	{
-		user.modifiedUserInfo(auth);
+		repoUser.modifiedUserInfo(auth);
+		repoUser.setCountry(user.getCountry());
+		repoUser.setDateOfJoin(user.getDateOfJoin());
+		repoUser.setDob(user.getDob());
+		repoUser.setFatherName(user.getFatherName());
+		repoUser.setLastName(user.getLastName());
+		repoUser.setProducer(user.getProducer());
+		repoUser.setSex(user.getSex());
+		repoUser.setUserName(user.getUserName());
 	}
 
 }

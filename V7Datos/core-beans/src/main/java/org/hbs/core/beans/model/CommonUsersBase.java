@@ -19,13 +19,15 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @MappedSuperclass
 public abstract class CommonUsersBase extends UsersBase implements IUsers
 {
 	private static final long			serialVersionUID	= -7527216318945401365L;
 
-	protected Set<IUsersMedia>			mediaList			= new LinkedHashSet<IUsersMedia>(0);
+	protected Set<UsersMedia>			mediaList			= new LinkedHashSet<UsersMedia>(0);
 
 	protected Set<IUsersAddress>		addressList			= new LinkedHashSet<IUsersAddress>(0);
 
@@ -109,7 +111,9 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 	@OneToMany(targetEntity = UsersMedia.class, fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@JsonIgnore
-	public Set<IUsersMedia> getMediaList()
+	@JsonDeserialize(as = LinkedHashSet.class)
+	@JsonManagedReference
+	public Set<UsersMedia> getMediaList()
 	{
 		return mediaList;
 	}
@@ -141,7 +145,7 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 		this.attachmentList = attachmentList;
 	}
 
-	public void setMediaList(Set<IUsersMedia> mediaList)
+	public void setMediaList(Set<UsersMedia> mediaList)
 	{
 		this.mediaList = mediaList;
 	}

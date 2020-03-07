@@ -31,13 +31,13 @@ public class Users extends CommonUsers
 	public Users()
 	{
 		super();
-		this.employeeId = getBusinessKey();
+		getBusinessKey();
 	}
 
 	public Users(EUserType userType)
 	{
 		super();
-		this.employeeId = getBusinessKey();
+		getBusinessKey();
 		this.userType = userType;
 	}
 
@@ -51,7 +51,8 @@ public class Users extends CommonUsers
 	@JsonIgnore
 	public String getBusinessKey(String... combination)
 	{
-		return EKey.Auto();
+		this.employeeId = EKey.Auto();
+		return this.employeeId;
 	}
 
 	@Embedded

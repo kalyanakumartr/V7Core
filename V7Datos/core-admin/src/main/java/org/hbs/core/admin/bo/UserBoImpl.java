@@ -9,6 +9,7 @@ import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.IUsersMedia;
 import org.hbs.core.beans.model.Users;
+import org.hbs.core.beans.model.UsersMedia;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.dao.SequenceDao;
@@ -32,7 +33,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 
 	// private final Logger logger = LoggerFactory.getLogger(UserBoImpl.class);
 
-	@Autowired
+	// @Autowired
 	GenericKafkaProducer		gKafkaProducer;
 
 	@Autowired
@@ -128,41 +129,55 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	public EnumInterface saveUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException, InvalidKeyException
 	{
 
-		// logger.info("UserBoImpl saveUser starts ::: ");
-		IUsersMedia uMedia = ufBean.user.getPrimaryMedia();
-		List<String> userNameList = userDao.checkUserNameEmailIdOrMobileNo(ufBean.user.getProducer().getProducerId(), uMedia.getEmailId(), uMedia.getMobileNo());
-		if (CommonValidator.isListFirstNotEmpty(userNameList))
+		if (EAuth.User.verifyProducer(auth, ufBean.user.getProducer().getProducerId()))
 		{
-			ufBean.user.createdUserProducerInfo(auth);
-
-			ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL();
-			ESecurity.Token.generate(ufBean.user, EFormAction.Verify);
-
-			ufBean.user.setUserId("USR" + sequenceDao.getPrimaryKey(Users.class.getSimpleName()));
-			ufBean.user.setStatus(false);
-			ufBean.user.setUserPwdModFlag(true);
-			ufBean.user = userDao.save(ufBean.user);
-
-			if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
+			// logger.info("UserBoImpl saveUser starts ::: ");
+			IUsersMedia uMedia = ufBean.user.getPrimaryMedia();
+			List<String> userNameList = userDao.checkUserNameEmailIdOrMobileNo(ufBean.user.getProducer().getProducerId(), uMedia.getEmailId(), uMedia.getMobileNo());
+			if (userNameList.isEmpty())
 			{
-				try
-				{
-					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.User_Create_Admin, ufBean);
-					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.User_Create_Employee, ufBean);
-					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS, ETemplate.SMS_Create_Employee, ufBean);
+				ufBean.user.createdUserProducerInfo(auth);
 
-					ufBean.messageCode = USER_CREATED_SUCCESSFULLY;
-					return EReturn.Success;
-				}
-				finally
+				ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL(ESecurity.Token.generate(ufBean.user, EFormAction.Verify));
+				ufBean.user.setStatus(false);
+				ufBean.user.setUserPwdModFlag(true);
+				ufBean.user.getBusinessKey();// Initialize Primary Key
+				
+				for(UsersMedia _UM : ufBean.user.getMediaList())
 				{
-					ufBean.tokenURL = null;
-					ufBean.user = null;
+					_UM.setUsers(ufBean.user);
 				}
+				ufBean.user.setUserId(sequenceDao.getPrimaryKey(Users.class.getSimpleName(), ufBean.user.getProducer().getProducerId()));
+				
+				ufBean.user = userDao.save(ufBean.user);
+				
+				if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
+				{
+					try
+					{
+						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
+						// ETemplate.User_Create_Admin, ufBean);
+						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
+						// ETemplate.User_Create_Employee, ufBean);
+						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
+						// ETemplate.SMS_Create_Employee, ufBean);
+
+						ufBean.messageCode = USER_CREATED_SUCCESSFULLY;
+						return EReturn.Success;
+					}
+					finally
+					{
+						ufBean.tokenURL = null;
+						ufBean.user = null;
+					}
+				}
+				throw new InvalidKeyException(USER_TOKEN_KEY_GENERATE_ISSUE);
 			}
-			throw new InvalidKeyException(USER_TOKEN_KEY_GENERATE_ISSUE);
+			throw new InvalidKeyException(USER_ALREADY_EXISTS);
 		}
-		throw new InvalidRequestException(USER_ALREADY_EXISTS);
+		// logger.error("UserBoImpl saveUser ::: Producer Not Matched");
+		throw new InvalidKeyException(USER_CREATED_FAILED);
+
 	}
 
 	@Override

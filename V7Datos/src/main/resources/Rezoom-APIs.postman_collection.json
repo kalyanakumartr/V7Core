@@ -85,7 +85,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTIwMjAxMSwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiI1MDgwYWYxNC0wNWQ5LTQ0ZDEtODkwYy01YmVkZGExNjMwNzMiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.wfO4uKdTUmXue1s_8Ng8882uMxb6XDWR9IB0iohULWo",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnRQcm9kdWNlck5hbWUiOiJFZHVUZWwgQWNhZGVteSIsInVzZXJfbmFtZSI6IkFuYW50aC1JZCIsInByb2R1Y2VyTmFtZSI6IkVkdVRlbCBBY2FkZW15IiwidXNlckZ1bGxOYW1lIjoiQmFsYXN1YnJhbWFuaWFuLCBBbmFudGgiLCJlbXBsb3llZUlkIjoiVVNSMTUxMzQzODAyNDc5OSIsInVzZXJOYW1lIjoiQW5hbnRoLUlkIiwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJjb3VudHJ5SWQiOiJBc2lhL0tvbGthdGEiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiIsInBhcmVudFByb2R1Y2VySWQiOiJQUkQwMDAwMDEiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJwcm9kdWNlcklkIjoiUFJEMDAwMDAxIiwiZXhwIjoxNTg1ODQ2NjQyLCJqdGkiOiIwNDM2OGM4Ny01ZDUyLTQwZDMtYmRlZC1lMDdhNjgzZjA3ZTkifQ._kdTPLncBGNOSPjj-JHXPt5oIf80gmoT7sNuuvvzjGk",
 							"type": "string"
 						}
 					]
@@ -432,6 +432,98 @@
 					"path": [
 						"core-admin",
 						"searchUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnRQcm9kdWNlck5hbWUiOiJFZHVUZWwgQWNhZGVteSIsInVzZXJfbmFtZSI6IkFuYW50aC1JZCIsInByb2R1Y2VyTmFtZSI6IkVkdVRlbCBBY2FkZW15IiwidXNlckZ1bGxOYW1lIjoiQmFsYXN1YnJhbWFuaWFuLCBBbmFudGgiLCJlbXBsb3llZUlkIjoiVVNSMTUxMzQzODAyNDc5OSIsInVzZXJOYW1lIjoiQW5hbnRoLUlkIiwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJjb3VudHJ5SWQiOiJBc2lhL0tvbGthdGEiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiIsInBhcmVudFByb2R1Y2VySWQiOiJQUkQwMDAwMDEiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJwcm9kdWNlcklkIjoiUFJEMDAwMDAxIiwiZXhwIjoxNTg2MDY1OTk5LCJqdGkiOiIwMjUyODJlZS0wMDUxLTRmMDctYTM3Zi02MzkzMzQzZTkwMWUifQ.FZ2kgwwCWhXhLsQOP32vhN7LttI4hkABeWGe2YZVBZU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"user\":{\r\n\t\t\"userName\" : \"Jayesh12\",\r\n\t\t\"country\" : {\r\n\t\t\t\"country\": \"Asia/Calcutta\"\r\n\t\t},\r\n\t\t\"producer\":{\r\n\t\t\t\"producerId\":\"PRD000001\"\t\r\n\t\t},\r\n\t\t\"mediaList\":[{\r\n\t\t\t\"mobileNo\":\"9677101122\",\r\n\t\t\t\"emailId\":\"eselfguru2@gmail.com\"\r\n\t\t}]\r\n\t}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/addUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"addUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnRQcm9kdWNlck5hbWUiOiJFZHVUZWwgQWNhZGVteSIsInVzZXJfbmFtZSI6IkFuYW50aC1JZCIsInByb2R1Y2VyTmFtZSI6IkVkdVRlbCBBY2FkZW15IiwidXNlckZ1bGxOYW1lIjoiQmFsYXN1YnJhbWFuaWFuLCBBbmFudGgiLCJlbXBsb3llZUlkIjoiVVNSMTUxMzQzODAyNDc5OSIsInVzZXJOYW1lIjoiQW5hbnRoLUlkIiwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJjb3VudHJ5SWQiOiJBc2lhL0tvbGthdGEiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiIsInBhcmVudFByb2R1Y2VySWQiOiJQUkQwMDAwMDEiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJwcm9kdWNlcklkIjoiUFJEMDAwMDAxIiwiZXhwIjoxNTg2MDY1OTk5LCJqdGkiOiIwMjUyODJlZS0wMDUxLTRmMDctYTM3Zi02MzkzMzQzZTkwMWUifQ.FZ2kgwwCWhXhLsQOP32vhN7LttI4hkABeWGe2YZVBZU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"user\":{\r\n\t\t\"employeeId\":\"634ee30d-ac3a-4fca-8d9c-fe723143520f\",\r\n\t\t\"userName\" : \"Jayesh123\",\r\n\t\t\"lastName\" : \"B.J.\",\r\n\t\t\"dateOfJoin\": \"07/03/2020\",\r\n\t\t\"dob\": \"07/03/2000\",\r\n\t\t\"fatherName\": \"Balaji\",\r\n\t\t\"sex\":\"Male\",\r\n\t\t\"country\" : {\r\n\t\t\t\"country\": \"Asia/Calcutta\"\r\n\t\t},\r\n\t\t\"producer\":{\r\n\t\t\t\"producerId\":\"PRD000001\"\t\r\n\t\t},\r\n\t\t\"mediaList\":[{\r\n\t\t\t\"mobileNo\":\"9677101122\",\r\n\t\t\t\"emailId\":\"eselfguru2@gmail.com\"\r\n\t\t}]\r\n\t}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/updateUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"updateUser"
 					]
 				}
 			},

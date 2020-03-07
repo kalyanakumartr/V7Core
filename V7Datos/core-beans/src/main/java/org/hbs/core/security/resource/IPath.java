@@ -3,6 +3,7 @@ package org.hbs.core.security.resource;
 import java.util.Map;
 
 import org.hbs.core.beans.model.IUsers;
+import org.hbs.core.beans.model.IUsers.EUsers;
 import org.hbs.core.beans.model.Producers;
 import org.hbs.core.beans.model.Users;
 import org.hbs.core.util.CommonValidator;
@@ -116,10 +117,17 @@ public interface IPath extends IConstProperty
 		{
 			if (details == null)
 				init(auth);
-			if (CommonValidator.isEqual((String) details.get(USER_NAME), ERole.SuperAdminRole))
+			if (CommonValidator.isEqual((String) details.get(USER_NAME), EUsers.SuperAdmin))
 				return true;
 
 			return false;
+		}
+		
+		public boolean verifyProducer(Authentication auth, String producerId)
+		{
+			if(isSuperAdmin(auth))
+				return true;
+			return CommonValidator.isEqual(getProducerId(auth), producerId);
 		}
 
 	}
@@ -218,7 +226,7 @@ public interface IPath extends IConstProperty
 
 	public static final String	PARENT_PRODUCER_NAME				= "parentProducerName";
 
-	public static final String	HAS_AUTHORITY_SUPERADMIN			= "hasAuthority('SUPERADMIN')";
+	public static final String	HAS_AUTHORITY_SUPERADMIN			= "hasAuthority('SUPERADMINROLE')";
 	public static final String	HAS_AUTHORITY_ADMINISTRATOR			= "hasAuthority('ADMIN')";
 	public static final String	HAS_AUTHORITY_EMPLOYEE				= "hasAuthority('EMPLOYEE')";
 	public static final String	HAS_AUTHORITY_USER					= "hasAuthority('USER')";

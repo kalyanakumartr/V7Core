@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author AnanthMalBal
- */
+
 /**
  * @author AnanthMalBal
  */
@@ -111,27 +109,6 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public ResponseEntity<?> getUserByEmailOrMobileOrUserId(Authentication auth, @RequestBody UserFormBean userFormBean)//
-	{
-		try
-		{
-			// logger.info("Inside UserController getUserByEmailOrMobileOrUserId ::: ");
-			Users users = userBo.getUserByEmailOrMobileOrUserId(userFormBean.searchParam);
-			users.setCreatedDateByTimeZone(users.getCountry().getCountry());
-			users.setModifiedDateByTimeZone(users.getCountry().getCountry());
-
-			return new ResponseEntity<Users>(users, HttpStatus.OK);
-		}
-		catch (Exception excep)
-		{
-			userFormBean = new UserFormBean();
-			userFormBean.messageCode = excep.getMessage();
-			// logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ", excep);
-			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
-		}
-	}
-
-	@Override
 	public ResponseEntity<?> getCities(Authentication auth, @RequestBody UserFormBean userFormBean)//
 	{
 		try
@@ -208,6 +185,27 @@ public class UserController implements IUserController
 	}
 
 	@Override
+	public ResponseEntity<?> getUserByEmailOrMobileOrUserId(Authentication auth, @RequestBody UserFormBean userFormBean)//
+	{
+		try
+		{
+			// logger.info("Inside UserController getUserByEmailOrMobileOrUserId ::: ");
+			Users users = userBo.getUserByEmailOrMobileOrUserId(userFormBean.searchParam);
+			users.setCreatedDateByTimeZone(users.getCountry().getCountry());
+			users.setModifiedDateByTimeZone(users.getCountry().getCountry());
+
+			return new ResponseEntity<Users>(users, HttpStatus.OK);
+		}
+		catch (Exception excep)
+		{
+			userFormBean = new UserFormBean();
+			userFormBean.messageCode = excep.getMessage();
+			// logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ", excep);
+			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@Override
 	public ResponseEntity<?> getUserListByProducer(Authentication auth)//
 	{
 		try
@@ -262,6 +260,11 @@ public class UserController implements IUserController
 		}
 	}
 
+	
+	/**
+	 * Need To Implement UserMedia and User Address Stuffs
+	 * 
+	 */
 	@Override
 	public ResponseEntity<?> updateUser(Authentication auth, @RequestBody UserFormBean userFormBean)
 	{

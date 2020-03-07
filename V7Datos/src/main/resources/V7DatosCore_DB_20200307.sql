@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `city` (
   PRIMARY KEY (`city`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.city: ~1 rows (approximately)
+-- Dumping data for table rezoom.city: ~17 rows (approximately)
 DELETE FROM `city`;
 /*!40000 ALTER TABLE `city` DISABLE KEYS */;
 INSERT INTO `city` (`city`, `state`, `zipCode`, `status`) VALUES
@@ -1153,6 +1153,23 @@ INSERT INTO `roles` (`roleId`, `enumKey`, `roleName`, `roleShortName`, `roleLong
 	('Employee', 'EmployeeRole', 'Employee Role', 'Employee Role', 'Employeeistrator Role', 'Employee Role', 'EmployeeRole', 'PRDADM0001', '2014-07-06 10:30:00', 'PRDADM0001', '2014-07-06 10:30:00', b'1', b'0');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
+-- Dumping structure for table rezoom.sequence
+CREATE TABLE IF NOT EXISTS `sequence` (
+  `autoId` int(11) NOT NULL AUTO_INCREMENT,
+  `producerId` varchar(50) NOT NULL,
+  `sequenceId` int(11) NOT NULL,
+  `sequenceKey` varchar(50) NOT NULL,
+  `prepend` varchar(3) DEFAULT NULL,
+  PRIMARY KEY (`autoId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table rezoom.sequence: ~1 rows (approximately)
+DELETE FROM `sequence`;
+/*!40000 ALTER TABLE `sequence` DISABLE KEYS */;
+INSERT INTO `sequence` (`autoId`, `producerId`, `sequenceId`, `sequenceKey`, `prepend`) VALUES
+	(1, 'PRD000001', 10003, 'Users', 'USR');
+/*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
+
 -- Dumping structure for table rezoom.state
 CREATE TABLE IF NOT EXISTS `state` (
   `state` varchar(50) NOT NULL,
@@ -1250,7 +1267,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `userPwdModFlag` bit(1) DEFAULT b'0',
   `userPwdModDate` datetime DEFAULT NULL,
   `dob` varchar(50) DEFAULT NULL,
-  `sex` varchar(10) DEFAULT NULL,
+  `sex` varchar(50) DEFAULT NULL,
   `otp` varchar(20) DEFAULT NULL,
   `userStatus` varchar(50) DEFAULT 'Pending',
   `dateOfJoin` varchar(50) DEFAULT NULL,
@@ -1268,13 +1285,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   CONSTRAINT `FK_users_producers` FOREIGN KEY (`producerId`) REFERENCES `producers` (`producerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.users: ~5 rows (approximately)
+-- Dumping data for table rezoom.users: ~8 rows (approximately)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`employeeId`, `userType`, `producerId`, `parentProducerId`, `userId`, `folderToken`, `userName`, `lastName`, `fatherName`, `userPwd`, `userPwdModFlag`, `userPwdModDate`, `dob`, `sex`, `otp`, `userStatus`, `dateOfJoin`, `token`, `tokenExpiryDate`, `country`, `createdBy`, `createdDate`, `modifiedBy`, `modifiedDate`, `status`) VALUES
+	('634ee30d-ac3a-4fca-8d9c-fe723143520f', 'Employee', 'PRD000001', 'PRD000001', 'USR10003', NULL, 'Jayesh123', 'B.J.', 'Balaji', NULL, b'1', NULL, '07/03/2000', 'Male', NULL, 'Pending', '07/03/2020', '8431700c-67c2-48d8-992a-f9e77d7f1b65', '2020-03-07 19:15:14', 'Asia/Calcutta', 'USR1513438024799', '2020-03-07 19:15:14', 'USR1513438024799', '2020-03-07 21:50:07', b'1'),
+	('66195a76-db0a-4f5b-8dfc-5acd0deba6a4', 'Employee', 'PRD000001', 'PRD000001', 'USR10001', NULL, 'Jayesh', NULL, NULL, NULL, b'1', NULL, NULL, 'NoToSpecify', NULL, 'Pending', NULL, '70369126-857c-4a52-a8b9-5f54a55fb8de', '2020-03-07 19:08:22', 'Asia/Calcutta', 'USR1513438024799', '2020-03-07 19:08:22', 'USR1513438024799', '2020-03-07 19:08:22', b'0'),
+	('7f3b966b-045b-43ae-a032-a9cbf38a5300', 'Employee', 'PRD000001', 'PRD000001', 'USR10002', NULL, 'Jayesh1', NULL, NULL, NULL, b'1', NULL, NULL, 'NoToSpecify', NULL, 'Pending', NULL, '6a3e78de-e075-4c8e-8bbc-ed4323b945fa', '2020-03-07 19:09:47', 'Asia/Calcutta', 'USR1513438024799', '2020-03-07 19:09:47', 'USR1513438024799', '2020-03-07 19:09:47', b'0'),
 	('PRDADM0001', 'Producer', 'PRD000001', 'PRD000001', 'EduTel-Id', '013ea493-8fcc-4c68-b4b8-431a82a375bb', 'Rezoom', 'Admin', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', b'0', NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-09-23 22:00:21', 'Asia/Kolkata', 'PRDADM0001', '2018-01-30 23:47:50', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
 	('USR0000000000000', 'Consumer', 'PRD000001', 'PRD000001', 'Demo-Id', '013ea493-8fcc-4c68-b4b8-431a82a375bb', 'Demo', 'User', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', NULL, NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-12-16 20:57:29', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
-	('USR1513438024799', 'Consumer', 'PRD000001', 'PRD000001', 'Ananth-Id', '1aa2850a-6717-4664-9215-56a2bf52806e', 'Ananth', 'Balasubramanian', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', NULL, NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-12-16 20:57:29', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
+	('USR1513438024799', 'Consumer', 'PRD000001', 'PRD000001', 'Ananth-Id', '1aa2850a-6717-4664-9215-56a2bf52806e', 'Ananth', 'Balasubramanian', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', b'0', NULL, NULL, NULL, NULL, 'Activated', NULL, '5a84770b-81cd-442f-8e8f-848231f6b66e', '2020-03-03 21:33:59', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'USR1513438024799', '2020-03-03 22:31:17', b'0'),
 	('USR1513438024800', 'Employee', 'PRD000001', 'PRD000001', 'Tamil-Id', '486f11d5-4972-44b0-9bdc-50f7b572ce11', 'Tamil', 'Selvan', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', NULL, NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-12-16 20:57:29', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
 	('USR1513438024801', 'Employee', 'PRD000001', 'PRD000001', 'HariHaran-Id', 'ca7621f6-a0e0-425a-a1ca-e0c171e6b282', 'HariHaran', 'Thavaselvam', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', NULL, NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-12-16 20:57:29', 'Asia/Kolkata', 'PRDADM0001', '2018-01-30 23:47:50', 'PRDADM0001', '2018-01-30 23:47:50', b'1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
@@ -1343,10 +1363,13 @@ CREATE TABLE IF NOT EXISTS `usersmedia` (
   PRIMARY KEY (`mediaId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.usersmedia: ~0 rows (approximately)
+-- Dumping data for table rezoom.usersmedia: ~4 rows (approximately)
 DELETE FROM `usersmedia`;
 /*!40000 ALTER TABLE `usersmedia` DISABLE KEYS */;
 INSERT INTO `usersmedia` (`mediaId`, `employeeId`, `mediaType`, `emailId`, `mobileNo`, `phoneNo`, `whatsAppNo`) VALUES
+	('267831db-5195-48aa-8c09-c32d9e9f452a', '66195a76-db0a-4f5b-8dfc-5acd0deba6a4', 'Primary', 'eselfguru@gmail.com', '9677101120', NULL, NULL),
+	('284c3500-88c6-4dd9-867d-59d0854f2aa8', '7f3b966b-045b-43ae-a032-a9cbf38a5300', 'Primary', 'eselfguru1@gmail.com', '9677101121', NULL, NULL),
+	('44943f5e-f07c-440d-b0e3-53aedf5aac70', '634ee30d-ac3a-4fca-8d9c-fe723143520f', 'Primary', 'eselfguru2@gmail.com', '9677101122', NULL, NULL),
 	('UMEDIA00001', 'USR1513438024799', 'Primary', 'ananth.malbal@gmail.com', '9677101112', ' ', '9789875832');
 /*!40000 ALTER TABLE `usersmedia` ENABLE KEYS */;
 

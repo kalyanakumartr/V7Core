@@ -57,7 +57,7 @@ public interface IUsers extends IUsersBase, IUsersByUser
 
 	public String getDomainUrl(HttpServletRequest request);
 
-	public Set<IUsersMedia> getMediaList();
+	public Set<UsersMedia> getMediaList();
 
 	public String getOtp();
 
@@ -79,7 +79,7 @@ public interface IUsers extends IUsersBase, IUsersByUser
 
 	public void setAttachmentList(Set<IUsersAttachments> attachmentList);
 
-	public void setMediaList(Set<IUsersMedia> mediaList);
+	public void setMediaList(Set<UsersMedia> mediaList);
 
 	public void setOtp(String otp);
 

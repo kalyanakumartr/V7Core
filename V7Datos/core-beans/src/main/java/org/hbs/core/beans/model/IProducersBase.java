@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public interface IProducersBase extends Serializable
 {
-	public IProducers getProducer();
+	public Producers getProducer();
 
-	public void setProducer(IProducers producer);
+	public void setProducer(Producers producer);
 }

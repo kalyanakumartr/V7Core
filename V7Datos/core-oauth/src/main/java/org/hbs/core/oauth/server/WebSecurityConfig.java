@@ -1,7 +1,6 @@
 package org.hbs.core.oauth.server;
 
 import org.hbs.core.security.resource.OAuth2Constants;
-import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

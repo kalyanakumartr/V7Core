@@ -49,9 +49,9 @@ public interface IUsersBase extends EBusinessKey, ICRUDBean, ICommonDateAndStatu
 
 	public String getLastName();
 
-	public IProducers getParentProducer();
+	public Producers getParentProducer();
 
-	public IProducers getProducer();
+	public Producers getProducer();
 
 	public EGender getSex();
 
@@ -89,9 +89,9 @@ public interface IUsersBase extends EBusinessKey, ICRUDBean, ICommonDateAndStatu
 
 	public void setLastName(String usLastName);
 
-	public void setParentProducer(IProducers subProducer);
+	public void setParentProducer(Producers subProducer);
 
-	public void setProducer(IProducers producer);
+	public void setProducer(Producers producer);
 
 	public void setSex(EGender usSex);
 

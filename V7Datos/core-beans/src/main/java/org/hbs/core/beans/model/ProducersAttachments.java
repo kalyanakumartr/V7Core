@@ -17,14 +17,14 @@ public class ProducersAttachments extends CommonFileUpload implements IProducers
 
 	protected String			documentStatus;
 
-	protected IProducers		producer;
+	protected Producers		producer;
 
 	public ProducersAttachments()
 	{
 		super();
 	}
 
-	public ProducersAttachments(int autoId, IProducers producer, String documentStatus, String documentDesc)
+	public ProducersAttachments(int autoId, Producers producer, String documentStatus, String documentDesc)
 	{
 		super();
 		this.autoId = autoId;
@@ -47,7 +47,7 @@ public class ProducersAttachments extends CommonFileUpload implements IProducers
 
 	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "producerId", nullable = false)
-	public IProducers getProducer()
+	public Producers getProducer()
 	{
 		return producer;
 	}
@@ -62,7 +62,7 @@ public class ProducersAttachments extends CommonFileUpload implements IProducers
 		this.documentStatus = documentStatus;
 	}
 
-	public void setProducer(IProducers producer)
+	public void setProducer(Producers producer)
 	{
 		this.producer = producer;
 	}
