@@ -10,7 +10,7 @@ import org.hbs.core.beans.model.Producers;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.dao.ProducerDao;
 import org.hbs.core.dao.SequenceDao;
-import org.hbs.core.security.resource.IPath.EReturn;
+import org.hbs.core.security.resource.IPathBase.EReturn;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.IConstProperty.EWrap;

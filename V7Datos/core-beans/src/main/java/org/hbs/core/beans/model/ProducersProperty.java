@@ -12,9 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hbs.core.security.resource.IPath.EAuth;
-import org.hbs.core.security.resource.IPath.EMedia;
-import org.hbs.core.security.resource.IPath.EMediaMode;
-import org.hbs.core.security.resource.IPath.EMediaType;
+import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
+import org.hbs.core.security.resource.IPathBase.EMediaType;
 import org.hbs.core.util.EBusinessKey;
 import org.springframework.security.core.Authentication;
 

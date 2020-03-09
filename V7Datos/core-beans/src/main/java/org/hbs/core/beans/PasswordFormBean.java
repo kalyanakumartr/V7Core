@@ -1,6 +1,6 @@
 package org.hbs.core.beans;
 
-import org.hbs.core.security.resource.IPath.EFormAction;
+import org.hbs.core.security.resource.IPathBase.EFormAction;
 
 public class PasswordFormBean extends APIStatus
 {

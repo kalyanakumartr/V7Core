@@ -7,8 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.hbs.core.security.resource.IPath.EMedia;
-import org.hbs.core.security.resource.IPath.EMediaMode;
+import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 
 public class ProducerPropertyDaoImpl implements Serializable
 {

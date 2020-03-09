@@ -3,8 +3,8 @@ package org.hbs.core.dao;
 import java.util.List;
 
 import org.hbs.core.beans.model.ProducersProperty;
-import org.hbs.core.security.resource.IPath.EMedia;
-import org.hbs.core.security.resource.IPath.EMediaMode;
+import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

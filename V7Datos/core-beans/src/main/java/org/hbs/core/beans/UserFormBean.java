@@ -1,7 +1,7 @@
 package org.hbs.core.beans;
 
 import org.hbs.core.beans.model.Users;
-import org.hbs.core.security.resource.IPath.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.springframework.security.core.Authentication;
 
 public class UserFormBean extends APIStatus

@@ -6,7 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import org.hbs.core.security.resource.IPath.EMediaType;
+import org.hbs.core.security.resource.IPathBase.EMediaType;
 
 @MappedSuperclass
 public abstract class CommunicationMedia extends CommunicationMediaBase implements ICommunicationMedia

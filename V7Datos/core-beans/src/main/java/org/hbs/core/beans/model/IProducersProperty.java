@@ -1,7 +1,7 @@
 package org.hbs.core.beans.model;
 
-import org.hbs.core.security.resource.IPath.EMedia;
-import org.hbs.core.security.resource.IPath.EMediaMode;
+import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 
 public interface IProducersProperty extends IProducersBase, ICommonDateAndStatusFields
 {

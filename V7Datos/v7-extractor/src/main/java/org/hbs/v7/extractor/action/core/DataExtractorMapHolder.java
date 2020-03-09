@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.IConstProperty;
 import org.hbs.core.util.LabelValueBean;
-import org.hbs.extractor.beans.model.DataExtractorPattern;
-import org.hbs.extractor.beans.model.DataExtractorPattern.RegExFor;
+import org.hbs.extractor.beans.model.resume.DataExtractorPattern;
+import org.hbs.extractor.beans.model.resume.DataExtractorPattern.RegExFor;
 import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
 
 public abstract class DataExtractorMapHolder implements IConstProperty

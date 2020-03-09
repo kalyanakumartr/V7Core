@@ -8,8 +8,8 @@ import java.util.concurrent.Executors;
 import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
-import org.hbs.core.security.resource.IPath.EMedia;
-import org.hbs.core.security.resource.IPath.EMediaMode;
+import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.v7.extractor.action.core.InBoxReaderScheduler;
 import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
@@ -56,7 +56,7 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 								try
 								{
 									System.out.println("Started By " + config.getFromId() + " at " + new Date());
-									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel(config, gKafkaProducer);
+									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel(config,gKafkaProducer,extractorBo);
 								}
 								catch (Exception e)
 								{
@@ -74,6 +74,13 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 					while ( !executor.isTerminated() )
 						;
 					System.out.println("Finished all threads");
+					
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			else

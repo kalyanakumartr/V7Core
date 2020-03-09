@@ -8,12 +8,11 @@ import org.hbs.core.beans.model.Producers;
 import org.hbs.core.beans.model.Users;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
-import org.hbs.core.util.IConstProperty;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
-public interface IPath extends IConstProperty
+public interface IPath extends IPathBase
 {
 	public enum EAuth implements EnumInterface
 	{
@@ -132,35 +131,7 @@ public interface IPath extends IConstProperty
 
 	}
 
-	public enum EFormAction implements EnumInterface
-	{
-		Add, Update, Search, SoftDelete, PermanentDelete, ChangePassword, ForgotPassword, Verify, PasswordChanged, TokenExpired
-	}
-
-	public enum EMedia implements EnumInterface
-	{
-		Email, SMS, WhatsApp, Manual, Web
-	}
-
-	public enum EMediaMode implements EnumInterface
-	{
-		NoReply, Internal, External;
-	}
-
-	public enum EMediaType implements EnumInterface
-	{
-		Primary, Secondary, Alternate
-	}
-
-	public enum EReturn implements EnumInterface
-	{
-		Success, Failure, Exists, Not_Exists
-	}
-
-	public enum ERole implements EnumInterface
-	{
-		Administrator, Consumer, Dummy, Employee, Producer, SuperAdminRole;
-	}
+	
 
 	public enum ETemplate implements EnumInterface
 	{
@@ -233,9 +204,5 @@ public interface IPath extends IConstProperty
 	public static final String	HAS_AUTHORITY_SUPERADMIN_OR_ADMIN	= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_SUPERADMIN;
 	public static final String	HAS_AUTHORITY_BOTH					= HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE;
 	public static final String	HAS_ALL_AUTHORITY					= HAS_AUTHORITY_SUPERADMIN + " or " + HAS_AUTHORITY_ADMINISTRATOR + " or " + HAS_AUTHORITY_EMPLOYEE + " or " + HAS_AUTHORITY_USER;
-
-	public static final String	INTERNAL_TOPIC						= "InternalTopic";
-	public static final String	MESSAGES_TOPIC						= "ExternalTopic";
-	public static final String	ATTACHMENT_TOPIC					= "AttachmentTopic";
 
 }

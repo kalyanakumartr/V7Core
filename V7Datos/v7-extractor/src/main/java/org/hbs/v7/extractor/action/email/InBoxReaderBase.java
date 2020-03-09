@@ -15,12 +15,14 @@ import javax.mail.UIDFolder;
 
 import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
-import org.hbs.core.security.resource.IPath.EMedia;
 import org.hbs.core.security.resource.IPath.ETopic;
+import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.extractor.event.KafkaEmailReferenceBean;
 import org.hbs.v7.extractor.action.core.InBoxReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.google.gson.Gson;
 @ComponentScan({ "org.hbs.v7.extractor.event.service" })
 public abstract class InBoxReaderBase implements InBoxReader
 {
@@ -28,7 +30,10 @@ public abstract class InBoxReaderBase implements InBoxReader
 
 	@Autowired
 	GenericKafkaProducer		gKafkaProducer;
-
+	
+	ConfigurationEmail config;
+	//@Autowired
+	//KafkaEmailReferenceBean 	kafkaEmailRef;
 	public InBoxReaderBase()
 	{
 		super();
@@ -36,6 +41,7 @@ public abstract class InBoxReaderBase implements InBoxReader
 
 	protected Store authenticateMailAndConnect(ConfigurationEmail config) throws NoSuchProviderException, MessagingException
 	{
+		this.config= config;
 		try
 		{
 			Store store = EmailConnectionHandler.getInstance().getStore(config.getProducerId() + config.getFromId());
@@ -83,17 +89,17 @@ public abstract class InBoxReaderBase implements InBoxReader
 
 	protected void pushToQueue(String producerId, UIDFolder _UIDFolder, Message... messages) throws MessagingException
 	{
+		
 		for (Message message : messages)
 		{
-			try
-			{
-				// gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, "producerId :
-				// "+producerId+" UIDFolder : "+ _UIDFolder.toString()+" Message :"+
-				// message.toString());
-				gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, new UIDMimeMessage(producerId, _UIDFolder, message));
-			}
-			catch (Exception ex)
-			{
+			try {
+				KafkaEmailReferenceBean 	kafkaEmailRef = new KafkaEmailReferenceBean(message.getMessageNumber(),message.getSentDate(),config);
+				
+						 
+			//gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, "producerId : "+producerId+" UIDFolder : "+ _UIDFolder.toString()+" Message :"+ message.toString());
+			//gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, new UIDMimeMessage(producerId, _UIDFolder, message)); // Need to give the messaged UUID and emailSent Time as Json
+				gKafkaProducer.sendMessage(ETopic.Attachment, EMedia.Email, new Gson().toJson(kafkaEmailRef)); // Need to give the messaged UUID and emailSent Time as Json
+			}catch(Exception ex) {
 				ex.printStackTrace();
 				throw ex;
 			}

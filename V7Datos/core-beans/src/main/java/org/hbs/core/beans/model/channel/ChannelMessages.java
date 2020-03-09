@@ -15,7 +15,7 @@ import org.hbs.core.beans.model.CreatedModifiedUsers;
 import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.V7MessagesBase;
 import org.hbs.core.security.resource.IPath.EAuth;
-import org.hbs.core.security.resource.IPath.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.springframework.security.core.Authentication;

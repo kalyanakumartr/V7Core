@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.hbs.core.security.resource.IPath.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.util.EBusinessKey;
 import org.hbs.core.util.EnumInterface;
 

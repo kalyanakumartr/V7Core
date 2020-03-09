@@ -11,7 +11,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.hbs.core.beans.model.IAddress.AddressType;
-import org.hbs.core.security.resource.IPath.EMediaType;
+import org.hbs.core.security.resource.IPathBase.EMediaType;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hibernate.annotations.Fetch;

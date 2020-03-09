@@ -6,9 +6,9 @@ import java.util.List;
 import org.hbs.core.beans.ConfigurationFormBean;
 import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.ProducersProperty;
-import org.hbs.core.security.resource.IPath.EMedia;
-import org.hbs.core.security.resource.IPath.EMediaMode;
-import org.hbs.core.security.resource.IPath.EMediaType;
+import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
+import org.hbs.core.security.resource.IPathBase.EMediaType;
 import org.hbs.core.util.EnumInterface;
 import org.springframework.security.core.Authentication;
 

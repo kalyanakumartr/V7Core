@@ -5,8 +5,8 @@ import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hbs.core.beans.model.IAddress.AddressType;
-import org.hbs.core.security.resource.IPath.EMediaType;
-import org.hbs.core.security.resource.IPath.ERole;
+import org.hbs.core.security.resource.IPathBase.EMediaType;
+import org.hbs.core.security.resource.IPathBase.ERole;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.Masker;
 

@@ -7,7 +7,7 @@ import java.util.List;
 import org.hbs.core.beans.model.IUserRoles;
 import org.hbs.core.beans.model.IUsers;
 import org.hbs.core.beans.model.IUsers.EUsers;
-import org.hbs.core.security.resource.IPath.ERole;
+import org.hbs.core.security.resource.IPathBase.ERole;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.IConstProperty;
 import org.springframework.security.core.GrantedAuthority;

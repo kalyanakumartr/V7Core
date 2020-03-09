@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.hbs.core.security.resource.IPath.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.util.EnumInterface;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

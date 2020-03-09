@@ -1,4 +1,4 @@
-package org.hbs.extractor.beans.model;
+package org.hbs.extractor.beans.model.resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;

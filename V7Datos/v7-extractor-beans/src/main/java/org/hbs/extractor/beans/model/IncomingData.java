@@ -1,22 +1,29 @@
 package org.hbs.extractor.beans.model;
 
+import java.sql.Timestamp;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hbs.core.security.resource.IPath.EMedia;
+import org.hbs.core.beans.model.IProducers;
+import org.hbs.core.beans.model.ProducersProperty;
+import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.util.EBusinessKey;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ICRUDBean;
+import org.hbs.extractor.beans.model.resume.CustomerProducer;
 
 @Entity
 @Table(name = "resume_incoming_data")
@@ -25,7 +32,7 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 
 	public enum EIncomingStatus implements EnumInterface
 	{
-		New, InProcess, Completed, AttachmentReadError, InvalidAttachment, UnRecognizedError
+		New, Ready, InProcess, Completed, AttachmentReadError, InvalidAttachment, UnRecognizedError, Timeout
 	}
 
 	private static final long		serialVersionUID	= 8524114488133328911L;
@@ -41,6 +48,9 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 	protected String				readerInstance;
 	protected EIncomingStatus		incomingStatus		= EIncomingStatus.New;
 	protected Set<DataAttachments>	attachmentList		= new LinkedHashSet<DataAttachments>();
+	protected IProducers			producer;
+	protected ProducersProperty		producerProperty;
+	protected Timestamp				createdDate;
 
 	public IncomingData()
 	{
@@ -48,7 +58,7 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 		this.incomingId = getBusinessKey();
 	}
 
-	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, mappedBy = "incomingData")
+	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "incomingData")
 	public Set<DataAttachments> getAttachmentList()
 	{
 		return attachmentList;
@@ -118,6 +128,36 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 		return uniqueId;
 	}
 
+	@ManyToOne(targetEntity = CustomerProducer.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "producerId")
+	public IProducers getProducer()
+	{
+		return producer;
+	}
+
+	@ManyToOne(targetEntity = ProducersProperty.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "propertyId")
+	public ProducersProperty getProducerProperty()
+	{
+		return producerProperty;
+	}
+
+	@Column(name = "createdDate")
+	public Timestamp getCreatedDate()
+	{
+		return createdDate;
+	}
+
+	public void setProducerProperty(ProducersProperty producerProperty)
+	{
+		this.producerProperty = producerProperty;
+	}
+
+	public void setProducer(IProducers producer)
+	{
+		this.producer = producer;
+	}
+
 	public void setUniqueId(String uniqueId)
 	{
 		this.uniqueId = uniqueId;
@@ -177,5 +217,10 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 	public void set_URN(String _URN)
 	{
 		this._URN = _URN;
+	}
+
+	public void setCreatedDate(Timestamp createdDate)
+	{
+		this.createdDate = createdDate;
 	}
 }

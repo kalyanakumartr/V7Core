@@ -6,7 +6,7 @@ import org.hbs.core.beans.MessageFormBean;
 import org.hbs.core.beans.SMSResponseBean;
 import org.hbs.core.beans.model.channel.IChannelMessages;
 import org.hbs.core.beans.model.clickatell.SMSCallBackFormBean;
-import org.hbs.core.security.resource.IPath.EReturn;
+import org.hbs.core.security.resource.IPathBase.EReturn;
 import org.hbs.core.util.CustomException;
 import org.springframework.security.core.Authentication;
 
