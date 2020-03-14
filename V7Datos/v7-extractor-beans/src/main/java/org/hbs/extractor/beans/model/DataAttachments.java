@@ -13,7 +13,7 @@ import org.hbs.core.beans.model.CommonFileUpload;
 import org.hbs.core.util.EnumInterface;
 
 @Entity
-@Table(name = "data_attachments")
+@Table(name = "resume_attachments") // Change over DB Table name
 public class DataAttachments extends CommonFileUpload
 {
 
@@ -25,7 +25,7 @@ public class DataAttachments extends CommonFileUpload
 	private static final long	serialVersionUID	= 3340835331638013651L;
 
 	protected IncomingData		incomingData;
-	protected String			_URN;										// Resume
+	protected String			dataURN;										// Resume
 	protected EDataTrace		trace				= EDataTrace.YetToTrace;
 
 	public DataAttachments()
@@ -57,15 +57,15 @@ public class DataAttachments extends CommonFileUpload
 		this.trace = trace;
 	}
 
-	@Column(name = "_URN")
-	public String get_URN()
+	@Column(name = "dataURN")
+	public String getDataURN()
 	{
-		return _URN;
+		return dataURN;
 	}
 
-	public void set_URN(String _URN)
+	public void setDataURN(String dataURN)
 	{
-		this._URN = _URN;
+		this.dataURN = dataURN;
 	}
 
 }

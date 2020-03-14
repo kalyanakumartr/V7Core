@@ -14,11 +14,14 @@ import org.hbs.core.beans.model.CommonBeanFields;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+//@Entity
+//@Table(name = "core_data")
+//@Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
 public abstract class ACoreDataBase extends CommonBeanFields implements ICoreData
 {
 	private static final long		serialVersionUID	= 5357766946700135577L;
-	protected String				_URN;
+	protected String				dataURN;
 	protected Set<DataAttachments>	attachmentList		= new LinkedHashSet<DataAttachments>(0);
 
 	public ACoreDataBase()
@@ -28,14 +31,14 @@ public abstract class ACoreDataBase extends CommonBeanFields implements ICoreDat
 
 	@Override
 	@Id
-	@Column(name = "_URN")
-	public String get_URN()
+	@Column(name = "dataURN")
+	public String getDataURN()
 	{
-		return _URN;
+		return dataURN;
 	}
 
 	@Override
-	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, mappedBy = "_URN", cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, mappedBy = "dataURN", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	public Set<DataAttachments> getAttachmentList()
 	{
@@ -43,9 +46,9 @@ public abstract class ACoreDataBase extends CommonBeanFields implements ICoreDat
 	}
 
 	@Override
-	public void set_URN(String _URN)
+	public void setDataURN(String dataURN)
 	{
-		this._URN = _URN;
+		this.dataURN = dataURN;
 	}
 
 	@Override
