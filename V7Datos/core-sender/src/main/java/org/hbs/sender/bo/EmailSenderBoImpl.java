@@ -98,10 +98,6 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 				{
 					props.put(key, configuration.getAdditionalProperties().get(key));
 				}
-				// props.put("mail.transport.protocol", "smtp");
-				// props.put("mail.smtp.auth", "true");
-				// props.put("mail.smtp.starttls.enable", "true");
-				// props.put("mail.debug", "false"); // True will enable log
 
 				return mailSender;
 			}
@@ -217,16 +213,6 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 
 	private EMessageStatus sendMimeMessage(IMessages message, JavaMailSender emailSender) throws MessagingException, IOException
 	{
-		if (CommonValidator.isNotNullNotEmpty(message.getMessageId()) && message.getMessageId() != null)
-		{
-			List<IMessages> messageList = messageDao.getByMessageId(message.getProducer().getProducerId(), message.getMessageId());
-			if (CommonValidator.isListFirstNotEmpty(messageList))
-			{
-				message.setSubject(messageList.iterator().next().getSubject());
-				message.setMessage(messageList.iterator().next().getMessage());
-			}
-		}
-
 		ConfigurationEmail configuration = (ConfigurationEmail) message.getConfiguration();
 		MimeMessage mimeMessage = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -243,7 +229,7 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 
 			if (CommonValidator.isListFirstNotEmpty(attachmentList))
 			{
-				String basePath = getResourceBasePath("ATTACHEMENT");
+				String basePath = getResourceBasePath("ATTACHMENT");
 				File file = null;
 				for (EmailAttachments attachment : attachmentList)
 				{

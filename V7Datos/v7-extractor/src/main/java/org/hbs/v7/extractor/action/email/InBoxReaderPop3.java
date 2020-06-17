@@ -10,7 +10,7 @@ public class InBoxReaderPop3 extends InBoxReaderBase
 	private static final long serialVersionUID = 4813150068221933347L;
 
 	@Override
-	public void readDataFromChannel(IConfiguration config, GenericKafkaProducer gKafkaProducer,  ExtractorBo extractorBo)
+	public void readDataFromChannel(IConfiguration config, GenericKafkaProducer gKafkaProducer, ExtractorBo extractorBo)
 	{
 
 	}

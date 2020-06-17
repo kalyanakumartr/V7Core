@@ -6,11 +6,13 @@ import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.util.EnumInterface;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public interface PasswordBo extends Serializable
 {
 	EnumInterface changePassword(PasswordFormBean password);
 
-	EnumInterface forgotPassword(UserFormBean user);
+	EnumInterface forgotPassword(UserFormBean user) throws JsonProcessingException;
 
 	/**
 	 * Should contain at least one digit Should contain at least one lower case letter Should

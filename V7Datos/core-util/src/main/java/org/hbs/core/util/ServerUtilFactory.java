@@ -10,8 +10,8 @@ import org.springframework.core.env.Environment;
 public class ServerUtilFactory implements IConstProperty
 {
 
-	private static final String DOMAIN_URL = "_DomainURL";
-	private static final String DEV = "dev";
+	private static final String			DOMAIN_URL			= "_DomainURL";
+	private static final String			DEV					= "dev";
 	private static final long			serialVersionUID	= 7653346655071987488L;
 	private static ServerUtilFactory	serverUtilFactory	= null;
 	private String						serverTZ			= null;
@@ -59,7 +59,7 @@ public class ServerUtilFactory implements IConstProperty
 	public String getDomainURL(String... requestPath)
 	{
 		String finalPath = "";
-		
+
 		for (String rPath : requestPath)
 		{
 			finalPath += rPath;

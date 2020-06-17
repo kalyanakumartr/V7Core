@@ -140,8 +140,8 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
 	{
 		return new CustomTokenEnhancer();
 	}
-	
-	//DoNOT remove this initialization
+
+	// DoNOT remove this initialization
 	@Bean
 	public ServerUtilFactory getServerUtilFactory()
 	{

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "state")
 public class State implements ICRUDBean, Comparable<State>
 {
-	private static final long serialVersionUID = -5149419121984598098L;
+	private static final long	serialVersionUID	= -5149419121984598098L;
 	protected Country			country;
 	protected String			state;
 	protected boolean			status;

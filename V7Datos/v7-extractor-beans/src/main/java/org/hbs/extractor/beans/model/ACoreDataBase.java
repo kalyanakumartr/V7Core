@@ -14,9 +14,9 @@ import org.hbs.core.beans.model.CommonBeanFields;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-//@Entity
-//@Table(name = "core_data")
-//@Inheritance(strategy = InheritanceType.JOINED)
+// @Entity
+// @Table(name = "core_data")
+// @Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
 public abstract class ACoreDataBase extends CommonBeanFields implements ICoreData
 {

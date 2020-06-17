@@ -60,7 +60,7 @@ public interface IConstProperty extends Serializable
 		YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd hh:mm:ss"), //
 		YYYY_MM_DD_HH_MM_SS_24("yyyy-MM-dd HH:mm:ss"), //
 		YYYY_MM_DD_HH_MM_SS_SSS("yyyy-MM-dd hh:mm:ss.SSS"), //
-		YYYY_MM_DD_HH_MM_SS_SSS_24("yyyy-MM-dd HH:mm:ss.SSS");
+		YYYY_MM_DD_HH_MM_SS_SSS_24("yyyy-MM-dd HH:mm:ss.SSS"), YYYY_MM_DD_HH_MM_SS_SSS_24_TZ("yyyy-MM-ddTHH:mm:ss.SSS");
 
 		String format;
 
@@ -84,6 +84,11 @@ public interface IConstProperty extends Serializable
 		public String byTimeZone(String destinationTZ, Timestamp timeStamp)
 		{
 			return byTimeZone(ServerUtilFactory.getInstance().getTimeZone(), destinationTZ, timeStamp.toString());
+		}
+
+		public String byTimeZone(Timestamp timeStamp)
+		{
+			return byTimeZone(ServerUtilFactory.getInstance().getTimeZone(), ServerUtilFactory.getInstance().getTimeZone(), timeStamp.toString());
 		}
 
 		public String byTimeZone(String sourceTZ, String destinationTZ, Timestamp timeStamp)

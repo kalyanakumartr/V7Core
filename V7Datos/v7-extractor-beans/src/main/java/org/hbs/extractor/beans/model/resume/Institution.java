@@ -97,5 +97,4 @@ public class Institution extends ProducersBase implements ICRUDBean, EBusinessKe
 	{
 		this.rating = rating;
 	}
-
 }

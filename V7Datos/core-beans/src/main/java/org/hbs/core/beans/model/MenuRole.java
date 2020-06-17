@@ -23,7 +23,7 @@ public class MenuRole implements IProducersBase, ICRUDBean
 
 	protected int				autoId;
 
-	protected Producers		producer;
+	protected Producers			producer;
 
 	protected IRoles			roles;
 

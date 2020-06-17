@@ -10,5 +10,5 @@ public interface IFormBean extends Serializable
 
 	IFormBean getStatusBeanWithMessage(String messageCode);
 
-	Map<String, String> updateObjectAsMap();
+	Map<String, Object> updateObjectAsMap();
 }

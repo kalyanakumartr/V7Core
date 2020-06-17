@@ -12,6 +12,8 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -24,6 +26,7 @@ import javax.persistence.Transient;
 
 import org.hbs.core.beans.model.IUsersBase.EUserType;
 import org.hbs.core.security.resource.IPath.EAuth;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EBusinessKey;
 import org.hbs.core.util.EnumInterface;
@@ -53,7 +56,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 	private String						producerId;
 	private String						producerName;
 	private EUserType					producerType			= EUserType.Producer;
-	private Set<IProducersProperty>		propertyList			= new LinkedHashSet<IProducersProperty>(0);
+	private Set<ProducersProperty>		propertyList			= new LinkedHashSet<ProducersProperty>(0);
 	private Timestamp					pwdExpiryDays;
 	private IUsers						users;
 	private boolean						primary					= true;
@@ -89,6 +92,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 		this.primary = primary;
 	}
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "producerType", insertable = false, updatable = false)
 	public EUserType getProducerType()
 	{
@@ -156,6 +160,17 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 
 	@Transient
 	@JsonIgnore
+	public IProducersProperty getProperty(EnumInterface media, EMediaMode mediaMode, String key)
+	{
+		List<IProducersProperty> iPPList = propertyList.stream().filter(p -> (p.getMedia() == media && p.getMediaMode() == mediaMode && p.getProperty().equals(key))).collect(Collectors.toList());
+
+		if (CommonValidator.isListFirstNotEmpty(iPPList))
+			return iPPList.iterator().next();
+		return null;
+	}
+
+	@Transient
+	@JsonIgnore
 	public IProducersProperty getProperty(EnumInterface media, String key)
 	{
 		List<IProducersProperty> iPPList = propertyList.stream().filter(p -> (p.getMedia() == media && p.getProperty().equals(key))).collect(Collectors.toList());
@@ -172,10 +187,11 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 		return propertyList.stream().filter(p -> (p.getMedia() == media)).collect(Collectors.toList());
 	}
 
-	@OneToMany(targetEntity = ProducersProperty.class, fetch = FetchType.LAZY, mappedBy = "producer")
+	@OneToMany(targetEntity = ProducersProperty.class, fetch = FetchType.EAGER, mappedBy = "producer")
 	@Fetch(FetchMode.JOIN)
+	// @JsonDeserialize(as = LinkedHashSet.class)
 	@JsonIgnore
-	public Set<IProducersProperty> getPropertyList()
+	public Set<ProducersProperty> getPropertyList()
 	{
 		return propertyList;
 	}
@@ -226,7 +242,7 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 		this.producerName = producerName;
 	}
 
-	public void setPropertyList(Set<IProducersProperty> propertyList)
+	public void setPropertyList(Set<ProducersProperty> propertyList)
 	{
 		this.propertyList = propertyList;
 	}
@@ -265,6 +281,22 @@ public class Producers extends CommonDateAndStatusFields implements IProducers, 
 	{
 		this.byUser.modifiedUser = EAuth.User.getUser(auth);
 		this.modifiedDate = new Timestamp(System.currentTimeMillis());
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		if (this.byUser.createdUser != null && this.byUser.createdUser.getCountry() != null && this.byUser.modifiedUser == null)
+		{
+			return this.byUser.createdUser.getCountry().getCountry();
+		}
+		else if (this.byUser.modifiedUser.getCountry() != null)
+		{
+			return this.byUser.modifiedUser.getCountry().getCountry();
+		}
+		return null;
 	}
 
 }

@@ -9,7 +9,7 @@ import org.hbs.core.util.ICRUDBean;
 import org.hbs.core.util.IConstProperty;
 
 @MappedSuperclass
-public abstract class CommonBeanFields extends CommonDateAndStatusFields implements ICommonBeanFields, IConstProperty, ICRUDBean
+public abstract class CommonBeanFields extends ProducersBase implements ICommonBeanFields, IConstProperty, ICRUDBean
 {
 	private static final long	serialVersionUID	= -4784531727752023870L;
 

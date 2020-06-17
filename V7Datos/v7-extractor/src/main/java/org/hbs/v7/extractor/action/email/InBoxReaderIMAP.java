@@ -23,23 +23,22 @@ import org.springframework.stereotype.Component;
 
 import com.sun.mail.imap.IMAPFolder;
 
-
 @Component
 public class InBoxReaderIMAP extends InBoxReaderBase
 {
 
 	private static final long	serialVersionUID	= 2521396768665593925L;
-	private final Logger		logger				=  LoggerFactory.getLogger(InBoxReaderIMAP.class);
+	private final Logger		logger				= LoggerFactory.getLogger(InBoxReaderIMAP.class);
 
 	@Override
 	public void readDataFromChannel(IConfiguration iConfig, GenericKafkaProducer gKafkaProducer, ExtractorBo extractorBo)
 	{
-		
-		logger.info("InSide IMAP");
+
+		logger.info("Inside IMAP");
 		if (CommonValidator.isNotNullNotEmpty(iConfig))
 		{
 			ConfigurationEmail config = (ConfigurationEmail) iConfig;
-			this.gKafkaProducer=gKafkaProducer;
+			this.gKafkaProducer = gKafkaProducer;
 			Store store = null;
 			IMAPFolder imapFolder = null;
 			try
@@ -56,35 +55,37 @@ public class InBoxReaderIMAP extends InBoxReaderBase
 
 				SearchTerm searchTerm = createBaseSearchTerm();
 				ReceivedDateTerm minDateTerm, maxDateTerm = null;
-				
+
 				endTime = new Date();
-				long lastDateTime =  extractorBo.getLastEmailSentDate(config.getProducerId());
-				startTime =initDateTime = (lastDateTime == 0) ? imapFolder.getMessage(1).getReceivedDate() : new Date(lastDateTime);
-				if (config.reverseStart) {
+				long lastDateTime = extractorBo.getLastEmailSentDate(config.getProducerId());
+				startTime = initDateTime = (lastDateTime == 0) ? imapFolder.getMessage(1).getReceivedDate() : new Date(lastDateTime);
+				if (config.reverseStart)
+				{
 					maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, endTime);
 					minDateTerm = new ReceivedDateTerm(ComparisonTerm.GE, startTime);
 					pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
 				}
 				else if (config.reverseStart)
 				{
-					
+
 					while ( config.startDate.isReached(initDateTime, endTime) )
 					{
 						maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, startTime); // Going_Backward...
 
-						//endTime = config.readEvery.getReversedDate(startTime); // Reverse_Going_By_5_minutes_Default
+						// endTime = config.readEvery.getReversedDate(startTime); //
+						// Reverse_Going_By_5_minutes_Default
 
 						minDateTerm = new ReceivedDateTerm(ComparisonTerm.GE, endTime);
 
- 						pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
+						pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
 
-						//startTime = endTime;
+						// startTime = endTime;
 					}
 				}
 				else
 				{
 					// Get the Last Received Mail Date from DB
-					 lastDateTime = 0l;// extractorBo.getLastEmailSentDate(config.getFromId());
+					lastDateTime = 0l;// extractorBo.getLastEmailSentDate(config.getFromId());
 					startTime = (lastDateTime == 0) ? new Date(System.currentTimeMillis() - config.readEvery.getDateTime()) : new Date(lastDateTime);
 					endTime = new Date();
 
@@ -146,7 +147,7 @@ public class InBoxReaderIMAP extends InBoxReaderBase
 	{
 		searchTerm = new AndTerm(searchTerm, minDateTerm);
 		searchTerm = new AndTerm(searchTerm, maxDateTerm);
- 
+
 		pushToQueue(producerId, imapFolder, (Message[]) imapFolder.search(searchTerm));
 	}
 

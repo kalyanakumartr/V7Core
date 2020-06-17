@@ -14,6 +14,7 @@ import org.hbs.core.beans.model.State;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.dao.CityDao;
 import org.hbs.core.dao.CountryDao;
+import org.hbs.core.dao.ProducerDao;
 import org.hbs.core.dao.StateDao;
 import org.hbs.core.dao.UserDao;
 import org.hbs.core.security.resource.IPath;
@@ -28,6 +29,9 @@ public abstract class UserBoComboBoxImpl implements UserBo, IErrorAdmin, IPath
 	private static final long	serialVersionUID	= 1160466715298198052L;
 
 	// private final Logger logger = LoggerFactory.getLogger(UserBoComboBoxImpl.class);
+
+	@Autowired
+	protected ProducerDao		producerDao;
 
 	@Autowired
 	protected UserDao			userDao;

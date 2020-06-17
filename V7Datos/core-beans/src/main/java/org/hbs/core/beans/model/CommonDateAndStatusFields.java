@@ -6,7 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.hbs.core.beans.TimestampDeserializer;
+import org.hbs.core.beans.TimestampSerializer;
 import org.hbs.core.util.IConstProperty;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @MappedSuperclass
 public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusFields, IConstProperty
@@ -37,12 +42,16 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 	}
 
 	@Column(name = "createdDate")
+	@JsonSerialize(using = TimestampSerializer.class)
+	@JsonDeserialize(using = TimestampDeserializer.class)
 	public Timestamp getCreatedDate()
 	{
 		return createdDate;
 	}
 
 	@Column(name = "modifiedDate")
+	@JsonSerialize(using = TimestampSerializer.class)
+	@JsonDeserialize(using = TimestampDeserializer.class)
 	public Timestamp getModifiedDate()
 	{
 		return modifiedDate;
@@ -59,9 +68,12 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 		this.createdDate = createdDate;
 	}
 
-	public void setCreatedDateByTimeZone(String countryId)
+	@Transient
+	public void createdDateByTimeZone()
 	{
-		this.createdDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(countryId, createdDate);
+		if (this.getCountryTimeZone() != null)
+			this.createdDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(this.getCountryTimeZone(), createdDate);
+
 	}
 
 	public void setModifiedDate(Timestamp modifiedDate)
@@ -69,9 +81,11 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 		this.modifiedDate = modifiedDate;
 	}
 
-	public void setModifiedDateByTimeZone(String countryId)
+	@Transient
+	public void modifiedDateByTimeZone()
 	{
-		this.modifiedDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(countryId, modifiedDate);
+		if (this.getCountryTimeZone() != null)
+			this.modifiedDateByTimeZone = EDate.DD_MMM_YYYY_HH_MM_SS_AM_PM.byTimeZone(this.getCountryTimeZone(), modifiedDate);
 	}
 
 	public void setStatus(Boolean status)
@@ -91,4 +105,13 @@ public abstract class CommonDateAndStatusFields implements ICommonDateAndStatusF
 		return modifiedDateByTimeZone;
 	}
 
+	public void setCreatedDateByTimeZone(String createdDateByTimeZone)
+	{
+		this.createdDateByTimeZone = createdDateByTimeZone;
+	}
+
+	public void setModifiedDateByTimeZone(String modifiedDateByTimeZone)
+	{
+		this.modifiedDateByTimeZone = modifiedDateByTimeZone;
+	}
 }

@@ -18,7 +18,7 @@ import org.hbs.core.beans.model.ProducersAddress;
 import org.hbs.core.util.EnumInterface;
 
 @Entity(name = "CustomerProducer")
-//@DiscriminatorValue("RezoomProducer")
+// @DiscriminatorValue("RezoomProducer")
 public class CustomerProducer extends Producers
 {
 	public enum EProducerStatus implements EnumInterface

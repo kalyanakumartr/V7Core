@@ -62,9 +62,9 @@ public class IncomingDataByEmail implements IPath
 		try
 		{
 			KafkaEmailReferenceBean kafkaEmailRef = new Gson().fromJson(uidJsonStr, KafkaEmailReferenceBean.class);
-			
-			logger.info(kafkaEmailRef.messageNumber+" -    -    -   "+kafkaEmailRef.sentDate);
-			
+
+			logger.info(kafkaEmailRef.messageNumber + " -    -    -   " + kafkaEmailRef.sentDate);
+
 			ConfigurationEmail config = kafkaEmailRef.config;
 			Store store = EmailConnectionHandler.getInstance().getStore(config.getProducerId() + config.getFromId());
 			if (store == null)
@@ -95,18 +95,19 @@ public class IncomingDataByEmail implements IPath
 					{
 						break;
 					}
-				} 
+				}
 				EmailConnectionHandler.getInstance().putStore(config.getProducerId() + config.getFromId(), store);
 			}
-			
-			try {
+
+			try
+			{
 				imapFolder = (IMAPFolder) store.getFolder("inbox");
 
 				// Open the Folder.
 				if (!imapFolder.isOpen())
 					imapFolder.open(Folder.READ_ONLY);
 
-				//Date initDateTime = null, startTime = null, endTime = null;
+				// Date initDateTime = null, startTime = null, endTime = null;
 
 				SearchTerm searchTerm = new SearchTerm() {
 
@@ -115,9 +116,10 @@ public class IncomingDataByEmail implements IPath
 					{
 						try
 						{
-							logger.info(message.getMessageNumber()+" - "+ kafkaEmailRef.messageNumber+"   -  "+kafkaEmailRef.sentDate+"  -   "+message.getSentDate());
-							if(message.getMessageNumber()== kafkaEmailRef.messageNumber && message.getSentDate().equals(kafkaEmailRef.sentDate)) {
-								logger.info(message.getMessageNumber()+"");
+							logger.info(message.getMessageNumber() + " - " + kafkaEmailRef.messageNumber + "   -  " + kafkaEmailRef.sentDate + "  -   " + message.getSentDate());
+							if (message.getMessageNumber() == kafkaEmailRef.messageNumber && message.getSentDate().equals(kafkaEmailRef.sentDate))
+							{
+								logger.info(message.getMessageNumber() + "");
 								return true;
 							}
 						}
@@ -129,18 +131,19 @@ public class IncomingDataByEmail implements IPath
 						return false;
 					}
 				};
-				//Message[] messages = (Message[]) imapFolder.search(searchTerm);
-				Message message= imapFolder.getMessage(kafkaEmailRef.messageNumber);
-				logger.info(message.getMessageNumber()+" -S- "+ kafkaEmailRef.messageNumber+"   -  "+kafkaEmailRef.sentDate+"  -   "+message.getSentDate());
-				
-				UIDMimeMessage uidMessage =new UIDMimeMessage(config.getProducerId(),imapFolder,message);
-				SimpleDateFormat DATE_FORMAT  = new SimpleDateFormat("yyyy-MM-dd");
-				SimpleDateFormat TIME_FORMAT  = new SimpleDateFormat("HHmmss");
-				
-				uidMessage.setSubFolderPath(config.getProducerId()+"\\"+config.getProducerId()+"\\"+DATE_FORMAT.format(message.getSentDate())+"\\"+TIME_FORMAT.format(message.getSentDate())+"\\");
-				
+				// Message[] messages = (Message[]) imapFolder.search(searchTerm);
+				Message message = imapFolder.getMessage(kafkaEmailRef.messageNumber);
+				logger.info(message.getMessageNumber() + " -S- " + kafkaEmailRef.messageNumber + "   -  " + kafkaEmailRef.sentDate + "  -   " + message.getSentDate());
+
+				UIDMimeMessage uidMessage = new UIDMimeMessage(config.getProducerId(), imapFolder, message);
+				SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HHmmss");
+
+				uidMessage.setSubFolderPath(
+						config.getProducerId() + "\\" + config.getProducerId() + "\\" + DATE_FORMAT.format(message.getSentDate()) + "\\" + TIME_FORMAT.format(message.getSentDate()) + "\\");
+
 				IncomingData incomingData = processMultiPart(uidMessage);
-				
+
 				if (CommonValidator.isNotNullNotEmpty(incomingData))
 				{
 					incomingData.setCandidateEmail(message.getFrom()[0].toString());
@@ -148,18 +151,18 @@ public class IncomingDataByEmail implements IPath
 					incomingData.setIncomingStatus(EIncomingStatus.New);
 					incomingData.setSubject(message.getSubject());
 					incomingData.setSentTime(message.getSentDate().getTime());
-					incomingData.setUniqueId(imapFolder.getUID(message)+"");
+					incomingData.setUniqueId(imapFolder.getUID(message) + "");
 					incomingData.setReaderInstance(EMedia.Email.toString());
 					incomingData.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-					//incomingData.setProducerProperty(kafkaEmailRef.config.getProducerId());
+					// incomingData.setProducerProperty(kafkaEmailRef.config.getProducerId());
 					IProducers producer = new Producers();
 					producer.setProducerId(config.getProducerId());
 					incomingData.setProducer(producer);
 					incomingDao.save(incomingData);
-					
+
 				}
 				logger.info(incomingData.getAttachmentList().toString());
-				
+
 			}
 			catch (FolderClosedException excep)
 			{
@@ -195,50 +198,38 @@ public class IncomingDataByEmail implements IPath
 				}
 			}
 
-			
-			/*if (IMAPMessage.class.isInstance(uidMessag
-			 * e.message))
+			/*
+			 * if (IMAPMessage.class.isInstance(uidMessag e.message))
 			 */
-			//{
-				/*
-				 * If the mail is auto generated mail, then the message.getSentDate() should be
-				 * null. So we use the message.getReceivedDate() to get the sentDate
-				 */
-				/*Date sentDate = uidMessage.message.getSentDate() == null ? uidMessage.message.getReceivedDate() : uidMessage.message.getSentDate();
-
-				if (uidMessage.message.getContentType() != null)
-				{
-					Address[] froms = uidMessage.message.getFrom();
-
-					String candidateEmailId = null;
-					DataExtractor.getInstance(uidMessage.producerId).dataFramer(RegExFor.Email, Arrays.toString(froms));
-
-					if (CommonValidator.isNullOrEmpty(candidateEmailId))
-					{
-						candidateEmailId = froms == null ? "" : ((InternetAddress) froms[0]).getAddress();
-					}
-
-					if (CommonValidator.isNotNullNotEmpty(candidateEmailId) && CommonValidator.isNotNullNotEmpty(uidMessage.message.getSubject()))
-					{
-						IncomingData incomingData = processMultiPart(uidMessage);
-
-						if (CommonValidator.isNotNullNotEmpty(incomingData))
-						{
-							incomingData.setCandidateEmail(candidateEmailId);
-							incomingData.setMedia(EMedia.Email);
-							incomingData.setIncomingStatus(EIncomingStatus.New);
-							incomingData.setSubject(uidMessage.message.getSubject());
-							incomingData.setSentTime(sentDate.getTime());
-							incomingData.setUniqueId(uidMessage.uniqueId);
-							incomingDao.save(incomingData);
-						}
-					}
-				}
-			}*/
+			// {
+			/*
+			 * If the mail is auto generated mail, then the message.getSentDate() should be null. So
+			 * we use the message.getReceivedDate() to get the sentDate
+			 */
+			/*
+			 * Date sentDate = uidMessage.message.getSentDate() == null ?
+			 * uidMessage.message.getReceivedDate() : uidMessage.message.getSentDate(); if
+			 * (uidMessage.message.getContentType() != null) { Address[] froms =
+			 * uidMessage.message.getFrom(); String candidateEmailId = null;
+			 * DataExtractor.getInstance(uidMessage.producerId).dataFramer(RegExFor.Email,
+			 * Arrays.toString(froms)); if (CommonValidator.isNullOrEmpty(candidateEmailId)) {
+			 * candidateEmailId = froms == null ? "" : ((InternetAddress) froms[0]).getAddress(); }
+			 * if (CommonValidator.isNotNullNotEmpty(candidateEmailId) &&
+			 * CommonValidator.isNotNullNotEmpty(uidMessage.message.getSubject())) { IncomingData
+			 * incomingData = processMultiPart(uidMessage); if
+			 * (CommonValidator.isNotNullNotEmpty(incomingData)) {
+			 * incomingData.setCandidateEmail(candidateEmailId);
+			 * incomingData.setMedia(EMedia.Email);
+			 * incomingData.setIncomingStatus(EIncomingStatus.New);
+			 * incomingData.setSubject(uidMessage.message.getSubject());
+			 * incomingData.setSentTime(sentDate.getTime());
+			 * incomingData.setUniqueId(uidMessage.uniqueId); incomingDao.save(incomingData); } } }
+			 * }
+			 */
 		}
 		finally
 		{
-			//uidMessage.message = null;
+			// uidMessage.message = null;
 		}
 	}
 
@@ -293,7 +284,7 @@ public class IncomingDataByEmail implements IPath
 				}
 
 			}
-			
+
 			incomingData.setAttachmentList(attachmentsSet);
 			return incomingData;
 		}

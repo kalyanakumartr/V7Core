@@ -12,6 +12,8 @@ import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.LabelValueBean;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public interface UserBo extends Serializable
 {
 	EnumInterface blockUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException;
@@ -30,7 +32,7 @@ public interface UserBo extends Serializable
 
 	Collection<LabelValueBean> getUsersBySearchParam(Authentication auth, UserFormBean gmfBean);
 
-	EnumInterface resendActivationLink(Authentication auth, UserFormBean userFormBean) throws InvalidKeyException;
+	EnumInterface resendActivationLink(Authentication auth, UserFormBean userFormBean) throws InvalidKeyException, JsonProcessingException;
 
 	EnumInterface saveUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException, InvalidKeyException;
 

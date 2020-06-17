@@ -176,5 +176,4 @@ public class UserActivity extends CommonBeanFields implements IUserActivity
 	{
 		this.groupName = groupName;
 	}
-
 }

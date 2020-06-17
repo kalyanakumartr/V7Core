@@ -121,27 +121,25 @@ public interface IPath extends IPathBase
 
 			return false;
 		}
-		
+
 		public boolean verifyProducer(Authentication auth, String producerId)
 		{
-			if(isSuperAdmin(auth))
+			if (isSuperAdmin(auth))
 				return true;
 			return CommonValidator.isEqual(getProducerId(auth), producerId);
 		}
 
 	}
 
-	
-
 	public enum ETemplate implements EnumInterface
 	{
-		User_Create_Admin(100), //
-		User_Create_Employee(110), //
+		Create_User_Admin(100), //
+		Create_User_Employee(110), //
 		User_Token(120), //
 		User_Password(130), //
 		User_Reset_Password(140), //
 		User_Blocked_Admin(150), //
-		SMS_Create_Employee(200), //
+		Create_User_Employee_SMS(200), //
 		SMS_OTP(210), //
 		WhatsApp_Create_Employee(300), //
 		Test_Email_Connection(900), //
@@ -158,18 +156,6 @@ public interface IPath extends IPathBase
 		public long getId()
 		{
 			return id;
-		}
-	}
-
-	public enum ETopic implements EnumInterface
-	{
-		Internal("InternalTopic"), External("ExternalTopic"), Attachment("AttachmentTopic");
-
-		String topic;
-
-		ETopic(String topic)
-		{
-			this.topic = topic;
 		}
 	}
 

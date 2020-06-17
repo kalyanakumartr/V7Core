@@ -49,7 +49,7 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 	{
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
-		if (CommonValidator.isEqual(user.getUserId(),EUsers.SuperAdmin))
+		if (CommonValidator.isEqual(user.getUserId(), EUsers.SuperAdmin))
 			authorities.add(new SimpleGrantedAuthority(ERole.SuperAdminRole.name().toUpperCase()));
 		else
 		{

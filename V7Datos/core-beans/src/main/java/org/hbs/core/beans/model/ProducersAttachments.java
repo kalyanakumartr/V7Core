@@ -6,6 +6,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "producersattachments")
@@ -17,7 +20,7 @@ public class ProducersAttachments extends CommonFileUpload implements IProducers
 
 	protected String			documentStatus;
 
-	protected Producers		producer;
+	protected Producers			producer;
 
 	public ProducersAttachments()
 	{
@@ -67,4 +70,11 @@ public class ProducersAttachments extends CommonFileUpload implements IProducers
 		this.producer = producer;
 	}
 
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		return null;
+	}
 }

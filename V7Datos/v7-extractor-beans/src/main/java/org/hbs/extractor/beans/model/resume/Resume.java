@@ -18,10 +18,10 @@ import org.hbs.extractor.beans.model.ACoreDataBase;
 @Table(name = "resume")
 public class Resume extends ACoreDataBase
 {
-	private static final long			serialVersionUID	= 5049651757005693167L;
+	private static final long	serialVersionUID	= 5049651757005693167L;
 
-	protected Set<Producers>			producerList		= new LinkedHashSet<Producers>(0);
-	protected ResumeData				resumeData;
+	protected Set<Producers>	producerList		= new LinkedHashSet<Producers>(0);
+	protected ResumeData		resumeData;
 
 	public Resume()
 	{

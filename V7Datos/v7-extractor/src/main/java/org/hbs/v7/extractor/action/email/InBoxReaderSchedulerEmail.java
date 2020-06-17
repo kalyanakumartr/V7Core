@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author AnanthMalBal
- *
  */
 @Component
 public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
@@ -60,7 +59,7 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 								try
 								{
 									System.out.println("Started By " + config.getFromId() + " at " + new Date());
-									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel(config,gKafkaProducer,extractorBo);
+									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel(config, gKafkaProducer, extractorBo);
 								}
 								catch (Exception e)
 								{
@@ -78,10 +77,13 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 					while ( !executor.isTerminated() )
 						;
 					System.out.println("Finished all threads");
-					
-					try {
+
+					try
+					{
 						Thread.sleep(10000);
-					} catch (InterruptedException e) {
+					}
+					catch (InterruptedException e)
+					{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}

@@ -18,6 +18,7 @@ import org.hbs.core.security.resource.IPathBase.EMediaType;
 import org.hbs.core.util.EBusinessKey;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.Gson;
 
 @Entity(name = "ProducersProperty")
@@ -35,7 +36,6 @@ public class ProducersProperty extends ProducersBase implements IProducersProper
 	private EMediaMode				mediaMode;
 	private EMediaType				mediaType			= EMediaType.Primary;
 	private String					property;
-	private boolean					status				= true;
 	private String					value;
 
 	public ProducersProperty()
@@ -75,12 +75,14 @@ public class ProducersProperty extends ProducersBase implements IProducersProper
 
 	@Override
 	@Transient
+	@JsonIgnore
 	public String getBusinessKey(String... combination)
 	{
 		return EKey.Auto();
 	}
 
 	@Embedded
+	@JsonIgnore
 	public CreatedModifiedUsers getByUser()
 	{
 		return byUser;
@@ -135,6 +137,7 @@ public class ProducersProperty extends ProducersBase implements IProducersProper
 
 	@SuppressWarnings("unchecked")
 	@Transient
+	@JsonIgnore
 	public IConfiguration getPropertyAsConfiguration() throws ClassNotFoundException
 	{
 		Class<IConfiguration> clazz = (Class<IConfiguration>) Class.forName(property);
@@ -214,5 +217,21 @@ public class ProducersProperty extends ProducersBase implements IProducersProper
 	public void setValue(String value)
 	{
 		this.value = value;
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		if (this.byUser.createdUser != null && this.byUser.createdUser.getCountry() != null && this.byUser.modifiedUser == null)
+		{
+			return this.byUser.createdUser.getCountry().getCountry();
+		}
+		else if (this.byUser.modifiedUser.getCountry() != null)
+		{
+			return this.byUser.modifiedUser.getCountry().getCountry();
+		}
+		return null;
 	}
 }

@@ -71,8 +71,8 @@ public abstract class OAuth2ResourceServerConfigBase extends ResourceServerConfi
 		return converter;
 
 	}
-	
-	//DoNOT remove this initialization
+
+	// DoNOT remove this initialization
 	@Bean
 	public ServerUtilFactory getServerUtilFactory()
 	{

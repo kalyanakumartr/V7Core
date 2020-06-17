@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProducerDao extends JpaRepository<Producers, String>
 {
-	public Producers findByProducerId(String producerId);
+	@Query("Select P From Producers P where P.status = true And P.producerId = :producerId")
+	public Producers findByProducerId(@Param("producerId") String producerId);
 
 	public int countByProducerName(String producerName);
 

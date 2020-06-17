@@ -82,4 +82,12 @@ public class Users extends CommonUsers
 		this.modifiedDate = new Timestamp(System.currentTimeMillis());
 	}
 
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		return this.byUser.getCountryId();
+	}
+
 }

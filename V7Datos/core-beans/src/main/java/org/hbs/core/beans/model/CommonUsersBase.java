@@ -110,7 +110,7 @@ public abstract class CommonUsersBase extends UsersBase implements IUsers
 
 	@OneToMany(targetEntity = UsersMedia.class, fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
-	@JsonIgnore
+	// @JsonIgnore
 	@JsonDeserialize(as = LinkedHashSet.class)
 	@JsonManagedReference
 	public Set<UsersMedia> getMediaList()

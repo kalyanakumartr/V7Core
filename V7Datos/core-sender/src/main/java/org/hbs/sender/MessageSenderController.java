@@ -57,7 +57,7 @@ public class MessageSenderController implements IMessageSenderController
 	{
 		try
 		{
-			V7Messages message = new V7Messages((EAuth.User.getProducerId(auth) == EUsers.SuperAdmin.name()) ? ETemplate.User_Create_Admin : ETemplate.User_Create_Employee);
+			V7Messages message = new V7Messages((EAuth.User.getProducerId(auth) == EUsers.SuperAdmin.name()) ? ETemplate.Create_User_Admin : ETemplate.Create_User_Employee);
 			// message.setEmailId(userFormBean.user.getEmailId());
 			// message.putFormInDataMap(userFormBean);
 

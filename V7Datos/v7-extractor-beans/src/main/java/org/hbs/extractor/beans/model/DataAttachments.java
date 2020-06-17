@@ -25,7 +25,7 @@ public class DataAttachments extends CommonFileUpload
 	private static final long	serialVersionUID	= 3340835331638013651L;
 
 	protected IncomingData		incomingData;
-	protected String			dataURN;										// Resume
+	protected String			dataURN;									// Resume
 	protected EDataTrace		trace				= EDataTrace.YetToTrace;
 
 	public DataAttachments()
@@ -66,6 +66,12 @@ public class DataAttachments extends CommonFileUpload
 	public void setDataURN(String dataURN)
 	{
 		this.dataURN = dataURN;
+	}
+
+	@Override
+	public String getCountryTimeZone()
+	{
+		return null;
 	}
 
 }

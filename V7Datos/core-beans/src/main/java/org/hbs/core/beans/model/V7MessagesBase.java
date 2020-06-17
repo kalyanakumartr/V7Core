@@ -8,31 +8,40 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.hbs.core.beans.model.channel.ConfigurationEmail;
+import org.hbs.core.beans.model.channel.ConfigurationSMS;
+import org.hbs.core.beans.model.channel.ConfigurationWeb;
+import org.hbs.core.beans.model.channel.ConfigurationWhatsApp;
 import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.hbs.core.util.EnumInterface;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
-public abstract class V7MessagesBase extends ProducersBase implements IMessages
+public abstract class V7MessagesBase extends CommonDateAndStatusFields implements IMessages
 {
 
 	private static final long		serialVersionUID	= 7502995821299931151L;
 	protected IConfiguration		configuration;
 	protected Map<String, Object>	dataMap				= new LinkedHashMap<String, Object>();
 	protected String				dataMapTemplateName;
-	protected String				messageId;
-	protected String				message				= null;
-	protected String				messageName;
-	protected String				subject				= "";
 	protected EMedia				media;
+	protected String				message				= null;
+	protected String				messageId;
+	protected String				messageName;
+	protected Producers				producer;
 	protected String[]				recipients;
+	protected String				subject				= "";
 	protected boolean				textHTML			= true;
 
 	public V7MessagesBase()
@@ -40,16 +49,22 @@ public abstract class V7MessagesBase extends ProducersBase implements IMessages
 		super();
 	}
 
-	@JsonIgnore
 	@Transient
-	public String[] getRecipients()
+	public void generateConfigurationFromProducerProperty(EMediaMode mediaMode) throws ClassNotFoundException
 	{
-		return recipients;
-	}
+		String property = "";
+		if (media == EMedia.Email)
+			property = ConfigurationEmail.class.getCanonicalName();
+		else if (media == EMedia.SMS)
+			property = ConfigurationSMS.class.getCanonicalName();
+		else if (media == EMedia.Web)
+			property = ConfigurationWeb.class.getCanonicalName();
+		else if (media == EMedia.WhatsApp)
+			property = ConfigurationWhatsApp.class.getCanonicalName();
 
-	public void setRecipients(String... recipients)
-	{
-		this.recipients = recipients;
+		this.configuration = producer.getProperty(media, mediaMode, property).getPropertyAsConfiguration();
+		this.configuration.setProducerId(producer.getProducerId());
+
 	}
 
 	@Transient
@@ -101,20 +116,23 @@ public abstract class V7MessagesBase extends ProducersBase implements IMessages
 	}
 
 	@Transient
+	public IConfiguration getConfiguration()
+	{
+		return configuration;
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		return null;
+	}
+
+	@Transient
 	public Map<String, Object> getDataMap()
 	{
 		return dataMap;
-	}
-
-	@Column(name = "textHTML")
-	public boolean isTextHTML()
-	{
-		return textHTML;
-	}
-
-	public void setTextHTML(boolean textHTML)
-	{
-		this.textHTML = textHTML;
 	}
 
 	@Column(name = "dataMapTemplateName")
@@ -123,16 +141,11 @@ public abstract class V7MessagesBase extends ProducersBase implements IMessages
 		return dataMapTemplateName;
 	}
 
-	@Id
-	@Column(name = "messageId")
-	public String getMessageId()
+	@Enumerated(EnumType.STRING)
+	@Column(name = "media")
+	public EMedia getMedia()
 	{
-		return messageId;
-	}
-
-	public void setMessageId(String messageId)
-	{
-		this.messageId = messageId;
+		return media;
 	}
 
 	@Override
@@ -142,23 +155,38 @@ public abstract class V7MessagesBase extends ProducersBase implements IMessages
 		return message;
 	}
 
+	@Id
+	@Column(name = "messageId")
+	public String getMessageId()
+	{
+		return messageId;
+	}
+
 	@Column(name = "messageName")
 	public String getMessageName()
 	{
 		return messageName;
 	}
 
+	@ManyToOne(targetEntity = Producers.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "producerId")
+	@JsonIgnore
+	public Producers getProducer()
+	{
+		return producer;
+	}
+
+	@JsonIgnore
+	@Transient
+	public String[] getRecipients()
+	{
+		return recipients;
+	}
+
 	@Column(name = "subject")
 	public String getSubject()
 	{
 		return subject;
-	}
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "media")
-	public EMedia getMedia()
-	{
-		return media;
 	}
 
 	@Transient
@@ -182,6 +210,17 @@ public abstract class V7MessagesBase extends ProducersBase implements IMessages
 		};
 	}
 
+	@Column(name = "textHTML")
+	public boolean isTextHTML()
+	{
+		return textHTML;
+	}
+
+	public void setConfiguration(IConfiguration configuration)
+	{
+		this.configuration = configuration;
+	}
+
 	public void setDataMap(Map<String, Object> dataMap)
 	{
 		this.dataMap = dataMap;
@@ -193,9 +232,20 @@ public abstract class V7MessagesBase extends ProducersBase implements IMessages
 	}
 
 	@Override
+	public void setMedia(EMedia message)
+	{
+		this.media = message;
+	}
+
+	@Override
 	public void setMessage(String message)
 	{
 		this.message = message;
+	}
+
+	public void setMessageId(String messageId)
+	{
+		this.messageId = messageId;
 	}
 
 	public void setMessageName(String messageName)
@@ -203,26 +253,25 @@ public abstract class V7MessagesBase extends ProducersBase implements IMessages
 		this.messageName = messageName;
 	}
 
+	@Override
+	public void setProducer(Producers producer)
+	{
+		this.producer = producer;
+	}
+
+	public void setRecipients(String... recipients)
+	{
+		this.recipients = recipients;
+	}
+
 	public void setSubject(String subject)
 	{
 		this.subject = subject;
 	}
 
-	@Override
-	public void setMedia(EMedia message)
+	public void setTextHTML(boolean textHTML)
 	{
-		this.media = message;
-	}
-
-	@Transient
-	public IConfiguration getConfiguration()
-	{
-		return configuration;
-	}
-
-	public void setConfiguration(IConfiguration configuration)
-	{
-		this.configuration = configuration;
+		this.textHTML = textHTML;
 	}
 
 }

@@ -5,8 +5,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hbs.core.beans.model.CommonFileUpload;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "emailattachments")
@@ -31,5 +34,13 @@ public class EmailAttachments extends CommonFileUpload
 	public void setMessage(IChannelMessages message)
 	{
 		this.message = message;
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		return null;
 	}
 }

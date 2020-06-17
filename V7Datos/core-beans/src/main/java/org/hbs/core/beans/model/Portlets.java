@@ -5,8 +5,11 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hbs.core.util.EBusinessKey;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "portlets")
@@ -97,5 +100,21 @@ public class Portlets extends CommonDateAndStatusFields implements IPortlets, EB
 	public void setPortletTemplatePath(String portletTemplatePath)
 	{
 		this.portletTemplatePath = portletTemplatePath;
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		if (this.byUser.createdUser != null && this.byUser.createdUser.getCountry() != null && this.byUser.modifiedUser == null)
+		{
+			return this.byUser.createdUser.getCountry().getCountry();
+		}
+		else if (this.byUser.modifiedUser.getCountry() != null)
+		{
+			return this.byUser.modifiedUser.getCountry().getCountry();
+		}
+		return null;
 	}
 }

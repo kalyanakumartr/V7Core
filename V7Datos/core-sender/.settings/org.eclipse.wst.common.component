@@ -5,10 +5,10 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
-        <dependent-module archiveName="core-beans-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/core-beans/core-beans">
+        <dependent-module archiveName="core-util-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/core-util/core-util">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="core-util-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/core-util/core-util">
+        <dependent-module archiveName="core-beans-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/core-beans/core-beans">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="core-sender"/>

@@ -29,7 +29,6 @@ public class City implements ICRUDBean, Comparable<City>
 		super();
 	}
 
-	
 	@Id
 	@Column(name = "city")
 	public String getCity()

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.hbs.core.util.EBusinessKey;
 import org.hbs.core.util.EnumInterface;
 
@@ -34,6 +35,8 @@ public interface IMessages extends IProducersBase, EBusinessKey
 		Abort, Failed, InComplete, Pending, Processing, Ready, Retry, Send, Error, Completed;
 
 	}
+
+	void generateConfigurationFromProducerProperty(EMediaMode mediaMode) throws ClassNotFoundException;
 
 	String generateVTLMessage() throws IOException;
 

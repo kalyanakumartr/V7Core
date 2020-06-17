@@ -7,7 +7,7 @@ public interface IOAuth2UserDetails extends UserDetails
 	public String getEmployeeId();
 
 	public String getFullName();
-	
+
 	public String getParentProducerId();
 
 	public String getParentProducerName();
@@ -17,7 +17,7 @@ public interface IOAuth2UserDetails extends UserDetails
 	public String getProducerName();
 
 	public void setEmployeeId(String employeeId);
-	
+
 	public void setProducerId(String producerId);
 
 	public void setParentProducerId(String parentProducerId);

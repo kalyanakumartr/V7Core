@@ -5,9 +5,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hbs.core.beans.model.IUsersBase.EResource;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "usersattachments")
@@ -44,5 +47,21 @@ public class UsersAttachments extends CommonFileUpload implements IUsersAttachme
 	public void setUsers(IUsers users)
 	{
 		this.users = users;
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		if (this.users.getByUser().createdUser != null && this.users.getByUser().createdUser.getCountry() != null && this.users.getByUser().modifiedUser == null)
+		{
+			return this.users.getByUser().createdUser.getCountry().getCountry();
+		}
+		else if (this.users.getByUser().modifiedUser.getCountry() != null)
+		{
+			return this.users.getByUser().modifiedUser.getCountry().getCountry();
+		}
+		return null;
 	}
 }

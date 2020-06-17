@@ -53,5 +53,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements O
 	{
 		return super.authenticationManagerBean();
 	}
-	
+
 }

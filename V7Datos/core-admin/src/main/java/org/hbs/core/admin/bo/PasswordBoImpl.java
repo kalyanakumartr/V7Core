@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @Service
 @Transactional
 public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
@@ -101,13 +103,14 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 	}
 
 	@Override
-	public EnumInterface forgotPassword(@RequestBody UserFormBean ufBean)
+	public EnumInterface forgotPassword(@RequestBody UserFormBean ufBean) throws JsonProcessingException
 	{
 		Users users = userBo.getUserByEmailOrMobileOrUserId(ufBean.emailId);
 		if (users != null)
 		{
-//			String token = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(users, EFormAction.ForgotPassword);
-//			ufBean.tokenURL = token;
+			// String token = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(users,
+			// EFormAction.ForgotPassword);
+			// ufBean.tokenURL = token;
 			ufBean.user = users;
 			userDao.save(users);
 

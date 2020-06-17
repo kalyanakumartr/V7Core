@@ -10,6 +10,8 @@ import org.hbs.core.security.resource.IPathBase.ERole;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.Masker;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @MappedSuperclass
 public abstract class CommonUsers extends CommonUsersBase
 {
@@ -70,6 +72,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Transient
+	@JsonIgnore
 	public IUsersAddress getAddressToDisplay(AddressType addressType)
 	{
 
@@ -85,6 +88,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Transient
+	@JsonIgnore
 	public IUsersMedia getMediaToDisplay(EMediaType eMediaType)
 	{
 
@@ -100,6 +104,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Override
+	@JsonIgnore
 	public String getDomainUrl(HttpServletRequest request)
 	{
 		if (CommonValidator.isNotNullNotEmpty(parentProducer, parentProducer.getDomainContext()))
@@ -111,6 +116,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Transient
+	@JsonIgnore
 	public boolean hasMenuRole(String pathVariable)
 	{
 		if (CommonValidator.isSetFirstNotEmpty(userRoleses))
@@ -132,6 +138,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Transient
+	@JsonIgnore
 	public boolean isAdmin()
 	{
 		if (CommonValidator.isSetFirstNotEmpty(userRoleses))
@@ -147,6 +154,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Transient
+	@JsonIgnore
 	public boolean isEmployee()
 	{
 		if (CommonValidator.isSetFirstNotEmpty(userRoleses))
@@ -161,6 +169,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Transient
+	@JsonIgnore
 	public boolean isSuperAdmin()
 	{
 		if (CommonValidator.isSetFirstNotEmpty(userRoleses))
@@ -175,6 +184,7 @@ public abstract class CommonUsers extends CommonUsersBase
 	}
 
 	@Transient
+	@JsonIgnore
 	public boolean isValid()
 	{
 		if (CommonValidator.isNotNullNotEmpty(userStatus))

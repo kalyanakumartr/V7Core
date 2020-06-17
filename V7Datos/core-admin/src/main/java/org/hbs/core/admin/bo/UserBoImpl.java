@@ -13,7 +13,6 @@ import org.hbs.core.beans.model.UsersMedia;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.dao.SequenceDao;
-import org.hbs.core.dao.UserDao;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory;
@@ -24,6 +23,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @Service
 @Transactional
 public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmin, IPathAdmin
@@ -33,14 +34,11 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 
 	// private final Logger logger = LoggerFactory.getLogger(UserBoImpl.class);
 
-	// @Autowired
+	@Autowired
 	GenericKafkaProducer		gKafkaProducer;
 
 	@Autowired
 	private SequenceDao			sequenceDao;
-
-	@Autowired
-	private UserDao				userDao;
 
 	@Value("${admin.update.delay.in.seconds:120}") // 2 minutes default update
 	private int					updateDelay;
@@ -83,8 +81,8 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		Users user = userDao.findById(ufBean.user.getEmployeeId()).get();
 		if (CommonValidator.isNotNullNotEmpty(user))
 		{
-			user.setCreatedDateByTimeZone(user.getCountry().getCountry());
-			user.setModifiedDateByTimeZone(user.getCountry().getCountry());
+			user.createdDateByTimeZone();
+			user.modifiedDateByTimeZone();
 		}
 		return user;
 	}
@@ -116,6 +114,12 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 			{
 				if ((System.currentTimeMillis() - user.getModifiedDate().getTime()) > (updateDelay * 1000))
 				{
+					user.setProducerId(user.getProducer().getProducerId());
+					user.setProducerName(user.getProducer().getProducerName());
+					user.setParentProducerId(user.getParentProducer().getProducerId());
+					user.setParentProducerName(user.getParentProducer().getProducerName());
+					user.createdDateByTimeZone();
+					user.modifiedDateByTimeZone();
 					ufBean.repoUser = user;
 					return true;
 				}
@@ -142,28 +146,30 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 				ufBean.user.setStatus(false);
 				ufBean.user.setUserPwdModFlag(true);
 				ufBean.user.getBusinessKey();// Initialize Primary Key
-				
-				for(UsersMedia _UM : ufBean.user.getMediaList())
+
+				for (UsersMedia _UM : ufBean.user.getMediaList())
 				{
 					_UM.setUsers(ufBean.user);
 				}
 				ufBean.user.setUserId(sequenceDao.getPrimaryKey(Users.class.getSimpleName(), ufBean.user.getProducer().getProducerId()));
-				
-				ufBean.user = userDao.save(ufBean.user);
-				
+
+				// ufBean.user = userDao.save(ufBean.user);
+
 				if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
 				{
 					try
 					{
-						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
-						// ETemplate.User_Create_Admin, ufBean);
-						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
-						// ETemplate.User_Create_Employee, ufBean);
+						gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Admin, ufBean);
+						gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Employee, ufBean);
 						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
-						// ETemplate.SMS_Create_Employee, ufBean);
+						// ETemplate.Create_User_Employee_SMS, ufBean);
 
 						ufBean.messageCode = USER_CREATED_SUCCESSFULLY;
 						return EReturn.Success;
+					}
+					catch (Exception ex)
+					{
+						ex.printStackTrace();
 					}
 					finally
 					{
@@ -239,7 +245,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	}
 
 	@Override
-	public EnumInterface resendActivationLink(Authentication auth, UserFormBean ufBean) throws InvalidKeyException//
+	public EnumInterface resendActivationLink(Authentication auth, UserFormBean ufBean) throws InvalidKeyException, JsonProcessingException
 	{
 
 		try
@@ -247,24 +253,30 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 			if (isRecentlyUpdated(ufBean))
 			{
 				ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL(ESecurity.Token.generate(ufBean.repoUser, EFormAction.Verify));
-				ufBean.repoUser.modifiedUserInfo(auth);
+				// ufBean.repoUser.modifiedUserInfo(auth);
 				ufBean.repoUser.setStatus(false);
 				userDao.save(ufBean.repoUser);
-				if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
+				if (CommonValidator.isNotNullNotEmpty(ufBean.repoUser, ufBean.tokenURL))
 				{
-
+					ufBean.user = ufBean.repoUser;
+					// ufBean.user.setParentProducerId(EAuth.User.getParentProducerId(auth));
+					// ufBean.user.setParentProducerName(EAuth.User.getParentProducerName(auth));
+					ufBean.repoUser = null;
+					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Admin, ufBean);
 					// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
-					// ETemplate.User_Create_Admin, ufBean);
-					// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
-					// ETemplate.User_Create_Employee, ufBean);
+					// ETemplate.Create_User_Employee, ufBean);
 					// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
-					// ETemplate.SMS_Create_Employee, ufBean);
+					// ETemplate.Create_User_Employee_SMS, ufBean);
 
 					ufBean.messageCode = ACTIVATION_LINK_SENT_SUCCESSFULLY;
 				}
 			}
 			else
 				throw new InvalidKeyException(ACTIVATION_LINK_SENT_RECENTLY);
+		}
+		catch (Exception excep)
+		{
+			excep.printStackTrace();
 		}
 		finally
 		{
@@ -290,6 +302,9 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 		user.setProducerName((String) userDetail[1]);
 		user.setParentProducerId(user.getParentProducer().getProducerId());
 		user.setParentProducerName((String) userDetail[2]);
+		user.createdDateByTimeZone();
+		user.modifiedDateByTimeZone();
+
 		return user;
 	}
 }

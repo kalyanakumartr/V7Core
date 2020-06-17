@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 /**
  * @author AnanthMalBal
  */
@@ -54,6 +53,7 @@ public class UserController implements IUserController
 		{
 			userFormBean.user = null;
 			userFormBean.messageCode = excep.getMessage();
+			userFormBean = new UserFormBean();
 			// logger.error("Exception in UserController addUser ::: ", excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
@@ -191,8 +191,6 @@ public class UserController implements IUserController
 		{
 			// logger.info("Inside UserController getUserByEmailOrMobileOrUserId ::: ");
 			Users users = userBo.getUserByEmailOrMobileOrUserId(userFormBean.searchParam);
-			users.setCreatedDateByTimeZone(users.getCountry().getCountry());
-			users.setModifiedDateByTimeZone(users.getCountry().getCountry());
 
 			return new ResponseEntity<Users>(users, HttpStatus.OK);
 		}
@@ -200,7 +198,8 @@ public class UserController implements IUserController
 		{
 			userFormBean = new UserFormBean();
 			userFormBean.messageCode = excep.getMessage();
-			// logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ", excep);
+			// logger.error("Exception in UserController getUserByEmailOrMobileOrUserId ::: ",
+			// excep);
 			return new ResponseEntity<>(userFormBean, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -260,10 +259,8 @@ public class UserController implements IUserController
 		}
 	}
 
-	
 	/**
 	 * Need To Implement UserMedia and User Address Stuffs
-	 * 
 	 */
 	@Override
 	public ResponseEntity<?> updateUser(Authentication auth, @RequestBody UserFormBean userFormBean)

@@ -4,44 +4,50 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hbs.core.util.EBusinessKey;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "roles")
-public class Roles extends CommonBeanFields implements IRoles, EBusinessKey
+public class Roles extends ProducersBase implements IRoles, EBusinessKey
 {
 
-	private static final long	serialVersionUID	= 515193003553697834L;
+	private static final long		serialVersionUID	= 515193003553697834L;
 
-	private String				enumKey;
+	private CreatedModifiedUsers	byUser				= new CreatedModifiedUsers();
 
-	private Boolean				isAdminRole;
+	private String					description;
 
-	private Set<MenuRole>		menuRoles			= new LinkedHashSet<MenuRole>(0);
+	private String					enumKey;
 
-	private Set<PortletsRoles>	portletRoles		= new LinkedHashSet<PortletsRoles>(0);
+	private Boolean					isAdminRole;
 
-	private String				description;
+	private Set<MenuRole>			menuRoles			= new LinkedHashSet<MenuRole>(0);
 
-	private String				roleId;
+	private Set<PortletsRoles>		portletRoles		= new LinkedHashSet<PortletsRoles>(0);
 
-	private String				roleLongName;
+	private String					roleId;
 
-	private String				roleName;
+	private String					roleLongName;
 
-	private String				roleShortName;
+	private String					roleName;
 
-	private String				roleType;
+	private String					roleShortName;
+
+	private String					roleType;
 
 	public Roles()
 	{
@@ -59,6 +65,29 @@ public class Roles extends CommonBeanFields implements IRoles, EBusinessKey
 	public String getBusinessKey(String... combination)
 	{
 		return EKey.Auto();
+	}
+
+	@Embedded
+	@JsonIgnore
+	public CreatedModifiedUsers getByUser()
+	{
+		return byUser;
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		if (this.byUser.getCreatedUser() != null && this.byUser.getCreatedUser().getCountry().getCountry() != null && this.byUser.getModifiedUser() == null)
+		{
+			return this.byUser.getCreatedUser().getCountry().getCountry();
+		}
+		else if (this.byUser.getModifiedUser().getCountry().getCountry() != null)
+		{
+			return this.byUser.getModifiedUser().getCountry().getCountry();
+		}
+		return null;
 	}
 
 	@Column(name = "enumKey")
@@ -90,7 +119,7 @@ public class Roles extends CommonBeanFields implements IRoles, EBusinessKey
 	}
 
 	@Column(name = "description")
-	public String getRoleDescription()
+	public String getDescription()
 	{
 		return description;
 	}
@@ -126,6 +155,16 @@ public class Roles extends CommonBeanFields implements IRoles, EBusinessKey
 		return roleType;
 	}
 
+	public void setByUser(CreatedModifiedUsers byUser)
+	{
+		this.byUser = byUser;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
 	public void setEnumKey(String enumKey)
 	{
 		this.enumKey = enumKey;
@@ -144,11 +183,6 @@ public class Roles extends CommonBeanFields implements IRoles, EBusinessKey
 	public void setPortletRoles(Set<PortletsRoles> portletRoles)
 	{
 		this.portletRoles = portletRoles;
-	}
-
-	public void setRoleDescription(String roleDescription)
-	{
-		this.description = roleDescription;
 	}
 
 	public void setRoleId(String roleId)

@@ -20,6 +20,16 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 
 	protected IUsers			modifiedUser;
 
+	protected String			createdUserId		= "";
+
+	protected String			modifiedUserId		= "";
+
+	protected String			createdUserName		= "";
+
+	protected String			modifiedUserName	= "";
+
+	protected String			countryId			= "";
+
 	public CreatedModifiedUsers()
 	{
 		super();
@@ -47,13 +57,19 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 	@Transient
 	public String getCreatedUserId()
 	{
-		return createdUser.getEmployeeId();
+		if (CommonValidator.isNotNullNotEmpty(createdUser))
+		{
+			createdUserId = createdUser.getEmployeeId();
+		}
+		return createdUserId;
 	}
 
 	@Transient
 	public String getCreatedUserName()
 	{
-		return CommonValidator.isNullOrEmpty(createdUser.getLastName()) ? "" : createdUser.getLastName() + IConstProperty.COMMA_SPACE + createdUser.getUserName();
+		if (CommonValidator.isNotNullNotEmpty(createdUser))
+			createdUserName = CommonValidator.isNullOrEmpty(createdUser.getLastName()) ? "" : createdUser.getLastName() + IConstProperty.COMMA_SPACE + createdUser.getUserName();
+		return createdUserName;
 	}
 
 	@Override
@@ -68,13 +84,17 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 	@Transient
 	public String getModifiedUserId()
 	{
-		return modifiedUser.getEmployeeId();
+		if (CommonValidator.isNotNullNotEmpty(modifiedUser))
+			modifiedUserId = modifiedUser.getEmployeeId();
+		return modifiedUserId;
 	}
 
 	@Transient
 	public String getModifiedUserName()
 	{
-		return CommonValidator.isNullOrEmpty(modifiedUser.getLastName()) ? "" : modifiedUser.getLastName() + IConstProperty.COMMA_SPACE + modifiedUser.getUserName();
+		if (CommonValidator.isNotNullNotEmpty(modifiedUser))
+			modifiedUserName = CommonValidator.isNullOrEmpty(modifiedUser.getLastName()) ? "" : modifiedUser.getLastName() + IConstProperty.COMMA_SPACE + modifiedUser.getUserName();
+		return modifiedUserName;
 	}
 
 	@Override
@@ -87,6 +107,24 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 	public void setModifiedUser(IUsers modifiedUser)
 	{
 		this.modifiedUser = modifiedUser;
+	}
+
+	@Transient
+	public String getCountryId()
+	{
+		if (this.createdUser != null && this.createdUser.getCountry() != null && this.modifiedUser == null)
+		{
+			countryId = this.createdUser.getCountry().getCountry();
+		}
+		else if (this.modifiedUser != null && this.modifiedUser.getCountry() != null) // Purposely
+																						// Checked
+																						// '!= null'
+																						// check for
+																						// modifiedUser
+		{
+			countryId = this.modifiedUser.getCountry().getCountry();
+		}
+		return countryId;
 	}
 
 }

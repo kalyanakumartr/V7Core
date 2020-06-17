@@ -20,6 +20,7 @@ import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.Gson;
 
 @Entity
@@ -199,5 +200,21 @@ public class ChannelMessages extends V7MessagesBase implements IChannelMessages,
 	{
 		this.byUser.setModifiedUser(EAuth.User.getUser(auth));
 		this.modifiedDate = new Timestamp(System.currentTimeMillis());
+	}
+
+	@Override
+	@Transient
+	@JsonIgnore
+	public String getCountryTimeZone()
+	{
+		if (this.byUser.getCreatedUser() != null && this.byUser.getCreatedUser().getCountry().getCountry() != null && this.byUser.getModifiedUser() == null)
+		{
+			return this.byUser.getCreatedUser().getCountry().getCountry();
+		}
+		else if (this.byUser.getModifiedUser().getCountry().getCountry() != null)
+		{
+			return this.byUser.getModifiedUser().getCountry().getCountry();
+		}
+		return null;
 	}
 }

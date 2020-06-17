@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hbs.core.beans.model.IUsersBase.EUserType;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ICRUDBean;
 
@@ -24,11 +25,13 @@ public interface IProducers extends ICRUDBean
 
 	public EUserType getProducerType();
 
-	public List<IProducersProperty> getProperty(EnumInterface group);
+	public List<IProducersProperty> getProperty(EnumInterface media);
 
-	public IProducersProperty getProperty(EnumInterface group, String key);
+	public IProducersProperty getProperty(EnumInterface media, String key);
 
-	public Set<IProducersProperty> getPropertyList();
+	public IProducersProperty getProperty(EnumInterface media, EMediaMode mediaMode, String key);
+
+	public Set<ProducersProperty> getPropertyList();
 
 	public List<IProducersProperty> getPropertyList(EnumInterface group);
 
@@ -52,7 +55,7 @@ public interface IProducers extends ICRUDBean
 
 	public void setProducerType(EUserType producerType);
 
-	public void setPropertyList(Set<IProducersProperty> propertyList);
+	public void setPropertyList(Set<ProducersProperty> propertyList);
 
 	public void setPwdExpiryDays(Timestamp csPwdExpiryDays);
 

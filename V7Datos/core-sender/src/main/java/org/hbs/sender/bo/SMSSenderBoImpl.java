@@ -64,7 +64,7 @@ public class SMSSenderBoImpl extends BaseSenderBoImpl implements SMSSenderBo, IC
 			{
 				if (CommonValidator.isNotNullNotEmpty(message.getMessageId()))
 				{
-					List<IMessages> templateList = messageDao.getByMessageId(EAuth.User.getProducerId(auth), message.getMessageId());
+					List<? extends IMessages> templateList = messageDao.getByMessageId(EAuth.User.getProducerId(auth), message.getMessageId());
 					message.setMessage(templateList.iterator().next().getMessage());
 					message.setMessage(message.generateVTLMessage()); // Generating Dynamic SMS
 				}

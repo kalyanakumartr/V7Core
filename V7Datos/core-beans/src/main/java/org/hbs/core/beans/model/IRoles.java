@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.hbs.core.util.ICRUDBean;
 
-public interface IRoles extends ICommonBeanFields, ICRUDBean
+public interface IRoles extends ICommonDateAndStatusFields, IUsersByUser, ICRUDBean
 {
 	public String getEnumKey();
 
@@ -12,7 +12,7 @@ public interface IRoles extends ICommonBeanFields, ICRUDBean
 
 	public Set<MenuRole> getMenuRoles();
 
-	public String getRoleDescription();
+	public String getDescription();
 
 	public String getRoleId();
 
@@ -30,7 +30,7 @@ public interface IRoles extends ICommonBeanFields, ICRUDBean
 
 	public void setMenuRoles(Set<MenuRole> menuRoles);
 
-	public void setRoleDescription(String roleDescription);
+	public void setDescription(String roleDescription);
 
 	public void setRoleId(String roleId);
 

@@ -183,4 +183,18 @@ public class Credits extends ProducersBase implements EBusinessKey, ICRUDBean
 
 	}
 
+	@Override
+	public String getCountryTimeZone()
+	{
+		if (this.byUser.getCreatedUser() != null && this.byUser.getCreatedUser().getCountry().getCountry() != null && this.byUser.getModifiedUser() == null)
+		{
+			return this.byUser.getCreatedUser().getCountry().getCountry();
+		}
+		else if (this.byUser.getModifiedUser().getCountry().getCountry() != null)
+		{
+			return this.byUser.getModifiedUser().getCountry().getCountry();
+		}
+		return null;
+	}
+
 }
