@@ -1,4 +1,4 @@
-package org.hbs.core.oauth.server;
+package org.hbs.core.security.resource;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

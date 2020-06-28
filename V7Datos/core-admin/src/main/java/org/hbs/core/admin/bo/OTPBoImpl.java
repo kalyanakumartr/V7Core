@@ -5,20 +5,24 @@ import java.util.concurrent.ExecutionException;
 
 import org.hbs.core.admin.OTPService;
 import org.hbs.core.beans.GenericKafkaProducer;
-import org.hbs.core.beans.OTPFormBean;
-import org.hbs.core.beans.model.Users;
+import org.hbs.core.beans.PasswordFormBean;
+import org.hbs.core.beans.UserFormBean;
+import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.dao.UserDao;
 import org.hbs.core.security.resource.IPath.ETemplate;
 import org.hbs.core.security.resource.IPathBase.EMedia;
+import org.hbs.core.security.resource.IPathBase.EReturn;
 import org.hbs.core.security.resource.IPathBase.ETopic;
-import org.hbs.core.util.ServerUtilFactory;
+import org.hbs.core.util.CommonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @Service
 @Transactional
-public class OTPBoImpl implements OTPBo
+public class OTPBoImpl implements OTPBo, IErrorAdmin
 {
 	private static final long	serialVersionUID	= 1949352771664273090L;
 
@@ -34,35 +38,49 @@ public class OTPBoImpl implements OTPBo
 	@Autowired
 	protected UserDao			userDao;
 
-	@SuppressWarnings("unused")
-	@Autowired
-	private ServerUtilFactory	serverUtilFactory;
-
 	@Override
-	public String generateOTP(OTPFormBean otpFormBean) throws InvalidKeyException
+	public void generateOTP(PasswordFormBean pfBean) throws InvalidKeyException, JsonProcessingException
 	{
-		Users user = userBo.getUserByEmailOrMobileOrUserId(otpFormBean.user.getUserId());
-		if (user == null)
-			throw new InvalidKeyException("Invalid user Id");
-		otpFormBean.user = user;
-		String[] otps = otpService.generate(user.getUserId(), 6);
-		otpFormBean.id = otps[0];
-		otpFormBean.user.setOtp(otps[1]);
-		userDao.save(user);
+		UserFormBean ufBean = new UserFormBean(pfBean);
 		try
 		{
-			gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS, ETemplate.SMS_OTP, otpFormBean);
+			// Authentication object, we can't get at this request call
+			if (userBo.isRecentlyUpdated(null, ufBean))
+			{
+				// First 3 Characters are ANY Alphabets and Next 6 Characters are Numbers
+				// opts = ["REZ","REZ123456"]
+				String[] otps = otpService.generate(ufBean.user.getUserId(), 6);
+
+				// We are using Cache for OTP Validation and we are NOT persist otp in User table
+				// column otp, may use in future
+				// ufBean.user.modifiedUserInfo(null);
+				// ufBean.user.setUserStatus(EUserStatus.OTPEnabled);
+				// userDao.save(ufBean.user);
+
+				if (CommonValidator.isArrayFirstNotNull(otps))
+				{
+					ufBean.user.setOtp(otps[1]); // ["REZ123456"]
+					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS, ETemplate.SMS_OTP, ufBean);
+					pfBean.messageCode = USER_SMS_OTP_GENERATE_SUCCESSFULLY;
+					pfBean.$OTPPrefix = otps[0]; // ["REZ"]
+					pfBean.userId = ufBean.user.getUserId();
+				}
+				else
+					throw new InvalidKeyException(USER_SMS_OTP_GENERATE_ISSUE);
+			}
+			else
+				throw new InvalidKeyException(USER_DATA_UPDATED_RECENTLY);
 		}
-		catch (Exception e)
+		finally
 		{
-			e.printStackTrace();
+			ufBean = null;
 		}
-		return otps[0];
+
 	}
 
 	@Override
-	public String validateOTP(OTPFormBean otpFormBean) throws ExecutionException
+	public EReturn validateOTP(PasswordFormBean pfBean) throws ExecutionException
 	{
-		return otpService.validate(otpFormBean.id, otpFormBean.user.getOtp(), otpFormBean.otp).name();
+		return otpService.validate(pfBean.$OTPPrefix, pfBean.userId, pfBean.$OTP);
 	}
 }

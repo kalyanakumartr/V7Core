@@ -116,11 +116,8 @@ public class CreatedModifiedUsers implements IConstProperty, ICreatedModifiedUse
 		{
 			countryId = this.createdUser.getCountry().getCountry();
 		}
-		else if (this.modifiedUser != null && this.modifiedUser.getCountry() != null) // Purposely
-																						// Checked
-																						// '!= null'
-																						// check for
-																						// modifiedUser
+		// Purposely Checked '!= null' check form modifiedUser
+		else if (this.modifiedUser != null && this.modifiedUser.getCountry() != null)
 		{
 			countryId = this.modifiedUser.getCountry().getCountry();
 		}

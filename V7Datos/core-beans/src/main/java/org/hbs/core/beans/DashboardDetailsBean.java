@@ -3,6 +3,10 @@ package org.hbs.core.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class DashboardDetailsBean extends APIStatus
 {
 
@@ -13,4 +17,11 @@ public class DashboardDetailsBean extends APIStatus
 	public String						startDate;
 	public String						endDate;
 	public List<DashboardStatusBean>	status				= new ArrayList<>();
+
+	@Override
+	public void clearForm()
+	{
+		// TODO Auto-generated method stub
+
+	}
 }

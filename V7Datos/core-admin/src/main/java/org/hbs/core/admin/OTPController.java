@@ -1,13 +1,13 @@
 package org.hbs.core.admin;
 
 import org.hbs.core.admin.bo.OTPBo;
-import org.hbs.core.beans.OTPFormBean;
-import org.hbs.core.beans.UserFormBean;
-import org.hbs.core.dao.UserDao;
+import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.util.CommonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,55 +18,46 @@ public class OTPController implements IOTPController
 	@Autowired
 	protected OTPBo				otpBo;
 
-	@Autowired
-	private UserDao				userDao;
-
-	public ResponseEntity<?> generateOTP(OTPFormBean otpForm)
+	public ResponseEntity<?> generateOTP(@RequestBody PasswordFormBean pfBean)
 	{
 		try
 		{
-			OTPFormBean response = new OTPFormBean();
-			if (CommonValidator.isNotNullNotEmpty(otpForm, otpForm.tokenUrl))
+			if (CommonValidator.isNotNullNotEmpty(pfBean.mobileNo, pfBean.media))
 			{
-				UserFormBean ufBean = ESecurity.Token.validate(userDao, otpForm.tokenUrl, TOKEN_EXPIRY_DURATION);
-				otpForm.user = ufBean.user;
-				response.id = otpBo.generateOTP(otpForm);
-				return new ResponseEntity<>(response, HttpStatus.OK);
+				otpBo.generateOTP(pfBean);
+				return new ResponseEntity<>(pfBean, HttpStatus.OK);
 			}
-			else if (CommonValidator.isNotNullNotEmpty(otpForm, otpForm.user, otpForm.user.getUserId()))
-			{
-				response.id = otpBo.generateOTP(otpForm);
-				return new ResponseEntity<>(response, HttpStatus.OK);
-			}
-			else
-			{
-				return new ResponseEntity<String>(EReturn.Failure.name(), HttpStatus.BAD_REQUEST);
-			}
+			throw new InvalidRequestException(INVALID_REQUEST_PARAMETERS);
 		}
-		catch (Exception e)
+		catch (Exception excep)
 		{
-			e.printStackTrace();
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+			pfBean.clearForm();
+			pfBean.messageCode = excep.getMessage();
+			return new ResponseEntity<>(pfBean, HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	public ResponseEntity<?> validateOTP(OTPFormBean otpForm)
+	public ResponseEntity<?> validateOTP(@RequestBody PasswordFormBean pfBean)
 	{
 		try
 		{
-			if (CommonValidator.isNotNullNotEmpty(otpForm, otpForm.id, otpForm.user.getUserId(), otpForm.otp))
+			if (otpBo.validateOTP(pfBean) == EReturn.Success)
 			{
-				return new ResponseEntity<String>(otpBo.validateOTP(otpForm), HttpStatus.OK);
+				pfBean.messageCode = USER_SMS_OTP_VALIDATED_SUCCESSFULLY;
+				return new ResponseEntity<>(pfBean, HttpStatus.OK);
 			}
 			else
 			{
-				return new ResponseEntity<>(EReturn.Failure.name(), HttpStatus.BAD_REQUEST);
+				pfBean.clearForm();
+				pfBean.messageCode = USER_SMS_OTP_INVALID_OR_EXPIRED;
+				return new ResponseEntity<>(pfBean, HttpStatus.BAD_REQUEST);
 			}
 		}
-		catch (Exception e)
+		catch (Exception excep)
 		{
-			e.printStackTrace();
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+			pfBean.clearForm();
+			pfBean.messageCode = excep.getMessage();
+			return new ResponseEntity<>(pfBean, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

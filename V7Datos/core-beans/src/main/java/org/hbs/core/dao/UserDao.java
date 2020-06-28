@@ -24,9 +24,6 @@ public interface UserDao extends JpaRepository<Users, String>
 	@Query("select Distinct(U.employeeId), U.userName FROM Users U JOIN U.mediaList M WHERE U.status = true AND U.userStatus = 'Activated' AND (U.userName Like :searchParam OR M.emailId Like :searchParam) AND U.producer.producerId = :producerId")
 	List<Object[]> fetchUsersByUserNameOrEmailId(@Param("producerId") String producerId, @Param("searchParam") String searchParam);
 
-	@Query("select U FROM Users U WHERE U.status = true AND U.userStatus = 'Pending' AND U.token = :token")
-	Users fetchByToken(@Param("token") String token);
-
 	@Query("select U.userName FROM Users U JOIN U.mediaList M WHERE ( M.emailId = :emailId OR M.mobileNo = :mobileNo ) AND U.producer.producerId = :producerId")
 	List<String> checkUserNameEmailIdOrMobileNo(@Param("producerId") String producerId, @Param("emailId") String emailId, @Param("mobileNo") String mobileNo);
 

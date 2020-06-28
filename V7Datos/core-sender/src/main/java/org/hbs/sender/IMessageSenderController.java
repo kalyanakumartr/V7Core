@@ -3,7 +3,7 @@ package org.hbs.sender;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hbs.core.beans.ConfigurationFormBean;
-import org.hbs.core.beans.OTPFormBean;
+import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.V7Messages;
 import org.hbs.core.beans.model.channel.IChannelMessages;
@@ -51,7 +51,7 @@ public interface IMessageSenderController extends IPathSender
 
 	@PostMapping
 	@RequestMapping(value = SEND_SMS_OTP, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> sendSMS_OTP(Authentication auth, OTPFormBean otpForm);
+	public ResponseEntity<?> sendSMS_OTP(Authentication auth, PasswordFormBean pfForm);
 
 	@PostMapping
 	@RequestMapping(value = SEND_USER_BLOCK_MAIL, produces = MediaType.APPLICATION_JSON_VALUE)

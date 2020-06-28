@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.hbs.core.security.resource.IPath;
 import org.hbs.core.util.CommonValidator;
-import org.hbs.core.util.EnumInterface;
 import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
@@ -39,14 +38,13 @@ public class OTPService implements IPath
 		otpCache.invalidate(key);
 	}
 
-	public EnumInterface validate(Object _ALPHA_PREFIX, Object _Key, Object _OTP)
+	public EReturn validate(Object _ALPHA_PREFIX, Object _Key, Object _OTP)
 	{
 		try
 		{
-			String otpKey = ewrapOtpValues(_ALPHA_PREFIX, _Key), otpValue = ewrapOtpValues(_ALPHA_PREFIX, _OTP);
-			// if (CommonValidator.isEqual(otpCache.get(otpKey), otpValue)) // Need to fix OTP Cache
-			// Issue
-			if (CommonValidator.isEqual(otpKey, otpValue))
+			String otpKey = EWrap.Hyphen.append(_ALPHA_PREFIX, _Key);
+			String otpValue = EWrap.Hyphen.append(_ALPHA_PREFIX, _OTP);
+			if (CommonValidator.isEqual(otpCache.get(otpKey), otpValue)) // Need to fix OTP Cache
 			{
 				clear(otpKey);
 				return EReturn.Success;
@@ -54,6 +52,7 @@ public class OTPService implements IPath
 		}
 		catch (Exception excep)
 		{
+			excep.printStackTrace();
 		}
 		return EReturn.Failure;
 	}
@@ -78,17 +77,13 @@ public class OTPService implements IPath
 		}
 		String _OTP = String.valueOf(_OTPs);
 
-		String _OTPKey = ewrapOtpValues(_ALPHA_PREFIX, _SUFFIX_AS_ID);
-		String _OTPValue = ewrapOtpValues(_ALPHA_PREFIX, _OTP);
+		String _OTPKey = EWrap.Hyphen.append(_ALPHA_PREFIX, _SUFFIX_AS_ID);
+		String _OTPValue = EWrap.Hyphen.append(_ALPHA_PREFIX, _OTP);
 
 		otpCache.put(_OTPKey, _OTPValue);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>_OTPValue>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + _OTPValue);
 
-		return new String[] { _ALPHA_PREFIX, _OTP };
+		return new String[] { _ALPHA_PREFIX, _OTP }; // ["REZ","REZ123456"]
 	}
 
-	private String ewrapOtpValues(Object value1, Object value2)
-	{
-		return EWrap.Hyphen.append(new Object[] { value1, value2 });
-
-	}
 }

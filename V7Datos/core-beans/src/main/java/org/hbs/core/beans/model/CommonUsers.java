@@ -17,10 +17,10 @@ public abstract class CommonUsers extends CommonUsersBase
 {
 	private static final long	serialVersionUID	= 5331946490137030437L;
 
-	private String				producerId;
-	private String				producerName;
-	private String				parentProducerId;
-	private String				parentProducerName;
+	protected String			producerId;
+	protected String			producerName;
+	protected String			parentProducerId;
+	protected String			parentProducerName;
 
 	public CommonUsers()
 	{

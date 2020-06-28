@@ -16,7 +16,7 @@ public class OAuth2ResourceServerConfig extends OAuth2ResourceServerConfigBase i
 	public void configure(HttpSecurity http) throws Exception
 	{
 		configure(http, EPathAdmin.values());
-		http.formLogin().loginPage("/login").permitAll()//
+		http.formLogin().loginPage(LOGIN).permitAll()//
 				.and().logout().permitAll();
 	}
 }

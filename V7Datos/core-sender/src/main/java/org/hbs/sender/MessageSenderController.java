@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hbs.core.beans.ConfigurationFormBean;
 import org.hbs.core.beans.MessageFormBean;
-import org.hbs.core.beans.OTPFormBean;
+import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.IMessages.EMessageStatus;
@@ -169,25 +169,28 @@ public class MessageSenderController implements IMessageSenderController
 
 	}
 
-	public ResponseEntity<?> sendSMS_OTP(Authentication auth, @RequestBody OTPFormBean otpFormBean)
+	public ResponseEntity<?> sendSMS_OTP(Authentication auth, @RequestBody PasswordFormBean pfBean)
 	{
 		try
 		{
-			IConfiguration configuration = configurationBo.getConfigurationByType(otpFormBean.user.getProducer().getProducerId(), EMedia.SMS, EMediaType.Primary, EMediaMode.Internal);
-
-			if (CommonValidator.isNotNullNotEmpty(configuration))
-			{
-
-				IChannelMessages message = new ChannelMessages(ETemplate.SMS_OTP);
-				message.setRecipients(otpFormBean.user.getMediaToDisplay(EMediaType.Primary).getMobileNo());
-				message.setProducer(otpFormBean.user.getProducer());
-				message.setConfiguration(configuration);
-
-				// VTL Messages Data
-				// message.putFormInDataMap(otpFormBean);
-
-				return new ResponseEntity<>(smsSenderBo.sendSMSByMessage(auth, message), HttpStatus.OK);
-			}
+			// IConfiguration configuration =
+			// configurationBo.getConfigurationByType(pfBean.user.getProducer().getProducerId(),
+			// EMedia.SMS, EMediaType.Primary, EMediaMode.Internal);
+			//
+			// if (CommonValidator.isNotNullNotEmpty(configuration))
+			// {
+			//
+			// IChannelMessages message = new ChannelMessages(ETemplate.SMS_OTP);
+			// message.setRecipients(otpFormBean.user.getMediaToDisplay(EMediaType.Primary).getMobileNo());
+			// message.setProducer(otpFormBean.user.getProducer());
+			// message.setConfiguration(configuration);
+			//
+			// // VTL Messages Data
+			// // message.putFormInDataMap(otpFormBean);
+			//
+			// return new ResponseEntity<>(smsSenderBo.sendSMSByMessage(auth, message),
+			// HttpStatus.OK);
+			// }
 			throw new CustomException("IConfiguration NOT found for the given Producer Name : " + EAuth.User.getProducerName(auth));
 		}
 		catch (Exception excep)

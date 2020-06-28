@@ -22,17 +22,27 @@ public abstract class OAuth2ResourceServerConfigBase extends ResourceServerConfi
 
 	public void configure(HttpSecurity http, EnumResourceInterface... resourcePath) throws Exception
 	{
+
 		for (EnumResourceInterface ePath : resourcePath)
 		{
-			for (ERole eRole : ePath.getRoles())
+			if (ePath.getRoles() == null || ePath.getRoles().length == 0)
 			{
-				if (CommonValidator.isNotNullNotEmpty(eRole.name()))
-					http.authorizeRequests().antMatchers(ePath.getPath()).hasAuthority(eRole.name()).anyRequest().authenticated();
-				else
-					http.authorizeRequests().antMatchers(ePath.getPath()).authenticated();
+				http.authorizeRequests().antMatchers(ePath.getPath()).permitAll();
+			}
+			else
+			{
+				for (ERole eRole : ePath.getRoles())
+				{
+					if (CommonValidator.isNotNullNotEmpty(eRole.name()))
+						http.authorizeRequests().antMatchers(ePath.getPath()).hasAuthority(eRole.name()).anyRequest().authenticated();
+					else
+						http.authorizeRequests().antMatchers(ePath.getPath()).authenticated();
+				}
 			}
 		}
-		http.csrf().disable().authorizeRequests()//
+		http.csrf()//
+				.disable()//
+				.authorizeRequests()//
 				.and()//
 				.exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}

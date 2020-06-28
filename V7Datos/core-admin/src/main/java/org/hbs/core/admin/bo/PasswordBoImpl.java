@@ -1,5 +1,6 @@
 package org.hbs.core.admin.bo;
 
+import java.security.InvalidKeyException;
 import java.sql.Timestamp;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
@@ -7,7 +8,7 @@ import java.util.regex.Pattern;
 import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.beans.UserFormBean;
-import org.hbs.core.beans.model.Users;
+import org.hbs.core.beans.model.IUsersBase.EUserStatus;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.dao.UserDao;
@@ -15,6 +16,7 @@ import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,82 +46,104 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 	private ServerUtilFactory	serverUtil;
 
 	@Override
-	public EnumInterface changePassword(@RequestBody PasswordFormBean pfBean)
+	public UserFormBean validateUser(String tokenKey) throws InvalidKeyException
 	{
-		Users users = userBo.getUserByEmailOrMobileOrUserId(pfBean.userId);
-		pfBean.otp.user = users;
+		if (CommonValidator.isNotNullNotEmpty(tokenKey))
+		{
+			// logger.info("Inside UserBoImpl validateUser ::: ");
+			return ESecurity.Token.validate(userDao, tokenKey, TOKEN_EXPIRY_DURATION);
+
+		}
+		throw new InvalidKeyException(USER_TOKEN_KEY_NOT_AVAILABLE_IN_REQUEST);
+	}
+
+	@Override
+	public EnumInterface updatePassword(Authentication auth, PasswordFormBean pfBean) throws InvalidKeyException, ExecutionException
+	{
+		UserFormBean ufBean = new UserFormBean(pfBean); // Transform PasswordFormBean To
+														// UserFormBean
 		try
 		{
-			switch ( pfBean.eFormAction )
+			if (userBo.isRecentlyUpdated(auth, ufBean))
 			{
-				case ChangePassword :
-				case ForgotPassword :
-				case Verify :
+				switch ( pfBean.formAction )
 				{
-					if (EReturn.Success == validatePassword(pfBean, users))
+					case ChangePassword :
+					case ForgotPassword :
+					case Verify :
 					{
-						users.setUserPwd(new BCryptPasswordEncoder().encode(pfBean.newPassword));
-						users.setUserPwdModFlag(true);
-						users.setStatus(true);
-						users.setUserPwdModDate(new Timestamp(System.currentTimeMillis()));
-						users.setOtp(null);
-						users.setToken(null);
-						users.setTokenExpiryDate(null);
-						userDao.save(users);
-						pfBean.messageCode = EReturn.Success.name();
-						return EReturn.Success;
+						if (EReturn.Success == validatePassword(pfBean, ufBean))
+						{
+							ufBean.user.setUserPwd(new BCryptPasswordEncoder().encode(pfBean.newPassword));
+							ufBean.user.setUserPwdModFlag(false);
+							ufBean.user.setStatus(true);
+							ufBean.user.setUserPwdModDate(new Timestamp(System.currentTimeMillis()));
+							ufBean.user.setOtp(null);
+							ufBean.user.setToken(null);
+							ufBean.user.setTokenExpiryDate(null);
+							ufBean.user.setUserStatus(EUserStatus.Activated);
+							userDao.save(ufBean.user);
+							pfBean.messageCode = EReturn.Success.name();
+							return EReturn.Success;
+						}
 					}
+					default :
+						break;
 				}
-				default :
-					break;
 			}
+			else
+				throw new InvalidKeyException(PASSWORD_UPDATED_RECENTLY);
 		}
-		catch (ExecutionException e)
+		finally
 		{
-			e.printStackTrace();
+			ufBean = null;
 		}
-
 		return EReturn.Failure;
 	}
 
-	private EReturn validatePassword(PasswordFormBean pfBean, Users users) throws ExecutionException
+	private EReturn validatePassword(PasswordFormBean pfBean, UserFormBean ufBean) throws ExecutionException
 	{
 		if (!Pattern.compile(PASSWORD_VALIDATION_REGEX).matcher(pfBean.newPassword).matches())
 		{
 			pfBean.messageCode = PASSWORD_STRENGTH_FAILURE;
 			return EReturn.Failure;
 		}
-		else if (CommonValidator.isEqual(new BCryptPasswordEncoder().encode(pfBean.newPassword), users.getUserPwd()))
+		else if (new BCryptPasswordEncoder().matches(pfBean.newPassword, ufBean.user.getUserPwd()))
 		{
 			pfBean.messageCode = PASSWORD_SAME_AS_OLD_PASSWORD;
-			return EReturn.Failure;
-		}
-		else if (CommonValidator.isNotEqual(otpBo.validateOTP(pfBean.otp), EReturn.Success))
-		{
-			pfBean.messageCode = PASSWORD_INVALID_OTP;
 			return EReturn.Failure;
 		}
 		return EReturn.Success;
 	}
 
 	@Override
-	public EnumInterface forgotPassword(@RequestBody UserFormBean ufBean) throws JsonProcessingException
+	public EnumInterface forgotPassword(@RequestBody UserFormBean ufBean) throws InvalidKeyException, JsonProcessingException
 	{
-		Users users = userBo.getUserByEmailOrMobileOrUserId(ufBean.emailId);
-		if (users != null)
+		try
 		{
-			// String token = ServerUtilFactory._DomainUrl + ESecurity.Token.generate(users,
-			// EFormAction.ForgotPassword);
-			// ufBean.tokenURL = token;
-			ufBean.user = users;
-			userDao.save(users);
+			if (userBo.isRecentlyUpdated(null, ufBean))
+			{
+				ufBean.tokenURL = ServerUtilFactory.getInstance().getDomainURL(ESecurity.Token.generate(ufBean.user, EFormAction.ForgotPassword));
+				ufBean.user.modifiedUserInfo(null);
+				ufBean.user.setUserStatus(EUserStatus.ResetPassword);
+				userDao.save(ufBean.user);
+				if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
+				{
+					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.User_Reset_Password, ufBean);
 
-			gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.User_Reset_Password, ufBean.user);
-			ufBean.messageCode = FORGOT_PASSWORD_MAIL_SUCCESS;
-			return EReturn.Success;
+					ufBean.messageCode = FORGOT_PASSWORD_EMAIL_SENT_SUCCESSFULLY;
+				}
+			}
+			else
+				throw new InvalidKeyException(USER_DATA_UPDATED_RECENTLY);
 		}
-
-		return EReturn.Failure;
+		finally
+		{
+			ufBean.tokenURL = null;
+			ufBean.formUser = null;
+			ufBean.user = null;
+		}
+		return EReturn.Success;
 	}
 
 }

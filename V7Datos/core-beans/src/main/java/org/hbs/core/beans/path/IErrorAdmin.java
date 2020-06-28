@@ -36,17 +36,23 @@ public interface IErrorAdmin extends Serializable
 	public String	ACTIVATION_LINK_SENT_RECENTLY			= "activation.link.sent.recently";
 	public String	USER_DATA_UPDATED_RECENTLY				= "user.data.updated.recently";
 	public String	USER_NOT_FOUND							= "user.not.found";
-	public String	USER_TOKEN_KEY_GENERATE_ISSUE			= "user.key.generate.issue";
+	public String	USER_TOKEN_KEY_GENERATE_ISSUE			= "user.token.key.generate.issue";
+	public String	USER_TOKEN_KEY_EXPIRED					= "user.token.key.expired";
 	public String	USER_TOKEN_KEY_NOT_AVAILABLE_IN_REQUEST	= "user.token.key.not.available.in.request";
-	public String	USER_TOKEN_KEY_NOT_EXISTS				= "user.token.key.not.exists";
 	public String	USER_UPDATED_SUCCESSFULLY				= "user.updated.successfully";
+	public String	USER_SMS_OTP_GENERATE_SUCCESSFULLY		= "user.sms.otp.generate.successfully";
+	public String	USER_SMS_OTP_VALIDATED_SUCCESSFULLY		= "user.sms.otp.validated.successfully";
+	public String	USER_SMS_OTP_GENERATE_ISSUE				= "user.sms.otp.generate.issue";
+	public String	USER_SMS_OTP_INVALID_OR_EXPIRED			= "user.sms.otp.invalid.or.expired";
+	public String	USER_SMS_OTP_NOT_AVAILABLE_IN_REQUEST	= "user.sms.otp.not.available.in.request";
 
-	public String	FORGOT_PASSWORD_MAIL_SUCCESS			= "password.reset.mail.sent.successfully";
-	public String	FORGOT_PASSWORD_MAIL_FAILURE			= "password.reset.invalid.mail";
+	public String	FORGOT_PASSWORD_EMAIL_SENT_SUCCESSFULLY	= "password.reset.email.sent.successfully";
+	public String	FORGOT_PASSWORD_EMAIL_SENT_RECENTLY		= "password.reset.email.sent.recently";
 
 	public String	PASSWORD_SAME_AS_OLD_PASSWORD			= "password.cannot.be.same.as.old.password";
 	public String	PASSWORD_STRENGTH_FAILURE				= "password.strength.failure";
 	public String	PASSWORD_INVALID_OTP					= "password.invalid.otp";
+	public String	PASSWORD_UPDATED_RECENTLY				= "password.updated.recently";
 
 	public String	DEPARTMENT_ALREADY_EXISTS				= "department.already.exists";
 	public String	DEPARTMENT_BLOCKED_SUCCESSFULLY			= "department.blocked.successfully";

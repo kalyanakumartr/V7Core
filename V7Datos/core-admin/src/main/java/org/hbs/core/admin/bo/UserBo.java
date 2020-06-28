@@ -40,8 +40,8 @@ public interface UserBo extends Serializable
 
 	EnumInterface updateUser(Authentication auth, UserFormBean ufBean) throws InvalidRequestException;
 
-	UserFormBean validateUser(String token) throws InvalidKeyException;
-
 	Users getUserByEmailOrMobileOrUserId(String searchParam);
+
+	boolean isRecentlyUpdated(Authentication auth, UserFormBean ufBean);
 
 }

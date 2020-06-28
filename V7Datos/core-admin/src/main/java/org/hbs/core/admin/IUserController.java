@@ -1,7 +1,5 @@
 package org.hbs.core.admin;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.springframework.http.MediaType;
@@ -9,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,10 +48,6 @@ public interface IUserController extends IPathAdmin
 	@PreAuthorize(HAS_AUTHORITY_ADMINISTRATOR)
 	public ResponseEntity<?> deleteUser(Authentication auth, UserFormBean ufBean);
 
-	@GetMapping
-	@RequestMapping(value = VALIDATE_USER)
-	public void validateUser(@PathVariable("token") String token, HttpServletResponse response);
-
 	@PostMapping
 	@RequestMapping(value = SEARCH_COUNTRY, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize(HAS_ALL_AUTHORITY)
@@ -71,7 +64,7 @@ public interface IUserController extends IPathAdmin
 	ResponseEntity<?> getCities(Authentication auth, UserFormBean userFormBean);
 
 	@GetMapping
-	@RequestMapping(value = GET_USER_BY_CUSTID, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = GET_USERS_BY_PRODUCER, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize(HAS_ALL_AUTHORITY)
 	public ResponseEntity<?> getUserListByProducer(Authentication auth);
 

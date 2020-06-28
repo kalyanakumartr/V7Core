@@ -2,6 +2,7 @@ package org.hbs.core.oauth.server;
 
 import org.hbs.core.beans.model.Users;
 import org.hbs.core.dao.UserDao;
+import org.hbs.core.security.resource.OAuth2UserDetails;
 import org.hbs.core.util.ServerUtilFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

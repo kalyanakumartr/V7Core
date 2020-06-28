@@ -30,7 +30,7 @@ public interface IPathBase extends IConstProperty
 
 	public enum EFormAction implements EnumInterface
 	{
-		Add, Update, Search, SoftDelete, PermanentDelete, ChangePassword, ForgotPassword, Verify, PasswordChanged, TokenExpired
+		Default, Add, Update, Search, SoftDelete, PermanentDelete, ChangePassword, ForgotPassword, Verify, TokenExpired, OTP_Generate
 	}
 
 	public enum EMedia implements EnumInterface

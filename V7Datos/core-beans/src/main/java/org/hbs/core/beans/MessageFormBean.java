@@ -9,6 +9,10 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class MessageFormBean extends APIStatus
 {
 
@@ -51,5 +55,12 @@ public class MessageFormBean extends APIStatus
 	public SendMessageBean get(String key)
 	{
 		return this.dataMap.get(key);
+	}
+
+	@Override
+	public void clearForm()
+	{
+		// TODO Auto-generated method stub
+
 	}
 }

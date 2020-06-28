@@ -4,6 +4,10 @@ import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.ProducersProperty;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class ConfigurationFormBean extends APIStatus
 {
 
@@ -36,6 +40,13 @@ public class ConfigurationFormBean extends APIStatus
 
 	public void updateRepoConfiguration(Authentication auth)
 	{
+
+	}
+
+	@Override
+	public void clearForm()
+	{
+		// TODO Auto-generated method stub
 
 	}
 

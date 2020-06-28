@@ -16,7 +16,7 @@ public interface IUsersBase extends EBusinessKey, ICRUDBean, ICommonDateAndStatu
 
 	public enum EUserStatus implements EnumInterface
 	{
-		Activated, Blocked, DeActivated, Default, FirstTime, Fradulent, KYC_Incomplete, Pending, RecentPassword, ResetPassword, RecentToken, Suspended, Validate;
+		Activated, Blocked, DeActivated, Default, FirstTime, Fradulent, KYC_Incomplete, Pending, ResetPassword, Suspended, Validate, OTPEnabled;
 	}
 
 	public enum EUserType implements EnumInterface

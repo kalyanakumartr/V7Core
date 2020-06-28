@@ -60,9 +60,12 @@ public class ServerUtilFactory implements IConstProperty
 	{
 		String finalPath = "";
 
-		for (String rPath : requestPath)
+		if (CommonValidator.isArrayFirstNotNull(requestPath))
 		{
-			finalPath += rPath;
+			for (String rPath : requestPath)
+			{
+				finalPath += rPath;
+			}
 		}
 		return getDomainURL() + finalPath;
 	}

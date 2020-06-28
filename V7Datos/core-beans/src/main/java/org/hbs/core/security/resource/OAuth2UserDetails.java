@@ -1,4 +1,4 @@
-package org.hbs.core.oauth.server;
+package org.hbs.core.security.resource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +45,7 @@ public class OAuth2UserDetails implements IOAuth2UserDetails
 
 	}
 
-	private Collection<? extends GrantedAuthority> translate(IUsers user)
+	public static Collection<? extends GrantedAuthority> translate(IUsers user)
 	{
 		List<GrantedAuthority> authorities = new ArrayList<>();
 

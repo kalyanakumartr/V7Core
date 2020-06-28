@@ -1,6 +1,6 @@
 package org.hbs.core.admin;
 
-import org.hbs.core.beans.OTPFormBean;
+import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +12,10 @@ public interface IOTPController extends IPathAdmin
 {
 	@PostMapping
 	@RequestMapping(value = GENERATE_OTP, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<?> generateOTP(@RequestBody OTPFormBean otpForm);
+	ResponseEntity<?> generateOTP(@RequestBody PasswordFormBean pfBean);
 
 	@PostMapping
 	@RequestMapping(value = VALIDATE_OTP, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<?> validateOTP(@RequestBody OTPFormBean otpForm);
+	ResponseEntity<?> validateOTP(@RequestBody PasswordFormBean pfBean);
 
 }

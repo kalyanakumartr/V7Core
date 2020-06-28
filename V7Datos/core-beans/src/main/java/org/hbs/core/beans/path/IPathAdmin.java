@@ -11,11 +11,13 @@ import org.hbs.core.beans.model.Users;
 import org.hbs.core.dao.UserDao;
 import org.hbs.core.security.resource.EnumResourceInterface;
 import org.hbs.core.security.resource.IPath;
+import org.hbs.core.security.resource.OAuth2UserDetails;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 
 public interface IPathAdmin extends IPath, IErrorAdmin
 {
+	public String	LOGIN						= "/login";
 	public String	ERROR404					= "/404Error";
 	public String	ERROR500					= "/500Error";
 
@@ -38,7 +40,7 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 	public String	VALIDATE_USER				= VALIDATE_USER_BASE + "/{token}";
 	public String	RESEND_ACTIVATION_LINK		= "/resendActivationLink";
 	public String	GET_ALL_USERS				= "getAllUsers";
-	public String	GET_USER_BY_CUSTID			= "/getUserByProducer";
+	public String	GET_USERS_BY_PRODUCER		= "/getUserByProducer";
 	// Group
 	public String	GET_GROUP_LIST				= "/getGroupList";
 	public String	GET_GROUP					= "/getGroup";
@@ -73,10 +75,10 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 	// Password
 	public String	GENERATE_OTP				= "/generateOTP";
 	public String	VALIDATE_OTP				= "/validateOTP";
-	public String	CHANGE_PASSWORD				= "/changePassword";
+	public String	CHANGE_PASSWORD_BASE		= "/changePassword";
+	public String	CHANGE_PASSWORD				= CHANGE_PASSWORD_BASE + "/{token}";
 	public String	FORGOT_PASSWORD				= "/forgotPassword";
-	public String	RESET_PASSWORD				= "/resetPassword";
-	public String	PASSWORD_CHANGED			= "/passwordChanged";
+	public String	UPDATE_PASSWORD				= "/updatePassword";
 	public String	TOKEN_EXPIRED				= "/tokenExpired";
 
 	public long		TOKEN_EXPIRY_DURATION		= 86400000l;
@@ -113,10 +115,9 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 		BlockUser(BLOCK_USER, ERole.Administrator, ERole.Employee), //
 		DeleteUser(DELETE_USER, ERole.Administrator), //
 		GetAllUsers(GET_ALL_USERS, ERole.Administrator, ERole.Employee), //
-		GetUsersByProducer(GET_USER_BY_CUSTID, ERole.Administrator, ERole.Employee), SearchCountry(SEARCH_COUNTRY, ERole.Administrator, ERole.Employee, ERole.Consumer), //
+		GetUsersByProducer(GET_USERS_BY_PRODUCER, ERole.Administrator, ERole.Employee), SearchCountry(SEARCH_COUNTRY, ERole.Administrator, ERole.Employee, ERole.Consumer), //
 		SearchStates(SEARCH_STATE, ERole.Administrator, ERole.Employee, ERole.Consumer), //
 		SearchCities(SEARCH_CITY, ERole.Administrator, ERole.Employee, ERole.Consumer), //
-		// ValidateUser(VALIDATE_USER),
 
 		// Group
 		getGroupList(GET_GROUP_LIST, ERole.Administrator), // Dummy To Delete
@@ -187,57 +188,41 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 		public UserFormBean validate(UserDao userDao, String tokenKey, long expiryDuration)
 		{
 			UserFormBean ufBean = new UserFormBean();
-			tokenKey = decodeToken(tokenKey);
 
-			String token[] = tokenKey.split(HASH);
+			tokenKey = new StringBuffer(tokenKey).reverse().toString();
+			String tokenInfo[] = new String(Base64.decodeBase64(tokenKey)).split(HASH);
 
-			ufBean.user = null;// userDao.fetchByToken(token[0]);
-
-			if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.user.getTokenExpiryDate()))
+			if (CommonValidator.isArrayFirstNotNull(tokenInfo) && tokenInfo.length == 3)
 			{
-				if (CommonValidator.isEqual(token[1], ufBean.user.getToken()))
-				{
-					if (ufBean.user.getUserPwdModFlag() || CommonValidator.isEqual(token[2], EFormAction.ForgotPassword) || CommonValidator.isEqual(token[2], EFormAction.Verify))
-					{
-						long difference = System.currentTimeMillis() - ufBean.user.getTokenExpiryDate().getTime();
+				Object object = userDao.findByEmailOrMobileOrUserId(tokenInfo[0]);
 
-						if (difference <= expiryDuration)
+				if (object != null && CommonValidator.isArrayFirstNotNull((Object[]) object))
+				{
+					ufBean.formUser = (Users) ((Object[]) object)[0];
+					if (CommonValidator.isNotNullNotEmpty(ufBean.formUser.getTokenExpiryDate()))
+					{
+						if (CommonValidator.isEqual(tokenInfo[2], EFormAction.ForgotPassword) || CommonValidator.isEqual(tokenInfo[2], EFormAction.Verify))
 						{
-							ufBean.messageCode = EReturn.Success.name();
-							return ufBean;
-						}
-						else
-						{
-							ufBean.messageCode = EFormAction.TokenExpired.name();
-							return ufBean;
+							long difference = System.currentTimeMillis() - ufBean.formUser.getTokenExpiryDate().getTime();
+
+							if (difference <= expiryDuration)
+							{
+								ufBean.formAction = EFormAction.valueOf(tokenInfo[2]);
+								ufBean.authorities = OAuth2UserDetails.translate(ufBean.formUser);
+								return ufBean;
+							}
+							else
+							{
+								ufBean.formAction = EFormAction.TokenExpired;
+								return ufBean;
+							}
 						}
 					}
-				}
-				else if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.user.getUserPwd()))
-				{
-					ufBean.messageCode = EFormAction.PasswordChanged.name();
-					return ufBean;
+					throw new InvalidKeyException(USER_TOKEN_KEY_EXPIRED);
 				}
 			}
-			throw new InvalidKeyException(USER_TOKEN_KEY_NOT_EXISTS);
+			throw new InvalidKeyException(USER_TOKEN_KEY_NOT_AVAILABLE_IN_REQUEST);
 		}
 
-		private String decodeToken(String tokenKey)
-		{
-			tokenKey = new StringBuffer(tokenKey).reverse().toString();
-			return new String(Base64.decodeBase64(tokenKey));
-
-		}
-
-		public EFormAction getTokenAction(String tokenKey)
-		{
-			tokenKey = decodeToken(tokenKey);
-			String token[] = tokenKey.split(HASH);
-			if (token.length > 2)
-			{
-				return EFormAction.valueOf(token[2]);
-			}
-			throw new InvalidKeyException(USER_TOKEN_KEY_NOT_EXISTS);
-		}
 	}
 }

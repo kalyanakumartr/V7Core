@@ -66,7 +66,7 @@ public class Users extends CommonUsers
 		this.byUser = byUser;
 	}
 
-	public void createdUserProducerInfo(Authentication auth)
+	public void createdUserAndProducerInfo(Authentication auth)
 	{
 		this.byUser.createdUser = EAuth.User.getUser(auth);
 		this.createdDate = new Timestamp(System.currentTimeMillis());
@@ -78,8 +78,21 @@ public class Users extends CommonUsers
 
 	public void modifiedUserInfo(Authentication auth)
 	{
-		this.byUser.modifiedUser = EAuth.User.getUser(auth);
+		if (auth == null)
+			this.byUser.modifiedUser = this; // Self update any personal details / password change
+		else
+			this.byUser.modifiedUser = EAuth.User.getUser(auth);
 		this.modifiedDate = new Timestamp(System.currentTimeMillis());
+	}
+
+	public void updateDisplayInfoOfProducersAndDateTime()
+	{
+		this.producerId = this.producer.getProducerId();
+		this.producerName = this.producer.getProducerName();
+		this.parentProducerId = this.parentProducer.getProducerId();
+		this.parentProducerName = this.parentProducer.getProducerName();
+		createdDateByTimeZone();
+		modifiedDateByTimeZone();
 	}
 
 	@Override

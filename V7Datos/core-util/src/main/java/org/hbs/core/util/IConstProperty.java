@@ -60,7 +60,8 @@ public interface IConstProperty extends Serializable
 		YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd hh:mm:ss"), //
 		YYYY_MM_DD_HH_MM_SS_24("yyyy-MM-dd HH:mm:ss"), //
 		YYYY_MM_DD_HH_MM_SS_SSS("yyyy-MM-dd hh:mm:ss.SSS"), //
-		YYYY_MM_DD_HH_MM_SS_SSS_24("yyyy-MM-dd HH:mm:ss.SSS"), YYYY_MM_DD_HH_MM_SS_SSS_24_TZ("yyyy-MM-ddTHH:mm:ss.SSS");
+		YYYY_MM_DD_HH_MM_SS_SSS_24("yyyy-MM-dd HH:mm:ss.SSS"), //
+		YYYY_MM_DD_HH_MM_SS_SSS_24_TZ("yyyy-MM-ddTHH:mm:ss.SSS");
 
 		String format;
 
@@ -179,7 +180,7 @@ public interface IConstProperty extends Serializable
 			return "";
 		}
 
-		public String enclose(Object[] dataArr)
+		public String enclose(Object... dataArr)
 		{
 			String dataQt = "";
 			if (CommonValidator.isNotNullNotEmpty(dataArr))
@@ -200,7 +201,7 @@ public interface IConstProperty extends Serializable
 			return dataQt;
 		}
 
-		public String append(Object[] dataArr)
+		public String append(Object... dataArr)
 		{
 			String dataQt = "";
 			if (CommonValidator.isNotNullNotEmpty(dataArr))

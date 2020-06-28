@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements O
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()//
 				.csrf().disable()//
 				.authorizeRequests()//
-				.antMatchers("/oauth/token").permitAll()//
+				.antMatchers(OAUTH_TOKEN).permitAll()//
 				.anyRequest().authenticated().and()//
 				.httpBasic().realmName(REALM);
 		// @formatter:on
