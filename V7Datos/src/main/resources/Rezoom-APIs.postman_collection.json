@@ -528,6 +528,162 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "forgotPasswordLink",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"searchParam\":\"ananth.malbal@gmail.com\",\r\n\t\"media\":\"Email\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/forgotPassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"forgotPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdatePassword",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"messageCode\":null,\r\n   \"formAction\":\"ForgotPassword\",\r\n   \"media\":\"Email\",\r\n   \"newPassword\":\"Test\",\r\n   \"oldPassword\":\"test\",\r\n   \"userId\":null,\r\n   \"emailId\":\"ananth.malbal@gmail.com\",\r\n   \"mobileNo\":null,\r\n   \"$OTPPrefix\":null,\r\n   \"$OTP\":null,\r\n   \"$passwordToken\":\"$2a$10$rAb5yjDv1MIKjc5WotXzc.DJvb/t6aF8DoXYGUkySvLaXn.NSAFlK\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/updatePassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"updatePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generateOTP",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"messageCode\":null,\r\n   \"formAction\":\"OTP_Generate\",\r\n   \"media\":\"SMS\",\r\n   \"newPassword\":null,\r\n   \"oldPassword\":null,\r\n   \"userId\":null,\r\n   \"emailId\":null,\r\n   \"mobileNo\":\"9677101112\",\r\n   \"$OTPPrefix\":null,\r\n   \"$OTP\":null,\r\n   \"$passwordToken\":null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/generateOTP",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"generateOTP"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateOTP",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"messageCode\": \"user.sms.otp.generate.successfully\",\r\n    \"formAction\": \"OTP_Generate\",\r\n    \"media\": \"SMS\",\r\n    \"userId\": \"Ananth-Id\",\r\n    \"mobileNo\": \"9677101112\",\r\n    \"$OTPPrefix\": \"LAJ\",\r\n    \"$OTP\": \"043121\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8100/core-admin/validateOTP",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8100",
+					"path": [
+						"core-admin",
+						"validateOTP"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
