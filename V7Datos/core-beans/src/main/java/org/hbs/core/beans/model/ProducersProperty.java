@@ -141,7 +141,9 @@ public class ProducersProperty extends ProducersBase implements IProducersProper
 	public IConfiguration getPropertyAsConfiguration() throws ClassNotFoundException
 	{
 		Class<IConfiguration> clazz = (Class<IConfiguration>) Class.forName(property);
-		return new Gson().fromJson(value, clazz);
+		IConfiguration config = new Gson().fromJson(value, clazz);
+		config.setConnectionId(this.autoId);
+		return config;
 	}
 
 	@Column(name = "value")

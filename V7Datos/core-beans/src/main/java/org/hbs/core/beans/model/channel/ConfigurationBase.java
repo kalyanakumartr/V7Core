@@ -16,6 +16,7 @@ public abstract class ConfigurationBase implements IConfiguration
 
 	private Map<String, String>	additionalProperties	= new LinkedHashMap<String, String>();
 	private String				producerId;
+	private String				connectionId;
 	public EReadBy				startDate				= EReadBy._15_Minutes;
 	public EReadBy				readEvery				= EReadBy._5_Minutes;
 	public boolean				reverseStart			= true;
@@ -114,6 +115,16 @@ public abstract class ConfigurationBase implements IConfiguration
 	public void setReverseStart(boolean reverseStart)
 	{
 		this.reverseStart = reverseStart;
+	}
+
+	public String getConnectionId()
+	{
+		return connectionId;
+	}
+
+	public void setConnectionId(String connectionId)
+	{
+		this.connectionId = connectionId;
 	}
 
 }

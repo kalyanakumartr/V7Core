@@ -114,6 +114,10 @@ public class PasswordController implements IPasswordController
 			if (CommonValidator.isNotNullNotEmpty(token))
 			{
 				token = new StringBuffer(token).reverse().toString();
+				if (token.trim().startsWith(DOUBLE_EQUAL_TO))
+				{
+					token = token.substring(2) + DOUBLE_EQUAL_TO;
+				}
 				String tokenInfo[] = new String(Base64.decodeBase64(token)).split(HASH);
 
 				if (CommonValidator.isArrayFirstNotNull(tokenInfo) && tokenInfo.length == 3)

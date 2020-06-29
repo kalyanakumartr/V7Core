@@ -11,7 +11,6 @@ import java.nio.file.StandardCopyOption;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -34,13 +33,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.google.gson.Gson;
 
 @Component
 public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo, IConstProperty
@@ -80,32 +76,6 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 		return attachmentURLs;
 	}
 
-	private JavaMailSender createEmailSender(IMessages message) throws CustomException
-	{
-		if (CommonValidator.isNotNullNotEmpty(message.getConfiguration()))
-		{
-			ConfigurationEmail configuration = (ConfigurationEmail) message.getConfiguration();
-			if (CommonValidator.isNotNullNotEmpty(configuration.getFromId(), message.getRecipients()))
-			{
-				JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-				mailSender.setHost(configuration.getHostAddress());
-				mailSender.setPort(Integer.parseInt(configuration.getPort()));
-				mailSender.setUsername(configuration.getUserName());
-				mailSender.setPassword(configuration.getPassword());
-				Properties props = mailSender.getJavaMailProperties();
-
-				for (String key : configuration.getAdditionalProperties().keySet())
-				{
-					props.put(key, configuration.getAdditionalProperties().get(key));
-				}
-
-				return mailSender;
-			}
-		}
-		logger.error("JavaMailSender createEmailSender Object : " + new Gson().toJson(message));
-		throw new CustomException("Email Sender or Receiver emailId id not available.");
-	}
-
 	private JavaMailSender getConfigurationAndCreateEmailSender(Authentication auth, String token, IMessages message) throws Exception
 	{
 		if (CommonValidator.isNotNullNotEmpty(token, message))
@@ -114,14 +84,14 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 			if (CommonValidator.isNotNullNotEmpty(configuration))
 			{
 				message.setConfiguration(configuration);
-				return createEmailSender(message);
+				return ConfigurationHandler.getInstance().createEmailSender(message);
 			}
 
 			configuration = configurationBo.getConfigurationByType(auth, EMedia.Email, EMediaType.Secondary, EMediaMode.Internal);
 			if (CommonValidator.isNotNullNotEmpty(configuration))
 			{
 				message.setConfiguration(configuration);
-				return createEmailSender(message);
+				return ConfigurationHandler.getInstance().createEmailSender(message);
 			}
 
 			throw new CustomException("Email Configuration NOT found for given id : ");
@@ -202,7 +172,7 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 	public EMessageStatus sendEmailByMessage(IMessages message) throws MessagingException, IOException, CustomException
 	{
 		// Configuration exists inside message
-		return sendMimeMessage(message, createEmailSender(message));
+		return sendMimeMessage(message, ConfigurationHandler.getInstance().createEmailSender(message));
 	}
 
 	@Override

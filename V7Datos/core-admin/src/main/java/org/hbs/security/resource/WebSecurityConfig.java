@@ -13,7 +13,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
 	@Override
 	public void configure(WebSecurity web) throws Exception
 	{
-		web.ignoring().mvcMatchers(FORGOT_PASSWORD, VALIDATE_USER_BASE + SLASH_STARS, CHANGE_PASSWORD_BASE + SLASH_STARS, UPDATE_PASSWORD, GENERATE_OTP, VALIDATE_OTP);
+		web.ignoring().mvcMatchers(SWAGGER_UI, FORGOT_PASSWORD, VALIDATE_USER_BASE + SLASH_STARS, CHANGE_PASSWORD_BASE + SLASH_STARS, UPDATE_PASSWORD, GENERATE_OTP, VALIDATE_OTP);
 	}
 
 }

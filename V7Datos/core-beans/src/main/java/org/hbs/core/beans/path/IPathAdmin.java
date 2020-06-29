@@ -11,13 +11,14 @@ import org.hbs.core.beans.model.Users;
 import org.hbs.core.dao.UserDao;
 import org.hbs.core.security.resource.EnumResourceInterface;
 import org.hbs.core.security.resource.IPath;
-import org.hbs.core.security.resource.OAuth2UserDetails;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 
 public interface IPathAdmin extends IPath, IErrorAdmin
 {
 	public String	LOGIN						= "/login";
+	public String	SWAGGER_UI					= "/swagger-ui.html";
+	public String	SWAGGER_WEBJARS				= "/webjars/**";
 	public String	ERROR404					= "/404Error";
 	public String	ERROR500					= "/500Error";
 
@@ -179,6 +180,10 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 			user.setTokenExpiryDate(new Timestamp(System.currentTimeMillis()));
 			user.setUserPwdModFlag(false);
 			tokenKey = Base64.encodeBase64String((user.getPrimaryMedia().getEmailId() + HASH + user.getToken() + HASH + eFormAction.name()).getBytes());
+			if(tokenKey.trim().endsWith(DOUBLE_EQUAL_TO))
+			{
+				tokenKey = DOUBLE_EQUAL_TO + tokenKey.substring(0, tokenKey.indexOf(DOUBLE_EQUAL_TO));
+			}
 			StringBuffer tokenURL = new StringBuffer();
 			tokenURL.append(VALIDATE_USER_BASE + SLASH);
 			tokenURL.append(new StringBuffer(tokenKey).reverse());
@@ -190,6 +195,11 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 			UserFormBean ufBean = new UserFormBean();
 
 			tokenKey = new StringBuffer(tokenKey).reverse().toString();
+			if(tokenKey.trim().startsWith(DOUBLE_EQUAL_TO))
+			{
+				tokenKey = tokenKey.substring(2) + DOUBLE_EQUAL_TO;
+			}
+			
 			String tokenInfo[] = new String(Base64.decodeBase64(tokenKey)).split(HASH);
 
 			if (CommonValidator.isArrayFirstNotNull(tokenInfo) && tokenInfo.length == 3)
@@ -208,7 +218,6 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 							if (difference <= expiryDuration)
 							{
 								ufBean.formAction = EFormAction.valueOf(tokenInfo[2]);
-								ufBean.authorities = OAuth2UserDetails.translate(ufBean.formUser);
 								return ufBean;
 							}
 							else

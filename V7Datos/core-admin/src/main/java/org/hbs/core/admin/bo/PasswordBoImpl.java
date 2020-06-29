@@ -108,7 +108,7 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 			pfBean.messageCode = PASSWORD_STRENGTH_FAILURE;
 			return EReturn.Failure;
 		}
-		else if (new BCryptPasswordEncoder().matches(pfBean.newPassword, ufBean.user.getUserPwd()))
+		else if (pfBean.formAction == EFormAction.ChangePassword && new BCryptPasswordEncoder().matches(pfBean.newPassword, ufBean.user.getUserPwd()))
 		{
 			pfBean.messageCode = PASSWORD_SAME_AS_OLD_PASSWORD;
 			return EReturn.Failure;

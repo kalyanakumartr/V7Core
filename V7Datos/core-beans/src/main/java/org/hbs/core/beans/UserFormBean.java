@@ -1,35 +1,29 @@
 package org.hbs.core.beans;
 
-import java.util.Collection;
-
 import org.hbs.core.beans.model.Users;
 import org.hbs.core.security.resource.IPathBase.EFormAction;
 import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.util.CommonValidator;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
 public class UserFormBean extends APIStatus
 {
-	private static final long						serialVersionUID	= 1452795795821759203L;
+	private static final long	serialVersionUID	= 1452795795821759203L;
 
-	public String									country;
-	public String									emailId;
-	public String									media				= EMedia.Email.name();
-	public String									roleName;
-	public String									searchParam;
-	public String									state;
-	public String									tokenURL;
-	public Users									formUser;
-	public Users									user;
-	public EFormAction								formAction			= EFormAction.Default;
-	@JsonIgnore
-	public Collection<? extends GrantedAuthority>	authorities;
+	public String				country;
+	public String				emailId;
+	public String				media;
+	public String				roleName;
+	public String				searchParam;
+	public String				state;
+	public String				tokenURL;
+	public Users				formUser;
+	public Users				user;
+	public EFormAction			formAction;
 
 	public UserFormBean()
 	{
@@ -71,7 +65,6 @@ public class UserFormBean extends APIStatus
 	@Override
 	public void clearForm()
 	{
-		this.authorities = null;
 		this.country = null;
 		this.emailId = null;
 		this.formUser = null;

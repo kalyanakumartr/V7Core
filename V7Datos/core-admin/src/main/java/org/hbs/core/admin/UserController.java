@@ -234,7 +234,7 @@ public class UserController implements IUserController
 		}
 		catch (Exception excep)
 		{
-			ufBean.formUser = null;
+			ufBean.clearForm();
 			ufBean.messageCode = ACTIVATION_LINK_SENT_FAILED;
 			// logger.error("Exception in UserController resendActivationLink ::: ", e);
 			return new ResponseEntity<>(ufBean, HttpStatus.BAD_REQUEST);

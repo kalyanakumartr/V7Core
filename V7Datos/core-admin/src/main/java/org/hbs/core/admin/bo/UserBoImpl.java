@@ -53,7 +53,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 				// logger.info("Inside UserBoImpl blockUser ::: ", ufBean.user.getUserId());
 				ufBean.user.setStatus(!ufBean.formUser.getStatus());// Negate Current Status
 				userDao.save(ufBean.user);
-
+				ufBean.clearForm();
 				ufBean.messageCode = USER_BLOCKED_SUCCESSFULLY;
 				return EReturn.Success;
 			}
@@ -71,6 +71,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	{
 		// logger.info("Inside UserBoImpl deleteUser ::: ", ufBean.user.getUserId());
 		userDao.deleteById(ufBean.formUser.getUserId());
+		ufBean.clearForm();
 		return EReturn.Success;
 	}
 
@@ -163,18 +164,13 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 						gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Employee, ufBean);
 						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
 						// ETemplate.Create_User_Employee_SMS, ufBean);
-
+						ufBean.clearForm();
 						ufBean.messageCode = USER_CREATED_SUCCESSFULLY;
 						return EReturn.Success;
 					}
 					catch (Exception ex)
 					{
 						ex.printStackTrace();
-					}
-					finally
-					{
-						ufBean.tokenURL = null;
-						ufBean.formUser = null;
 					}
 				}
 				throw new InvalidKeyException(USER_TOKEN_KEY_GENERATE_ISSUE);
@@ -209,21 +205,13 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 	{
 		if (isRecentlyUpdated(auth, ufBean))
 		{
-			try
-			{
-				// logger.info("UserBoImpl updateUser starts ::: ");
-				ufBean.updateRepoUser(auth);
-				userDao.save(ufBean.user);
-
-				ufBean.messageCode = USER_UPDATED_SUCCESSFULLY;
-				// logger.info("UserBoImpl updateUser ends ::: ");
-				return EReturn.Success;
-			}
-			finally
-			{
-				ufBean.tokenURL = null;
-				ufBean.formUser = null;
-			}
+			// logger.info("UserBoImpl updateUser starts ::: ");
+			ufBean.updateRepoUser(auth);
+			userDao.save(ufBean.user);
+			ufBean.clearForm();
+			ufBean.messageCode = USER_UPDATED_SUCCESSFULLY;
+			// logger.info("UserBoImpl updateUser ends ::: ");
+			return EReturn.Success;
 		}
 		throw new InvalidRequestException(USER_DATA_UPDATED_RECENTLY);
 	}
@@ -244,7 +232,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 			// ETemplate.Create_User_Employee, ufBean);
 			// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
 			// ETemplate.Create_User_Employee_SMS, ufBean);
-
+			ufBean.clearForm();
 			ufBean.messageCode = ACTIVATION_LINK_SENT_SUCCESSFULLY;
 			return EReturn.Success;
 		}
