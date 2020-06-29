@@ -70,11 +70,6 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>19.0</version>
-		</dependency>
-		<dependency>
 			<groupId>V7Datos</groupId>
 			<artifactId>core-beans</artifactId>
 			<version>${project.version}</version>

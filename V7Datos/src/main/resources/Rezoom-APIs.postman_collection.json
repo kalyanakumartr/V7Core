@@ -55,7 +55,7 @@
 						},
 						{
 							"key": "password",
-							"value": "test",
+							"value": "Test@123",
 							"type": "text"
 						}
 					]
@@ -307,7 +307,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImV4cCI6MTU4NTIwMjAxMSwiYXV0aG9yaXRpZXMiOlsiRU1QTE9ZRUUiLCJBRE1JTiJdLCJqdGkiOiI1MDgwYWYxNC0wNWQ5LTQ0ZDEtODkwYy01YmVkZGExNjMwNzMiLCJjbGllbnRfaWQiOiJIQlNBUFBMSUNBVElPTiJ9.wfO4uKdTUmXue1s_8Ng8882uMxb6XDWR9IB0iohULWo",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnRQcm9kdWNlck5hbWUiOiJSZXpvb20gQWRtaW4iLCJ1c2VyX25hbWUiOiJBbmFudGgtSWQiLCJwcm9kdWNlck5hbWUiOiJSZXpvb20gQWRtaW4iLCJ1c2VyRnVsbE5hbWUiOiJCYWxhc3VicmFtYW5pYW4sIEFuYW50aCIsImVtcGxveWVlSWQiOiJVU1IxNTEzNDM4MDI0Nzk5IiwidXNlck5hbWUiOiJBbmFudGgtSWQiLCJhdXRob3JpdGllcyI6WyJFTVBMT1lFRSIsIkFETUlOIl0sImNvdW50cnlJZCI6IkFzaWEvS29sa2F0YSIsImNsaWVudF9pZCI6IkhCU0FQUExJQ0FUSU9OIiwicGFyZW50UHJvZHVjZXJJZCI6IlBSRDAwMDAwMSIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsInRydXN0Il0sInByb2R1Y2VySWQiOiJQUkQwMDAwMDEiLCJleHAiOjE1OTU5NDkwMjgsImp0aSI6IjViYmEyNzMzLTNkMDMtNGFkNS1hNTUxLWE4MjJiYmJlOGJkNyJ9.uDZ-yH02k9lDpdS-WqMAY0n0qnWg4Rl_xqtP-9Vcpw4",
 							"type": "string"
 						}
 					]
