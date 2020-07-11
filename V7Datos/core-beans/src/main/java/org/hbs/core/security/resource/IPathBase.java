@@ -1,45 +1,24 @@
 package org.hbs.core.security.resource;
 
+import org.hbs.core.kafka.KAFKAPartition;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.IConstProperty;
 
 public interface IPathBase extends IConstProperty
 {
-	public String	INTERNAL_TOPIC		= "InternalTopic";
-	public String	EXTERNAL_TOPIC		= "ExternalTopic";
-	public String	ATTACHMENT_TOPIC	= "AttachmentTopic";
-	public String	EMAIL				= "Email";
-	public String	SMS					= "SMS";
-
-	public enum ETopic implements EnumInterface
-	{
-		Internal(INTERNAL_TOPIC), External(EXTERNAL_TOPIC), Attachment(ATTACHMENT_TOPIC);
-
-		String topic;
-
-		ETopic(String topic)
-		{
-			this.topic = topic;
-		}
-
-		public String getTopic()
-		{
-			return this.topic;
-		}
-	}
-
 	public enum EFormAction implements EnumInterface
 	{
 		Default, Add, Update, Search, SoftDelete, PermanentDelete, ChangePassword, ForgotPassword, Verify, TokenExpired, OTP_Generate
 	}
 
-	public enum EMedia implements EnumInterface
+	public enum EMedia implements EnumInterface, KAFKAPartition
 	{
 		Email, SMS, WhatsApp, Manual, Web;
 
-		public String order()
+		@Override
+		public int getPartition()
 		{
-			return this.ordinal() + "";
+			return this.ordinal();
 		}
 	}
 

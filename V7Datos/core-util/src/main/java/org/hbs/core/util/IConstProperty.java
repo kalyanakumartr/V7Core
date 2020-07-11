@@ -19,6 +19,7 @@ public interface IConstProperty extends Serializable
 	public String	HASH			= "#";
 	public String	HYPHEN			= "-";
 	public String	SLASH			= "/";
+	public String	BACKSLASH		= "\\";
 	public String	FILE			= "file:";
 	public String	SLASH_STARS		= SLASH + "**";
 	public String	COMMA_SPACE		= ", ";
@@ -53,7 +54,7 @@ public interface IConstProperty extends Serializable
 		MM_DD_YYYY("MM-dd-yyyy"), //
 		MM_DD_YYYY_HH_MM("MM-dd-yyyy HH:mm"), //
 		MM_DD_YYYY_HH_MM_SS_AM_PM("MM-dd-yyyy hh:mm:ssa"), //
-		YYYYMMDD("yyyy MM dd"), //
+		YYYYMMDD("yyyyMMdd"), //
 		YYYY_MMM_DD("yyyy-MMM-dd"), //
 		YYYY_MM_DD("yyyy-MM-dd"), //
 		YYYY_MM_DD_HH_MM("yyyy-MM-dd hh:mm"), //
@@ -62,7 +63,8 @@ public interface IConstProperty extends Serializable
 		YYYY_MM_DD_HH_MM_SS_24("yyyy-MM-dd HH:mm:ss"), //
 		YYYY_MM_DD_HH_MM_SS_SSS("yyyy-MM-dd hh:mm:ss.SSS"), //
 		YYYY_MM_DD_HH_MM_SS_SSS_24("yyyy-MM-dd HH:mm:ss.SSS"), //
-		YYYY_MM_DD_HH_MM_SS_SSS_24_TZ("yyyy-MM-ddTHH:mm:ss.SSS");
+		YYYY_MM_DD_HH_MM_SS_SSS_24_TZ("yyyy-MM-ddTHH:mm:ss.SSS"), //
+		HHMM("HHmm");
 
 		String format;
 
@@ -155,7 +157,7 @@ public interface IConstProperty extends Serializable
 		{
 			if (data != null)
 			{
-				String encData = String.valueOf(data);
+				String encData = (data instanceof EnumInterface) ? ((EnumInterface) data).name() : String.valueOf(data);
 				if (eWrap.equals(""))
 				{
 					return Quote.eWrap + Percent.eWrap + encData.trim() + Percent.eWrap + Quote.eWrap;
@@ -187,7 +189,7 @@ public interface IConstProperty extends Serializable
 			if (CommonValidator.isNotNullNotEmpty(dataArr))
 			{
 				if (dataArr[0] instanceof String || dataArr[0] instanceof Integer || dataArr[0] instanceof Long || dataArr[0] instanceof Float || dataArr[0] instanceof Double
-						|| dataArr[0] instanceof Boolean)
+						|| dataArr[0] instanceof Boolean || dataArr[0] instanceof EnumInterface)
 				{
 					for (Object datum : dataArr)
 					{

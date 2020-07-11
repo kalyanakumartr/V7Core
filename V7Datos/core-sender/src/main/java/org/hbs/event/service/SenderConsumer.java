@@ -8,7 +8,9 @@ import javax.mail.MessagingException;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.V7Messages;
 import org.hbs.core.dao.MessageDao;
-import org.hbs.core.security.resource.IPath;
+import org.hbs.core.kafka.IKafkaConstants;
+import org.hbs.core.security.resource.IPathBase.EMediaMode;
+import org.hbs.core.security.resource.IPathBase.EMediaType;
 import org.hbs.core.util.CustomException;
 import org.hbs.sender.bo.EmailSenderBo;
 import org.hbs.sender.bo.SMSSenderBo;
@@ -23,7 +25,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class SenderConsumer implements IPath
+public class SenderConsumer implements IKafkaConstants
 {
 
 	@Autowired
@@ -38,7 +40,7 @@ public class SenderConsumer implements IPath
 	private static final long	serialVersionUID	= -3892033320967613405L;
 	// private final Logger logger = LoggerFactory.getLogger(SenderConsumer.class);
 
-	@KafkaListener(topicPartitions = @TopicPartition(topic = INTERNAL_TOPIC, partitions = { "0" }), groupId = EMPLOYEE_ID, clientIdPrefix = EMAIL)
+	@KafkaListener(topicPartitions = @TopicPartition(topic = INTERNAL_TOPIC, partitions = { "0" }), groupId = INTERNAL_GROUP, clientIdPrefix = EMAIL)
 	public void consumeEmail(@Payload String payload, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String messageId) throws IOException, MessagingException, CustomException, ClassNotFoundException
 	{
 		// logger.info("\n\n\n-----------------SenderConsumer------Starting--------------------------");
@@ -63,7 +65,7 @@ public class SenderConsumer implements IPath
 
 	}
 
-	@KafkaListener(topicPartitions = @TopicPartition(topic = INTERNAL_TOPIC, partitions = { "1" }), groupId = EMPLOYEE_ID, clientIdPrefix = SMS)
+	@KafkaListener(topicPartitions = @TopicPartition(topic = INTERNAL_TOPIC, partitions = { "1" }), groupId = INTERNAL_GROUP, clientIdPrefix = SMS)
 	public void consumeSMS(String message) throws IOException
 	{
 		System.out.println(String.format("#### -> consumeSMS message -> %s", message));

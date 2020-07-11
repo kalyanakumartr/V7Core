@@ -15,7 +15,7 @@ import org.hbs.core.util.IConstProperty;
 import org.hbs.core.util.LabelValueBean;
 import org.hbs.extractor.beans.model.resume.DataExtractorPattern;
 import org.hbs.extractor.beans.model.resume.DataExtractorPattern.RegExFor;
-import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
+import org.hbs.v7.extractor.bo.ExtractorBo;
 
 public abstract class DataExtractorMapHolder implements IConstProperty
 {

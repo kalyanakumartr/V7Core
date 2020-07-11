@@ -5,22 +5,21 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.v7.extractor.action.core.InBoxReaderScheduler;
-import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
+import org.hbs.v7.extractor.bo.ExtractorBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author AnanthMalBal
  */
-@Component
+@Service
 public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 {
 	private static final long	serialVersionUID	= 1958518665419239648L;
@@ -29,9 +28,6 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 
 	@Autowired
 	ExtractorBo					extractorBo;
-
-	@Autowired
-	GenericKafkaProducer		gKafkaProducer;
 
 	@Override
 	@Scheduled(fixedDelayString = "${channel.email.delay}")
@@ -42,8 +38,8 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 			if (!isRunning)
 			{
 				isRunning = true;
-				List<IConfiguration> configList = extractorBo.getConfigurationList(EMedia.Email, EMediaMode.Internal);
-				System.out.println("gKafkaProducer :" + gKafkaProducer);
+				List<IConfiguration> configList = extractorBo.getConfigurationList(EMedia.Email, EMediaMode.External);
+
 				if (CommonValidator.isListFirstNotEmpty(configList))
 				{
 					ExecutorService executor = Executors.newFixedThreadPool(configList.size());
@@ -59,7 +55,7 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 								try
 								{
 									System.out.println("Started By " + config.getFromId() + " at " + new Date());
-									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel(config, gKafkaProducer, extractorBo);
+									InBoxReaderEmailFactory.getInstance().reader(config).readDataFromChannel();
 								}
 								catch (Exception e)
 								{
@@ -77,16 +73,6 @@ public class InBoxReaderSchedulerEmail implements InBoxReaderScheduler
 					while ( !executor.isTerminated() )
 						;
 					System.out.println("Finished all threads");
-
-					try
-					{
-						Thread.sleep(10000);
-					}
-					catch (InterruptedException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 				}
 			}
 			else

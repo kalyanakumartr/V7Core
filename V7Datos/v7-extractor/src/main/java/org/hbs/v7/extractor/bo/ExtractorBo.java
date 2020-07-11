@@ -1,4 +1,4 @@
-package org.hbs.v7.extractor.extractor.bo;
+package org.hbs.v7.extractor.bo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,4 +15,6 @@ public interface ExtractorBo extends Serializable
 	long getLastEmailSentDate(String customerAccountMail);
 
 	List<DataExtractorPattern> getEmailExtractors(String producerId);
+
+	void updateProducerProperty(IConfiguration config) throws ClassNotFoundException;
 }

@@ -2,7 +2,9 @@ package org.hbs.core.beans.model.channel;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 
+import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 
 public class ConfigurationEmail extends ConfigurationBase
@@ -27,6 +29,21 @@ public class ConfigurationEmail extends ConfigurationBase
 	{
 		Gmail_IMAP, Gmail_Pop3, Gmail_SMTP;
 
+		ConfigurationEmail config;
+
+		public Properties getProperties()
+		{
+			Map<String, String[]> propMap = props();
+			Properties property = new Properties();
+			for (String key : propMap.keySet())
+			{
+				String[] $Props = propMap.get(key);
+				if (CommonValidator.isArrayFirstNotNull($Props))
+					property.put($Props[0], $Props[1]);
+			}
+			return property;
+		}
+
 		public Map<String, String[]> props()
 		{
 			Map<String, String[]> map = new LinkedHashMap<>();
@@ -34,18 +51,18 @@ public class ConfigurationEmail extends ConfigurationBase
 			{
 				case Gmail_IMAP :
 				{
-					map.put("SocketFactory", new String[] { "mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory" });
-					map.put("FallBack", new String[] { "mail.imap.socketFactory.fallback", "true,false" });
-					map.put("Enable SSL", new String[] { "mail.imap.ssl.enable", "true,false" });
-					map.put("TLS Encryption Type", new String[] { "mail.imap.starttls.enable", "true,false" });
+					map.put("SocketFactory", new String[] { "mail.imap.socketFactory.class", this.config == null ? "javax.net.ssl.SSLSocketFactory" : config.socketFactory });
+					map.put("FallBack", new String[] { "mail.imap.socketFactory.fallback", this.config == null ? "true,false" : config.fallBack });
+					map.put("Enable SSL", new String[] { "mail.imap.ssl.enable", this.config == null ? "true,false" : config.enablessl });
+					map.put("TLS Encryption Type", new String[] { "mail.imap.starttls.enable", this.config == null ? "true,false" : config.ttls });
 					map.put("Protocol", new String[] { "mail.store.protocol", "imaps" });
 					map.put("Hostname", new String[] { "mail.host", "imap.gmail.com" });
-					map.put("Port", new String[] { "mail.port", "587" });
+					map.put("Port", new String[] { "mail.port", this.config == null ? "587" : config.port });
 					map.put("UserName", null);
 					map.put("Password", null);
 					break;
 				}
-				case Gmail_Pop3 :
+				case Gmail_Pop3 : // Implement like above
 				{
 					map.put("SocketFactory", new String[] { "mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory" });
 					map.put("FallBack", new String[] { "mail.pop3.socketFactory.fallback", "true,false" });
@@ -58,7 +75,7 @@ public class ConfigurationEmail extends ConfigurationBase
 					map.put("Password", null);
 					break;
 				}
-				case Gmail_SMTP :
+				case Gmail_SMTP :// Implement like above
 				{
 					map.put("UserName", new String[] { "mail.smtp.user", "" });
 					map.put("Password", new String[] { "mail.smtp.password", "" });
@@ -207,6 +224,7 @@ public class ConfigurationEmail extends ConfigurationBase
 
 	public EmailChannel getSource()
 	{
+		source.config = this;
 		return source;
 	}
 

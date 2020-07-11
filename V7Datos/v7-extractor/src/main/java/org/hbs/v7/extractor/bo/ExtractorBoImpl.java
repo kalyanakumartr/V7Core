@@ -1,9 +1,10 @@
-package org.hbs.v7.extractor.extractor.bo;
+package org.hbs.v7.extractor.bo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hbs.core.beans.model.IConfiguration;
+import org.hbs.core.beans.model.ProducersProperty;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.core.beans.model.channel.ConfigurationSMS;
 import org.hbs.core.beans.model.channel.ConfigurationWeb;
@@ -79,18 +80,22 @@ public class ExtractorBoImpl implements ExtractorBo
 	@Override
 	public long getLastEmailSentDate(String producerId)
 	{
-		// List<Long> lastEmailSentDateList = incomingDao.getLastEmailSentDate(producerId, new
-		// PageRequest(0, 1));
-		// Long lastEmailSentDate = lastEmailSentDateList.size() > 0 ? lastEmailSentDateList.get(0)
-		// : 0;
-		return 0l;// !=null &&
-					// lastEmailSentDate.equals("")?Long.getLong(lastEmailSentDate):0;
+		Long dateTime = incomingDao.getLastEmailSentDate(producerId);
+		return dateTime == null ? 0L : dateTime;
 	}
 
 	@Override
 	public List<DataExtractorPattern> getEmailExtractors(String producerId)
 	{
 		return null;
+	}
+
+	@Override
+	public void updateProducerProperty(IConfiguration config) throws ClassNotFoundException
+	{
+		ProducersProperty _PP = producerPropertyDao.getProducerProperty(config.getProducerId(), EMedia.Email, EMediaMode.External);
+		_PP.updateValueAsJSON(config);
+		producerPropertyDao.save(_PP);
 	}
 
 }

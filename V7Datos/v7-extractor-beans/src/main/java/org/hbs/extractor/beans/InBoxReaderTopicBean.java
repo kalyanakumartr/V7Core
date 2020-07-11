@@ -1,4 +1,4 @@
-package org.hbs.extractor.event;
+package org.hbs.extractor.beans;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,7 +6,7 @@ import java.util.Date;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.springframework.messaging.MessagingException;
 
-public class KafkaEmailReferenceBean implements Serializable
+public class InBoxReaderTopicBean implements Serializable
 {
 
 	private static final long	serialVersionUID	= -6990780389417212191L;
@@ -14,7 +14,12 @@ public class KafkaEmailReferenceBean implements Serializable
 	public Date					sentDate;
 	public ConfigurationEmail	config;
 
-	public KafkaEmailReferenceBean(int messageNumber, Date sentDate, ConfigurationEmail config) throws MessagingException
+	public InBoxReaderTopicBean()
+	{
+
+	}
+
+	public InBoxReaderTopicBean(int messageNumber, Date sentDate, ConfigurationEmail config) throws MessagingException
 	{
 		super();
 		this.messageNumber = messageNumber;

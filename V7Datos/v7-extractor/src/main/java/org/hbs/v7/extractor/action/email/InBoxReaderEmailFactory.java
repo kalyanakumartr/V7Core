@@ -4,14 +4,21 @@ import java.io.Serializable;
 
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.v7.extractor.action.core.InBoxReader;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class InBoxReaderEmailFactory implements Serializable
 {
 	private static final long				serialVersionUID	= 4519947259430658342L;
 
 	private static InBoxReaderEmailFactory	readerFactory		= null;
+
+	@Autowired
+	InBoxReaderPop3							$InBoxReaderPop3;
+
+	@Autowired
+	InBoxReaderIMAP							$InBoxReaderIMAP;
 
 	private InBoxReaderEmailFactory()
 	{
@@ -32,10 +39,12 @@ public class InBoxReaderEmailFactory implements Serializable
 		switch ( config.getSource() )
 		{
 			case Gmail_Pop3 :
-				return new InBoxReaderPop3();
+				$InBoxReaderPop3.config = config;
+				return $InBoxReaderPop3;
 			case Gmail_IMAP :
 			default :
-				return new InBoxReaderIMAP();
+				$InBoxReaderIMAP.config = config;
+				return $InBoxReaderIMAP;
 
 		}
 	}

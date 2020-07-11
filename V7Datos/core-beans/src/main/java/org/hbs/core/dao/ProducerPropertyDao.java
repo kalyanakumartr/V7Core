@@ -16,4 +16,7 @@ public interface ProducerPropertyDao extends JpaRepository<ProducersProperty, St
 
 	@Query("Select PP.producer.producerId, PP.value From ProducersProperty PP where PP.status = true and PP.media = :eMedia and PP.mediaMode = :eMediaMode")
 	public List<Object[]> getProperty(@Param("eMedia") EMedia eMedia, @Param("eMediaMode") EMediaMode eMediaMode);
+
+	@Query("Select PP From ProducersProperty PP where PP.producer.producerId = :producerId AND PP.status = true and PP.media = :eMedia and PP.mediaMode = :eMediaMode")
+	public ProducersProperty getProducerProperty(@Param("producerId") String producerId, @Param("eMedia") EMedia eMedia, @Param("eMediaMode") EMediaMode eMediaMode);
 }

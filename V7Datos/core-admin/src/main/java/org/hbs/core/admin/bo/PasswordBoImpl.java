@@ -5,13 +5,14 @@ import java.sql.Timestamp;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.IUsersBase.EUserStatus;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.dao.UserDao;
+import org.hbs.core.kafka.GenericKafkaProducer;
+import org.hbs.core.kafka.IKafkaConstants.ETopic;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory;
@@ -129,7 +130,7 @@ public class PasswordBoImpl implements PasswordBo, IErrorAdmin, IPathAdmin
 				userDao.save(ufBean.user);
 				if (CommonValidator.isNotNullNotEmpty(ufBean.user, ufBean.tokenURL))
 				{
-					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.User_Reset_Password, ufBean);
+					gKafkaProducer.send(ETopic.Internal, EMedia.Email, ETemplate.User_Reset_Password, ufBean);
 
 					ufBean.messageCode = FORGOT_PASSWORD_EMAIL_SENT_SUCCESSFULLY;
 				}

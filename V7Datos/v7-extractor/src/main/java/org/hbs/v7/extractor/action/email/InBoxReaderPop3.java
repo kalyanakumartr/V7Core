@@ -1,16 +1,16 @@
 package org.hbs.v7.extractor.action.email;
 
-import org.hbs.core.beans.GenericKafkaProducer;
-import org.hbs.core.beans.model.IConfiguration;
-import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
+import org.hbs.v7.extractor.action.core.InBoxReader;
+import org.springframework.stereotype.Service;
 
-public class InBoxReaderPop3 extends InBoxReaderBase
+@Service
+public class InBoxReaderPop3 extends InBoxReaderBaseImpl implements InBoxReader
 {
 
 	private static final long serialVersionUID = 4813150068221933347L;
 
 	@Override
-	public void readDataFromChannel(IConfiguration config, GenericKafkaProducer gKafkaProducer, ExtractorBo extractorBo)
+	public void readDataFromChannel()
 	{
 
 	}

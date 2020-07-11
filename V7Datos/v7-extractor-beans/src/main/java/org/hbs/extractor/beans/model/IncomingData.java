@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,12 +25,36 @@ import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.util.EBusinessKey;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ICRUDBean;
+import org.hbs.core.util.IConstProperty;
 import org.hbs.extractor.beans.model.resume.CustomerProducer;
 
 @Entity
 @Table(name = "resume_incoming_data")
-public class IncomingData implements ICRUDBean, EBusinessKey
+public class IncomingData implements ICRUDBean, EBusinessKey, IConstProperty
 {
+	public enum EExtension implements EnumInterface
+	{
+		// RAR we are not supporting due to 3rd party license
+		Invalid, Zip, _7z, Doc, Docx, ODT, XLS, XLSX, PDF, HTML, HTM, Json, Csv;
+
+		public static EExtension isValid(String fileName)
+		{
+			if (fileName.indexOf(DOT) > 0)
+			{
+				for (EExtension EE : EExtension.values())
+				{
+					if (EE.name().toLowerCase().endsWith(fileName.substring(fileName.lastIndexOf(DOT) + 1).toLowerCase()))
+						return EE;
+				}
+			}
+			return EExtension.Invalid;
+		}
+
+		public static String format()
+		{
+			return EWrap.Brace.enclose((Object[]) EExtension.values());
+		}
+	}
 
 	public enum EIncomingStatus implements EnumInterface
 	{
@@ -38,7 +64,6 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 	private static final long		serialVersionUID	= 8524114488133328911L;
 
 	protected String				incomingId;
-	protected String				_URN;
 	protected EMedia				media				= EMedia.Email;
 	protected String				candidateEmail;
 	protected String				subject				= "";
@@ -51,11 +76,52 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 	protected IProducers			producer;
 	protected ProducersProperty		producerProperty;
 	protected Timestamp				createdDate;
+	protected boolean				bulkAttachment		= false;
+	protected EMessagePriority		priority			= EMessagePriority.Normal;
 
 	public IncomingData()
 	{
 		super();
+	}
+
+	public IncomingData(Message message) throws MessagingException
+	{
+		super();
 		this.incomingId = getBusinessKey();
+		this.priority = EMessagePriority.getPriority(message);
+	}
+
+	public IncomingData(String incomingId, EMedia media, String candidateEmail, String subject, String description, Long sentTime, String uniqueId, String readerInstance,
+			EIncomingStatus incomingStatus, Set<DataAttachments> attachmentList, IProducers producer, ProducersProperty producerProperty, Timestamp createdDate, boolean bulkAttachment,
+			EMessagePriority priority)
+	{
+		super();
+		this.incomingId = incomingId;
+		this.media = media;
+		this.candidateEmail = candidateEmail;
+		this.subject = subject;
+		this.description = description;
+		this.sentTime = sentTime;
+		this.uniqueId = uniqueId;
+		this.readerInstance = readerInstance;
+		this.incomingStatus = incomingStatus;
+		this.attachmentList = attachmentList;
+		this.producer = producer;
+		this.producerProperty = producerProperty;
+		this.createdDate = createdDate;
+		this.bulkAttachment = bulkAttachment;
+		this.priority = priority;
+	}
+
+	@Transient
+	public EMessagePriority getPriority()
+	{
+		return priority;
+	}
+
+	public void setPriority(EMessagePriority priority)
+	{
+		this.priority = priority;
 	}
 
 	@OneToMany(targetEntity = DataAttachments.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, mappedBy = "incomingData")
@@ -148,6 +214,17 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 		return createdDate;
 	}
 
+	@Column(name = "bulkAttachment")
+	public boolean isBulkAttachment()
+	{
+		return bulkAttachment;
+	}
+
+	public void setBulkAttachment(boolean bulkAttachment)
+	{
+		this.bulkAttachment = bulkAttachment;
+	}
+
 	public void setProducerProperty(ProducersProperty producerProperty)
 	{
 		this.producerProperty = producerProperty;
@@ -206,17 +283,6 @@ public class IncomingData implements ICRUDBean, EBusinessKey
 	public void setIncomingId(String incomingId)
 	{
 		this.incomingId = incomingId;
-	}
-
-	@Column(name = "_URN")
-	public String get_URN()
-	{
-		return _URN;
-	}
-
-	public void set_URN(String _URN)
-	{
-		this._URN = _URN;
 	}
 
 	public void setCreatedDate(Timestamp createdDate)

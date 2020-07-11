@@ -133,6 +133,7 @@ public interface IPath extends IPathBase
 
 	public enum ETemplate implements EnumInterface
 	{
+		Default(001), //
 		Create_User_Admin(100), //
 		Create_User_Employee(110), //
 		User_Token(120), //

@@ -180,7 +180,7 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 			user.setTokenExpiryDate(new Timestamp(System.currentTimeMillis()));
 			user.setUserPwdModFlag(false);
 			tokenKey = Base64.encodeBase64String((user.getPrimaryMedia().getEmailId() + HASH + user.getToken() + HASH + eFormAction.name()).getBytes());
-			if(tokenKey.trim().endsWith(DOUBLE_EQUAL_TO))
+			if (tokenKey.trim().endsWith(DOUBLE_EQUAL_TO))
 			{
 				tokenKey = DOUBLE_EQUAL_TO + tokenKey.substring(0, tokenKey.indexOf(DOUBLE_EQUAL_TO));
 			}
@@ -195,11 +195,11 @@ public interface IPathAdmin extends IPath, IErrorAdmin
 			UserFormBean ufBean = new UserFormBean();
 
 			tokenKey = new StringBuffer(tokenKey).reverse().toString();
-			if(tokenKey.trim().startsWith(DOUBLE_EQUAL_TO))
+			if (tokenKey.trim().startsWith(DOUBLE_EQUAL_TO))
 			{
 				tokenKey = tokenKey.substring(2) + DOUBLE_EQUAL_TO;
 			}
-			
+
 			String tokenInfo[] = new String(Base64.decodeBase64(tokenKey)).split(HASH);
 
 			if (CommonValidator.isArrayFirstNotNull(tokenInfo) && tokenInfo.length == 3)

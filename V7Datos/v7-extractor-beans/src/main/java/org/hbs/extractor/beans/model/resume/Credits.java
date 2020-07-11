@@ -18,6 +18,8 @@ import org.hbs.core.util.EBusinessKey;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ICRUDBean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "resume_credits")
 public class Credits extends ProducersBase implements EBusinessKey, ICRUDBean
@@ -184,6 +186,8 @@ public class Credits extends ProducersBase implements EBusinessKey, ICRUDBean
 	}
 
 	@Override
+	@Transient
+	@JsonIgnore
 	public String getCountryTimeZone()
 	{
 		if (this.byUser.getCreatedUser() != null && this.byUser.getCreatedUser().getCountry().getCountry() != null && this.byUser.getModifiedUser() == null)

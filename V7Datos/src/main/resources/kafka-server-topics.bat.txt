@@ -1,0 +1,12 @@
+cls
+cd C:\kafka_2.12-2.3.1
+
+ECHO ">>>>>>>>>>> 3 Partitons  - 0 Email / 1 SMS / 2 WhatsApp"
+start .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic InternalTopic 
+
+ECHO ">>>>>>>>>>> 2 Partitons  - 0 Normal / 1 Expedite"
+start .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic MessageTopic
+
+
+ECHO ">>>>>>>>>>> 3 Partitons  - 0 Basic / 1 EmailExtract / 2 MobileNoExtract"
+start .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic DataExtractTopic

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.kafka.common.errors.InvalidRequestException;
-import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.IUsersMedia;
 import org.hbs.core.beans.model.Users;
@@ -13,6 +12,8 @@ import org.hbs.core.beans.model.UsersMedia;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.beans.path.IPathAdmin;
 import org.hbs.core.dao.SequenceDao;
+import org.hbs.core.kafka.GenericKafkaProducer;
+import org.hbs.core.kafka.IKafkaConstants.ETopic;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EnumInterface;
 import org.hbs.core.util.ServerUtilFactory;
@@ -160,8 +161,8 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 				{
 					try
 					{
-						gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Admin, ufBean);
-						gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Employee, ufBean);
+						gKafkaProducer.send(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Admin, ufBean);
+						gKafkaProducer.send(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Employee, ufBean);
 						// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,
 						// ETemplate.Create_User_Employee_SMS, ufBean);
 						ufBean.clearForm();
@@ -227,7 +228,7 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 			userDao.save(ufBean.user);
 
 			// Putting User Details in KAFKA Topics
-			gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Admin, ufBean);
+			gKafkaProducer.send(ETopic.Internal, EMedia.Email, ETemplate.Create_User_Admin, ufBean);
 			// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.Email,
 			// ETemplate.Create_User_Employee, ufBean);
 			// gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS,

@@ -11,4 +11,7 @@ public interface IConfiguration extends Serializable
 	public String getConnectionId();
 
 	public void setConnectionId(String connectionId);
+
+	public String getBaseFolderPath();
+
 }

@@ -2,154 +2,36 @@ package org.hbs.v7.extractor.action.email;
 
 import java.util.Date;
 
-import javax.mail.Folder;
-import javax.mail.FolderClosedException;
+import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Store;
 import javax.mail.search.AndTerm;
 import javax.mail.search.ComparisonTerm;
+import javax.mail.search.FlagTerm;
 import javax.mail.search.ReceivedDateTerm;
 import javax.mail.search.SearchTerm;
 
-import org.hbs.core.beans.GenericKafkaProducer;
-import org.hbs.core.beans.model.IConfiguration;
-import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.core.util.CommonValidator;
-import org.hbs.v7.extractor.extractor.bo.ExtractorBo;
+import org.hbs.core.util.CustomException;
+import org.hbs.v7.extractor.action.core.InBoxReader;
+import org.hbs.v7.extractor.bo.ExtractorBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.sun.mail.imap.IMAPFolder;
 
-@Component
-public class InBoxReaderIMAP extends InBoxReaderBase
+@Service
+public class InBoxReaderIMAP extends InBoxReaderIMAPBase implements InBoxReader
 {
 
 	private static final long	serialVersionUID	= 2521396768665593925L;
+
+	@Autowired
+	ExtractorBo					extractorBo;
+
 	private final Logger		logger				= LoggerFactory.getLogger(InBoxReaderIMAP.class);
-
-	@Override
-	public void readDataFromChannel(IConfiguration iConfig, GenericKafkaProducer gKafkaProducer, ExtractorBo extractorBo)
-	{
-
-		logger.info("Inside IMAP");
-		if (CommonValidator.isNotNullNotEmpty(iConfig))
-		{
-			ConfigurationEmail config = (ConfigurationEmail) iConfig;
-			this.gKafkaProducer = gKafkaProducer;
-			Store store = null;
-			IMAPFolder imapFolder = null;
-			try
-			{
-				store = authenticateMailAndConnect(config);
-
-				imapFolder = (IMAPFolder) store.getFolder("inbox");
-
-				// Open the Folder.
-				if (!imapFolder.isOpen())
-					imapFolder.open(Folder.READ_ONLY);
-
-				Date initDateTime = null, startTime = null, endTime = null;
-
-				SearchTerm searchTerm = createBaseSearchTerm();
-				ReceivedDateTerm minDateTerm, maxDateTerm = null;
-
-				endTime = new Date();
-				long lastDateTime = extractorBo.getLastEmailSentDate(config.getProducerId());
-				startTime = initDateTime = (lastDateTime == 0) ? imapFolder.getMessage(1).getReceivedDate() : new Date(lastDateTime);
-				if (config.reverseStart)
-				{
-					maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, endTime);
-					minDateTerm = new ReceivedDateTerm(ComparisonTerm.GE, startTime);
-					pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
-				}
-				else if (config.reverseStart)
-				{
-
-					while ( config.startDate.isReached(initDateTime, endTime) )
-					{
-						maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, startTime); // Going_Backward...
-
-						// endTime = config.readEvery.getReversedDate(startTime); //
-						// Reverse_Going_By_5_minutes_Default
-
-						minDateTerm = new ReceivedDateTerm(ComparisonTerm.GE, endTime);
-
-						pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
-
-						// startTime = endTime;
-					}
-				}
-				else
-				{
-					// Get the Last Received Mail Date from DB
-					lastDateTime = 0l;// extractorBo.getLastEmailSentDate(config.getFromId());
-					startTime = (lastDateTime == 0) ? new Date(System.currentTimeMillis() - config.readEvery.getDateTime()) : new Date(lastDateTime);
-					endTime = new Date();
-
-					do
-					{
-						minDateTerm = new ReceivedDateTerm(ComparisonTerm.GT, startTime);
-
-						maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, endTime);
-
-						startTime = config.readEvery.getForwardDate(startTime); // Forward_Going_By_5_minutes_Default
-
-						pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
-
-					}
-					while ( startTime.getTime() < endTime.getTime() );
-				}
-			}
-			catch (FolderClosedException excep)
-			{
-				logger.info("Folder Closed ");
-				excep.printStackTrace();
-			}
-			catch (MessagingException excep)
-			{
-				logger.info("Messaging Exception ");
-				excep.printStackTrace();
-			}
-			finally
-			{
-				try
-				{
-					try
-					{
-						Thread.sleep(100000);
-					}
-					catch (InterruptedException ie)
-					{
-					}
-					if (imapFolder != null && imapFolder.isOpen())
-					{
-						imapFolder.close(true);
-					}
-					if (store != null)
-					{
-						store.close();
-					}
-				}
-				catch (MessagingException e)
-				{
-					logger.info("Message Exception ");
-					e.printStackTrace();
-				}
-			}
-
-		}
-	}
-
-	private void pushToQueue(String producerId, IMAPFolder imapFolder, SearchTerm searchTerm, ReceivedDateTerm minDateTerm, ReceivedDateTerm maxDateTerm) throws MessagingException
-	{
-		searchTerm = new AndTerm(searchTerm, minDateTerm);
-		searchTerm = new AndTerm(searchTerm, maxDateTerm);
-
-		pushToQueue(producerId, imapFolder, (Message[]) imapFolder.search(searchTerm));
-	}
 
 	@SuppressWarnings("serial")
 	private SearchTerm createBaseSearchTerm()
@@ -161,8 +43,11 @@ public class InBoxReaderIMAP extends InBoxReaderBase
 			{
 				try
 				{
-					return message.isMimeType("multipart/mixed") || message.isMimeType("multipart/alternative") || message.isMimeType("multipart/related") || message.isMimeType("multipart/signed")
-							|| message.isMimeType("multipart/encrypted");
+					return (message.isMimeType(MULTIPART_MIXED) || //
+					message.isMimeType(MULTIPART_ALTERNATIVE) || //
+					message.isMimeType(MULTIPART_RELATED) || //
+					message.isMimeType(MULTIPART_SIGNED) || //
+					message.isMimeType(MULTIPART_ENCRYPTED));
 				}
 				catch (MessagingException e)
 				{
@@ -172,6 +57,99 @@ public class InBoxReaderIMAP extends InBoxReaderBase
 			}
 		};
 		return searchTerm;
+	}
+
+	private boolean pushToQueue(String producerId, IMAPFolder imapFolder, SearchTerm searchTerm, ReceivedDateTerm minDateTerm, ReceivedDateTerm maxDateTerm) throws MessagingException
+	{
+		searchTerm = new AndTerm(searchTerm, minDateTerm);
+		searchTerm = new AndTerm(searchTerm, maxDateTerm);
+		searchTerm = new AndTerm(searchTerm, new FlagTerm(new Flags(Flags.Flag.SEEN), false)); // Read-Only-UnRead-Messages
+
+		return pushToQueue(producerId, imapFolder, (Message[]) imapFolder.search(searchTerm));
+	}
+
+	@Override
+	public void readDataFromChannel() throws CustomException
+	{
+
+		if (CommonValidator.isNotNullNotEmpty(config))
+		{
+			try
+			{
+				IMAPFolder imapFolder = getIMAPFolder(EFolder.Inbox);
+
+				Date initDateTime = null, startTime = null, endTime = new Date();
+
+				SearchTerm searchTerm = createBaseSearchTerm();
+				ReceivedDateTerm minDateTerm, maxDateTerm = null;
+
+				long lastDateTime = extractorBo.getLastEmailSentDate(config.getProducerId());
+				startTime = initDateTime = (lastDateTime == 0) ? new Date() : new Date(lastDateTime);
+				if (config.reverseStart)
+				{
+					System.out.println(">>>>>>>>>>>>>>>>>>>>>Reverse Start Started<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+
+					// Trying Backwards and loading latest first
+
+					while ( config.startDate.isReached(initDateTime, endTime) )
+					{
+						maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, startTime); // Going_Backward...
+
+						endTime = config.readEvery.getReversedDate(startTime); //
+						// Reverse_Going_By_5_minutes_Default
+
+						minDateTerm = new ReceivedDateTerm(ComparisonTerm.GE, endTime);
+
+						pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
+
+						startTime = endTime;
+					}
+					config.reverseStart = false;
+					extractorBo.updateProducerProperty(config);
+					System.out.println(">>>>>>>>>>>>>>>>>>>>>Reverse Start Completed<<<<<<<<<<<<<<<<<<<<<<<<<<");
+				}
+				else
+				{
+					System.out.println(">>>>>>>>>>>>>>>>>>>>>Forward Start Started<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+					// Get the Last Received Mail Date from DB
+					// Start with 5 Minutes earlier
+					startTime = (lastDateTime == 0) ? new Date(System.currentTimeMillis() - config.readEvery.getDateTime()) : new Date(lastDateTime);
+					endTime = new Date();
+
+					do
+					{
+						minDateTerm = new ReceivedDateTerm(ComparisonTerm.GT, startTime);
+
+						maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, endTime);
+
+						pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
+
+						startTime = config.readEvery.getForwardDate(startTime); // Forward_Going_By_5_minutes_Default
+
+					}
+					while ( startTime.getTime() < endTime.getTime() );
+
+					System.out.println(">>>>>>>>>>>>>>>>>>>>>Forward Start Completed<<<<<<<<<<<<<<<<<<<<<<<<<<");
+				}
+			}
+			catch (MessagingException | ClassNotFoundException excep)
+			{
+				excep.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					Thread.sleep(10000);
+				}
+				catch (InterruptedException ie)
+				{
+				}
+				PersistantStoreHandler.getInstance().removeStore(this);
+			}
+		}
+		else
+			throw new CustomException("Configuration NOT available");
 	}
 
 }

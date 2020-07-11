@@ -146,6 +146,13 @@ public class ProducersProperty extends ProducersBase implements IProducersProper
 		return config;
 	}
 
+	@Transient
+	@JsonIgnore
+	public void updateValueAsJSON(IConfiguration config) throws ClassNotFoundException
+	{
+		this.value = new Gson().toJson(config);
+	}
+
 	@Column(name = "value")
 	public String getValue()
 	{

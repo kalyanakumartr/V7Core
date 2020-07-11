@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `city` (
   PRIMARY KEY (`city`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.city: ~17 rows (approximately)
+-- Dumping data for table rezoom.city: ~18 rows (approximately)
 DELETE FROM `city`;
 /*!40000 ALTER TABLE `city` DISABLE KEYS */;
 INSERT INTO `city` (`city`, `state`, `zipCode`, `status`) VALUES
@@ -612,7 +612,7 @@ CREATE TABLE IF NOT EXISTS `menurole` (
   CONSTRAINT `FK_mamenurole_producers` FOREIGN KEY (`producerId`) REFERENCES `producers` (`producerId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.menurole: ~0 rows (approximately)
+-- Dumping data for table rezoom.menurole: ~1 rows (approximately)
 DELETE FROM `menurole`;
 /*!40000 ALTER TABLE `menurole` DISABLE KEYS */;
 INSERT INTO `menurole` (`autoId`, `menuId`, `producerId`, `roleId`) VALUES
@@ -635,9 +635,14 @@ CREATE TABLE IF NOT EXISTS `messages` (
   PRIMARY KEY (`messageId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.messages: ~0 rows (approximately)
+-- Dumping data for table rezoom.messages: ~4 rows (approximately)
 DELETE FROM `messages`;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+INSERT INTO `messages` (`messageId`, `message`, `messageName`, `subject`, `media`, `producerId`, `dataMapTemplateName`, `createdDate`, `modifiedDate`, `status`, `textHTML`) VALUES
+	('Create_User_Admin', 'Hi ${user_producerName} <BR> <BR>  User ${user_userName} from ${user_country_countryName} has been created. Pls verify the user. <BR> Please click here <a href="${tokenURL}">Activation Link</a><BR><BR>By<BR> ${user_producerName}.', 'Create_User_Admin', 'Hi ${user_producerName} User Created Info Admin ', 'Email', 'PRD000001', NULL, '2020-01-01 00:00:00', '2020-01-01 00:00:00', b'1', b'1'),
+	('Create_User_Employee', 'Rezoom: Your Account has been created successfully', 'Create_User_Employee', 'User Created Info Employee', 'Email', 'PRD000001', NULL, '2020-01-01 00:00:00', '2020-01-01 00:00:00', b'1', b'1'),
+	('Create_User_Employee_SMS', 'Rezoom: Your Account has been created successfully', 'Create_User_Employee_SMS', 'User Created Info Employee SMS', 'SMS', 'PRD000001', NULL, '2020-01-01 00:00:00', '2020-01-01 00:00:00', b'1', b'1'),
+	('User_Reset_Password', 'Hi ${user_userName} <BR> <BR>  Pls click the link to reset the password. <BR> Please click here <a href="${tokenURL}">Password Reset Link</a><BR><BR>By<BR> ${user_producerName}.', 'Create_User_Employee', '[${user_userName}] Your Rezoom Account Password Reset Link', 'Email', 'PRD000001', NULL, '2020-01-01 00:00:00', '2020-01-01 00:00:00', b'1', b'1');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 
 -- Dumping structure for table rezoom.portlets
@@ -679,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `portletsroles` (
   PRIMARY KEY (`prAutoId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.portletsroles: ~0 rows (approximately)
+-- Dumping data for table rezoom.portletsroles: ~1 rows (approximately)
 DELETE FROM `portletsroles`;
 /*!40000 ALTER TABLE `portletsroles` DISABLE KEYS */;
 INSERT INTO `portletsroles` (`prAutoId`, `portletId`, `roleId`, `status`, `displayOrder`) VALUES
@@ -696,7 +701,7 @@ CREATE TABLE IF NOT EXISTS `portletsusers` (
   PRIMARY KEY (`ptAutoId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.portletsusers: ~0 rows (approximately)
+-- Dumping data for table rezoom.portletsusers: ~1 rows (approximately)
 DELETE FROM `portletsusers`;
 /*!40000 ALTER TABLE `portletsusers` DISABLE KEYS */;
 INSERT INTO `portletsusers` (`ptAutoId`, `displayOrder`, `status`, `employeeId`, `portletId`) VALUES
@@ -731,13 +736,13 @@ CREATE TABLE IF NOT EXISTS `producers` (
 DELETE FROM `producers`;
 /*!40000 ALTER TABLE `producers` DISABLE KEYS */;
 INSERT INTO `producers` (`producerId`, `producerType`, `producerName`, `pwdExpiryDays`, `domainContext`, `employeeId`, `createdBy`, `createdDate`, `modifiedDate`, `modifiedBy`, `status`, `primary`, `emailId`, `mobileNo`, `phoneNo`, `whatsAppNo`, `description`, `registrationDate`, `customerStatus`) VALUES
-	('PRD000001', 'Producer', 'EduTel Academy', '2017-08-02 07:33:06', '/edutel', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
-	('PRD000002', 'Producer', 'EduTel Tambaram', '2017-08-02 07:33:06', '/edutel', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
-	('PRD000003', 'Producer', 'EduTel Medavakkam', '2017-08-02 07:33:06', '/edutel', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
-	('PRD000004', 'Producer', 'EduTel Villivakkam', '2017-08-02 07:33:06', '/edutel', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
-	('PRD000005', 'Producer', 'EduTel Annanagar', '2017-08-02 07:33:06', '/edutel', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
-	('PRD000006', 'Producer', 'EduTel Madipakkam', '2017-08-02 07:33:06', '/edutel', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
-	('PRD000007', 'Producer', 'EduTel Vadapalani', '2017-08-02 07:33:06', '/edutel', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending');
+	('PRD000001', 'Producer', 'Rezoom Admin', '2017-08-02 07:33:06', '/rezoom', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
+	('PRD000002', 'Producer', 'Rezoom Tambaram', '2017-08-02 07:33:06', '/rezoom', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
+	('PRD000003', 'Producer', 'Rezoom Medavakkam', '2017-08-02 07:33:06', '/rezoom', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
+	('PRD000004', 'Producer', 'Rezoom Villivakkam', '2017-08-02 07:33:06', '/rezoom', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
+	('PRD000005', 'Producer', 'Rezoom Annanagar', '2017-08-02 07:33:06', '/rezoom', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
+	('PRD000006', 'Producer', 'Rezoom Madipakkam', '2017-08-02 07:33:06', '/rezoom', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending'),
+	('PRD000007', 'Producer', 'Rezoom Vadapalani', '2017-08-02 07:33:06', '/rezoom', 'PRDADM0001', 'PRDADM0001', '2020-01-01 00:00:00', '2020-01-01 00:00:00', 'PRDADM0001', b'1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'Pending');
 /*!40000 ALTER TABLE `producers` ENABLE KEYS */;
 
 -- Dumping structure for table rezoom.producersattachments
@@ -791,7 +796,7 @@ CREATE TABLE IF NOT EXISTS `producersproperty` (
   `producerId` varchar(50) NOT NULL,
   `groupName` varchar(50) NOT NULL,
   `enumKey` varchar(50) NOT NULL,
-  `property` varchar(50) NOT NULL,
+  `property` varchar(200) NOT NULL,
   `value` text NOT NULL,
   `status` bit(1) NOT NULL DEFAULT b'1',
   `createdBy` varchar(50) DEFAULT NULL,
@@ -805,23 +810,24 @@ CREATE TABLE IF NOT EXISTS `producersproperty` (
   PRIMARY KEY (`autoId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.producersproperty: ~0 rows (approximately)
+-- Dumping data for table rezoom.producersproperty: ~2 rows (approximately)
 DELETE FROM `producersproperty`;
 /*!40000 ALTER TABLE `producersproperty` DISABLE KEYS */;
 INSERT INTO `producersproperty` (`autoId`, `producerId`, `groupName`, `enumKey`, `property`, `value`, `status`, `createdBy`, `modifiedBy`, `createdDate`, `modifiedDate`, `comments`, `media`, `mediaMode`, `mediaType`) VALUES
-	('1', 'PRD000001', 'gmailimap', 'gmailimap', 'gmailImap', '{\r\n    "socketFactory": "javax.net.ssl.SSLSocketFactory",\r\n    "fallback": "true",\r\n    "enablessl": "true",\r\n    "ttls": "true",\r\n    "protocol": "imaps",\r\n    "hostAddress": "imap.gmail.com",\r\n    "port": "587",\r\n    "userName": "tamilselvan.k@gmail.com",\r\n    "fromId": "tamilselvan.k@gmail.com",\r\n    "fromName": "Tamilselvan K",\r\n    "password": "Tam$elva78",\r\n    "source": "Gmail_IMAP"\r\n}', b'1', NULL, NULL, '2019-12-07 10:35:43', '2019-12-07 10:35:46', NULL, 'Email', 'Internal', 'Primary');
+	('1', 'PRD000001', 'ConfigurationEmail', 'ConfigurationEmail', 'org.hbs.core.beans.model.channel.ConfigurationEmail', '{"protocol":"imaps","socketFactory":"javax.net.ssl.SSLSocketFactory","enablessl":"true","hostAddress":"imap.gmail.com","userName":"eselfguru@gmail.com","password":"Hbs@140213","port":"587","ttls":"true","fromId":"eselfguru@gmail.com","fromName":"Rezoom","source":"Gmail_IMAP","additionalProperties":{},"producerId":"PRD000001","baseFolderPath":"C:/Ananth/Rezoom_Attachments","startDate":"_3_Days","readEvery":"_5_Minutes","reverseStart":false}', b'1', NULL, NULL, '2019-12-07 10:35:43', '2019-12-07 10:35:46', NULL, 'Email', 'External', 'Primary'),
+	('2', 'PRD000001', 'ConfigurationEmail', 'ConfigurationEmail', 'org.hbs.core.beans.model.channel.ConfigurationEmail', '{\r\n   "socketFactory":"javax.net.ssl.SSLSocketFactory",\r\n   "hostAddress":"smtp.gmail.com",\r\n   "port":"587",\r\n   "userName":"anandb.hbs@gmail.com",\r\n   "fromId":"anandb.hbs@gmail.com",\r\n   "fromName":"Anand",\r\n   "password":"Thiripura@7",\r\n   "source":"Gmail_SMTP",\r\n   "additionalProperties":{\r\n      "mail.smtp.ssl.trust": "smtp.gmail.com",\r\n      "mail.smtp.auth":"true",\r\n      "mail.smtp.starttls.enable":"true"\r\n   }\r\n}', b'1', NULL, NULL, '2019-12-07 10:35:43', '2019-12-07 10:35:46', NULL, 'Email', 'Internal', 'Primary');
 /*!40000 ALTER TABLE `producersproperty` ENABLE KEYS */;
 
 -- Dumping structure for table rezoom.resume
 CREATE TABLE IF NOT EXISTS `resume` (
-  `resumeURN` varchar(50) NOT NULL,
+  `dataURN` varchar(50) NOT NULL,
   `dataId` varchar(50) NOT NULL,
   `createdBy` varchar(50) DEFAULT NULL,
   `modifiedBy` varchar(50) DEFAULT NULL,
   `modifiedDate` datetime DEFAULT NULL,
   `createdDate` datetime DEFAULT NULL,
   `status` bit(1) DEFAULT b'1',
-  PRIMARY KEY (`resumeURN`)
+  PRIMARY KEY (`dataURN`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table rezoom.resume: ~0 rows (approximately)
@@ -871,14 +877,14 @@ DELETE FROM `resume_address`;
 -- Dumping structure for table rezoom.resume_attachments
 CREATE TABLE IF NOT EXISTS `resume_attachments` (
   `autoId` int(11) NOT NULL AUTO_INCREMENT,
-  `resumeURN` varchar(50) DEFAULT NULL,
+  `priority` varchar(50) NOT NULL DEFAULT 'Normal',
+  `dataURN` varchar(50) DEFAULT NULL,
   `incomingId` varchar(50) DEFAULT NULL,
   `trace` varchar(50) DEFAULT 'YetToTrace',
   `uploadFileDate` datetime DEFAULT NULL,
   `uploadFileFolderURL` varchar(500) DEFAULT NULL,
   `uploadFileLastModifiedDate` datetime DEFAULT NULL,
   `uploadFileName` varchar(100) DEFAULT NULL,
-  `uploadFileNameForDisplay` varchar(50) DEFAULT NULL,
   `uploadFileSize` bigint(20) NOT NULL,
   `uploadDocumentForType` varchar(50) DEFAULT NULL,
   `createdDate` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -887,13 +893,30 @@ CREATE TABLE IF NOT EXISTS `resume_attachments` (
   `modifiedBy` varchar(50) DEFAULT NULL,
   `status` bit(1) NOT NULL DEFAULT b'1',
   `uploadResourceHandler` varchar(50) DEFAULT NULL,
-  `uploadSubFolderPath` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`autoId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.resume_attachments: ~0 rows (approximately)
+-- Dumping data for table rezoom.resume_attachments: ~17 rows (approximately)
 DELETE FROM `resume_attachments`;
 /*!40000 ALTER TABLE `resume_attachments` DISABLE KEYS */;
+INSERT INTO `resume_attachments` (`autoId`, `priority`, `dataURN`, `incomingId`, `trace`, `uploadFileDate`, `uploadFileFolderURL`, `uploadFileLastModifiedDate`, `uploadFileName`, `uploadFileSize`, `uploadDocumentForType`, `createdDate`, `modifiedDate`, `createdBy`, `modifiedBy`, `status`, `uploadResourceHandler`) VALUES
+	(1, 'Normal', NULL, '7bcbb80e-e55e-4b0f-9eb6-40eebaac5d69', 'YetToTrace', '2020-07-06 21:54:15', 'C:/Ananth/Rezoom_Attachments\\20200706/2153', '2020-07-06 21:54:15', 'ITCertificate.pdf', 47953, NULL, '2020-07-06 21:54:15', NULL, NULL, NULL, b'1', 'Default'),
+	(31, 'Normal', NULL, '7d3d23e9-e4c7-4fb6-9330-cd0b492d60ea', 'YetToTrace', '2020-07-07 15:56:49', 'C:/Ananth/Rezoom_Attachments\\20200707/0930', '2020-07-07 15:56:49', 'INV-TN-B1-33417630-103012592921-JULY-2020.html', 30985, NULL, '2020-07-07 15:56:49', NULL, NULL, NULL, b'1', 'Default'),
+	(32, 'Expedite', NULL, 'f7029fba-7e7b-4fbb-a403-5bf3eecf3c86', 'YetToTrace', '2020-07-07 15:56:56', 'C:/Ananth/Rezoom_Attachments\\20200707/0931', '2020-07-07 15:56:55', 'VidelHealthCard.pdf', 249086, NULL, '2020-07-07 15:56:56', NULL, NULL, NULL, b'1', 'Default'),
+	(33, 'Normal', NULL, '6726c991-3476-455b-9d13-90dc6e8a0105', 'YetToTrace', '2020-07-07 15:57:04', 'C:/Ananth/Rezoom_Attachments\\20200707/0930', '2020-07-07 15:57:04', 'INV-TN-B1-33417630-103012592921-JULY-2020.html', 30985, NULL, '2020-07-07 15:57:04', NULL, NULL, NULL, b'1', 'Default'),
+	(34, 'Expedite', NULL, '88e9d6fc-21b9-463a-ab07-4a3470e1ed9d', 'YetToTrace', '2020-07-07 15:57:11', 'C:/Ananth/Rezoom_Attachments\\20200707/1454', '2020-07-07 15:57:11', '4399XXXXXXXXX402006-06-2020.pdf', 121328, NULL, '2020-07-07 15:57:11', NULL, NULL, NULL, b'1', 'Default'),
+	(35, 'Normal', NULL, 'cda9af7d-1c54-4478-bf76-0adcbdbf9dfe', 'YetToTrace', '2020-07-07 15:57:18', 'C:/Ananth/Rezoom_Attachments\\20200707/0930', '2020-07-07 15:57:18', 'INV-TN-B1-33417630-103012592921-JULY-2020.html', 30985, NULL, '2020-07-07 15:57:18', NULL, NULL, NULL, b'1', 'Default'),
+	(36, 'Normal', NULL, '6f3fb485-748c-4c7c-927b-6b76d6b4d62b', 'YetToTrace', '2020-07-07 15:57:32', 'C:/Ananth/Rezoom_Attachments\\20200707/0931', '2020-07-07 15:57:31', 'INV-TN-B1-33417630-103012592921-JULY-2020.html', 30985, NULL, '2020-07-07 15:57:32', NULL, NULL, NULL, b'1', 'Default'),
+	(37, 'Normal', NULL, '1aacca8b-3c7c-4f2a-8048-d2ad185c4489', 'YetToTrace', '2020-07-11 21:03:09', 'C:/Ananth/Rezoom_Attachments\\20200711/2056', '2020-07-11 21:03:09', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:03:09', NULL, NULL, NULL, b'1', 'Default'),
+	(38, 'Normal', NULL, 'fd639a6a-5cb4-4ca2-a40b-20b8a625f82a', 'YetToTrace', '2020-07-11 21:07:51', 'C:/Ananth/Rezoom_Attachments\\20200711/2056', '2020-07-11 21:07:51', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:07:51', NULL, NULL, NULL, b'1', 'Default'),
+	(39, 'Normal', NULL, '1b6c0040-a3d0-4102-a1e5-d80d5278da26', 'YetToTrace', '2020-07-11 21:12:27', 'C:/Ananth/Rezoom_Attachments\\20200711/2056', '2020-07-11 21:12:15', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:12:27', NULL, NULL, NULL, b'1', 'Default'),
+	(40, 'Normal', NULL, '5bf7958c-7e51-40fd-bd54-f41d9040713b', 'YetToTrace', '2020-07-11 21:13:56', 'C:/Ananth/Rezoom_Attachments\\20200711/2056', '2020-07-11 21:13:50', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:13:56', NULL, NULL, NULL, b'1', 'Default'),
+	(41, 'Normal', NULL, '1aaa8b2f-07db-43a6-82df-4cb4a00c5692', 'YetToTrace', '2020-07-11 21:18:19', 'C:/Ananth/Rezoom_Attachments\\20200711/2056', '2020-07-11 21:18:05', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:18:19', NULL, NULL, NULL, b'1', 'Default'),
+	(42, 'Normal', NULL, 'e10b441a-2c69-42e4-ac0c-55828084ec2b', 'YetToTrace', '2020-07-11 21:23:38', 'C:/Ananth/Rezoom_Attachments\\20200711/2056', '2020-07-11 21:23:31', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:23:38', NULL, NULL, NULL, b'1', 'Default'),
+	(43, 'Normal', NULL, 'c8ed0b00-a967-473e-86ed-574a2b835df4', 'YetToTrace', '2020-07-11 21:31:59', 'C:/Ananth/Rezoom_Attachments/20200711/2056', '2020-07-11 21:31:59', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:31:59', NULL, NULL, NULL, b'1', 'Default'),
+	(44, 'Normal', NULL, '070b791e-b82b-4059-97a7-511120f85123', 'YetToTrace', '2020-07-11 21:46:13', 'C:/Ananth/Rezoom_Attachments/20200711/2056', '2020-07-11 21:46:13', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:46:13', NULL, NULL, NULL, b'1', 'Default'),
+	(45, 'Normal', NULL, '6822ff59-b3e0-437b-8215-054f3dc85109', 'YetToTrace', '2020-07-11 21:49:03', 'C:/Ananth/Rezoom_Attachments/20200711/2056', '2020-07-11 21:49:03', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:49:03', NULL, NULL, NULL, b'1', 'Default'),
+	(46, 'Normal', NULL, '7c8d0fe0-f9d7-45c9-aedb-d0a89e26f3c7', 'YetToTrace', '2020-07-11 21:53:47', 'C:/Ananth/Rezoom_Attachments/20200711/2056', '2020-07-11 21:53:47', 'ITCertificate.pdf', 47953, NULL, '2020-07-11 21:53:47', NULL, NULL, NULL, b'1', 'Default');
 /*!40000 ALTER TABLE `resume_attachments` ENABLE KEYS */;
 
 -- Dumping structure for table rezoom.resume_comments
@@ -966,7 +989,7 @@ CREATE TABLE IF NOT EXISTS `resume_incoming_data` (
   `incomingId` varchar(50) NOT NULL,
   `media` varchar(50) NOT NULL,
   `candidateEmail` varchar(50) DEFAULT NULL,
-  `subject` varchar(50) DEFAULT NULL,
+  `subject` mediumtext,
   `description` longtext,
   `sentTime` bigint(11) NOT NULL,
   `portal` varchar(50) DEFAULT NULL,
@@ -976,12 +999,31 @@ CREATE TABLE IF NOT EXISTS `resume_incoming_data` (
   `propertyId` varchar(50) DEFAULT NULL,
   `createdDate` datetime DEFAULT NULL,
   `uniqueId` varchar(50) DEFAULT NULL,
+  `bulkAttachment` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`incomingId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table rezoom.resume_incoming_data: ~0 rows (approximately)
+-- Dumping data for table rezoom.resume_incoming_data: ~17 rows (approximately)
 DELETE FROM `resume_incoming_data`;
 /*!40000 ALTER TABLE `resume_incoming_data` DISABLE KEYS */;
+INSERT INTO `resume_incoming_data` (`incomingId`, `media`, `candidateEmail`, `subject`, `description`, `sentTime`, `portal`, `readerInstance`, `incomingStatus`, `producerId`, `propertyId`, `createdDate`, `uniqueId`, `bulkAttachment`) VALUES
+	('070b791e-b82b-4059-97a7-511120f85123', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:46:13', '1302', b'0'),
+	('1aaa8b2f-07db-43a6-82df-4cb4a00c5692', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:18:25', '1302', b'0'),
+	('1aacca8b-3c7c-4f2a-8048-d2ad185c4489', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:03:09', '1302', b'0'),
+	('1b6c0040-a3d0-4102-a1e5-d80d5278da26', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:12:38', '1302', b'0'),
+	('5bf7958c-7e51-40fd-bd54-f41d9040713b', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:14:00', '1302', b'0'),
+	('6726c991-3476-455b-9d13-90dc6e8a0105', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Test Email 1', '', 1594094455000, NULL, 'InBoxReaderIMAPConsumer', 'New', 'PRD000001', NULL, '2020-07-07 15:57:04', '1297', b'0'),
+	('6822ff59-b3e0-437b-8215-054f3dc85109', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:49:03', '1302', b'0'),
+	('6f3fb485-748c-4c7c-927b-6b76d6b4d62b', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Test Email 4', '', 1594094460000, NULL, 'InBoxReaderIMAPConsumer', 'New', 'PRD000001', NULL, '2020-07-07 15:57:32', '1299', b'0'),
+	('7bcbb80e-e55e-4b0f-9eb6-40eebaac5d69', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Test Forward', '', 1594052582000, NULL, 'InBoxReaderIMAPConsumer', 'New', 'PRD000001', NULL, '2020-07-06 21:54:15', '1295', b'0'),
+	('7c8d0fe0-f9d7-45c9-aedb-d0a89e26f3c7', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:53:47', '1302', b'0'),
+	('7d3d23e9-e4c7-4fb6-9330-cd0b492d60ea', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Test Email 2', '', 1594094450000, NULL, 'InBoxReaderIMAPConsumer', 'New', 'PRD000001', NULL, '2020-07-07 15:56:49', '1296', b'0'),
+	('88e9d6fc-21b9-463a-ab07-4a3470e1ed9d', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', '[HIGH]', '', 1594113862000, NULL, 'InBoxReaderIMAPConsumer', 'New', 'PRD000001', NULL, '2020-07-07 15:57:12', '1301', b'0'),
+	('c8ed0b00-a967-473e-86ed-574a2b835df4', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:31:59', '1302', b'0'),
+	('cda9af7d-1c54-4478-bf76-0adcbdbf9dfe', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Test Email 3', '', 1594094458000, NULL, 'InBoxReaderIMAPConsumer', 'New', 'PRD000001', NULL, '2020-07-07 15:57:18', '1298', b'0'),
+	('e10b441a-2c69-42e4-ac0c-55828084ec2b', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:23:45', '1302', b'0'),
+	('f7029fba-7e7b-4fbb-a403-5bf3eecf3c86', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', '[HIGH] Test Email 5', '', 1594094461000, NULL, 'InBoxReaderIMAPConsumer', 'New', 'PRD000001', NULL, '2020-07-07 15:56:56', '1300', b'0'),
+	('fd639a6a-5cb4-4ca2-a40b-20b8a625f82a', 'Email', 'Ananthoo <ananth.malbal@gmail.com>', 'Fwd: Test Forward', '', 1594481213000, NULL, 'InBoxReaderIMAPDownloader', 'New', 'PRD000001', NULL, '2020-07-11 21:07:51', '1302', b'0');
 /*!40000 ALTER TABLE `resume_incoming_data` ENABLE KEYS */;
 
 -- Dumping structure for table rezoom.resume_job_position
@@ -1129,6 +1171,7 @@ DELETE FROM `resume_qualification`;
 -- Dumping structure for table rezoom.roles
 CREATE TABLE IF NOT EXISTS `roles` (
   `roleId` varchar(50) NOT NULL,
+  `producerId` varchar(50) NOT NULL,
   `enumKey` varchar(50) NOT NULL,
   `roleName` varchar(50) NOT NULL,
   `roleShortName` varchar(50) NOT NULL,
@@ -1147,10 +1190,10 @@ CREATE TABLE IF NOT EXISTS `roles` (
 -- Dumping data for table rezoom.roles: ~3 rows (approximately)
 DELETE FROM `roles`;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` (`roleId`, `enumKey`, `roleName`, `roleShortName`, `roleLongName`, `description`, `roleType`, `createdBy`, `createdDate`, `modifiedBy`, `modifiedDate`, `status`, `isAdminRole`) VALUES
-	('Admin', 'Admin', 'Admin Role', 'Admin', 'Admin Role', 'Admin Role', 'Admin Role', 'PRDADM0001', '2014-07-06 10:30:00', 'PRDADM0001', '2014-07-06 10:30:00', b'1', b'1'),
-	('Dummy', 'Dummy', 'Dummy', 'Dummy', 'Dummy', 'Dummy', 'EmployeeRole', 'PRDADM0001', '2014-03-22 17:40:42', 'PRDADM0001', '2014-07-06 10:30:00', b'1', b'0'),
-	('Employee', 'EmployeeRole', 'Employee Role', 'Employee Role', 'Employeeistrator Role', 'Employee Role', 'EmployeeRole', 'PRDADM0001', '2014-07-06 10:30:00', 'PRDADM0001', '2014-07-06 10:30:00', b'1', b'0');
+INSERT INTO `roles` (`roleId`, `producerId`, `enumKey`, `roleName`, `roleShortName`, `roleLongName`, `description`, `roleType`, `createdBy`, `createdDate`, `modifiedBy`, `modifiedDate`, `status`, `isAdminRole`) VALUES
+	('Admin', 'PRD000001', 'Admin', 'Admin Role', 'Admin', 'Admin Role', 'Admin Role', 'Admin Role', 'PRDADM0001', '2014-07-06 10:30:00', 'PRDADM0001', '2014-07-06 10:30:00', b'1', b'1'),
+	('Dummy', 'PRD000001', 'Dummy', 'Dummy', 'Dummy', 'Dummy', 'Dummy', 'EmployeeRole', 'PRDADM0001', '2014-03-22 17:40:42', 'PRDADM0001', '2014-07-06 10:30:00', b'1', b'0'),
+	('Employee', 'PRD000001', 'EmployeeRole', 'Employee Role', 'Employee Role', 'Employeeistrator Role', 'Employee Role', 'EmployeeRole', 'PRDADM0001', '2014-07-06 10:30:00', 'PRDADM0001', '2014-07-06 10:30:00', b'1', b'0');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
 -- Dumping structure for table rezoom.sequence
@@ -1167,7 +1210,7 @@ CREATE TABLE IF NOT EXISTS `sequence` (
 DELETE FROM `sequence`;
 /*!40000 ALTER TABLE `sequence` DISABLE KEYS */;
 INSERT INTO `sequence` (`autoId`, `producerId`, `sequenceId`, `sequenceKey`, `prepend`) VALUES
-	(1, 'PRD000001', 10003, 'Users', 'USR');
+	(1, 'PRD000001', 10011, 'Users', 'USR');
 /*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
 
 -- Dumping structure for table rezoom.state
@@ -1285,16 +1328,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   CONSTRAINT `FK_users_producers` FOREIGN KEY (`producerId`) REFERENCES `producers` (`producerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.users: ~8 rows (approximately)
+-- Dumping data for table rezoom.users: ~5 rows (approximately)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`employeeId`, `userType`, `producerId`, `parentProducerId`, `userId`, `folderToken`, `userName`, `lastName`, `fatherName`, `userPwd`, `userPwdModFlag`, `userPwdModDate`, `dob`, `sex`, `otp`, `userStatus`, `dateOfJoin`, `token`, `tokenExpiryDate`, `country`, `createdBy`, `createdDate`, `modifiedBy`, `modifiedDate`, `status`) VALUES
-	('634ee30d-ac3a-4fca-8d9c-fe723143520f', 'Employee', 'PRD000001', 'PRD000001', 'USR10003', NULL, 'Jayesh123', 'B.J.', 'Balaji', NULL, b'1', NULL, '07/03/2000', 'Male', NULL, 'Pending', '07/03/2020', '8431700c-67c2-48d8-992a-f9e77d7f1b65', '2020-03-07 19:15:14', 'Asia/Calcutta', 'USR1513438024799', '2020-03-07 19:15:14', 'USR1513438024799', '2020-03-07 21:50:07', b'1'),
-	('66195a76-db0a-4f5b-8dfc-5acd0deba6a4', 'Employee', 'PRD000001', 'PRD000001', 'USR10001', NULL, 'Jayesh', NULL, NULL, NULL, b'1', NULL, NULL, 'NoToSpecify', NULL, 'Pending', NULL, '70369126-857c-4a52-a8b9-5f54a55fb8de', '2020-03-07 19:08:22', 'Asia/Calcutta', 'USR1513438024799', '2020-03-07 19:08:22', 'USR1513438024799', '2020-03-07 19:08:22', b'0'),
-	('7f3b966b-045b-43ae-a032-a9cbf38a5300', 'Employee', 'PRD000001', 'PRD000001', 'USR10002', NULL, 'Jayesh1', NULL, NULL, NULL, b'1', NULL, NULL, 'NoToSpecify', NULL, 'Pending', NULL, '6a3e78de-e075-4c8e-8bbc-ed4323b945fa', '2020-03-07 19:09:47', 'Asia/Calcutta', 'USR1513438024799', '2020-03-07 19:09:47', 'USR1513438024799', '2020-03-07 19:09:47', b'0'),
-	('PRDADM0001', 'Producer', 'PRD000001', 'PRD000001', 'EduTel-Id', '013ea493-8fcc-4c68-b4b8-431a82a375bb', 'Rezoom', 'Admin', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', b'0', NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-09-23 22:00:21', 'Asia/Kolkata', 'PRDADM0001', '2018-01-30 23:47:50', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
+	('PRDADM0001', 'Producer', 'PRD000001', 'PRD000001', 'EduTel-Id', '013ea493-8fcc-4c68-b4b8-431a82a375bb', 'Rezoom', 'Admin', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', b'0', NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-09-23 22:00:21', 'Asia/Singapore', 'PRDADM0001', '2018-01-30 23:47:50', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
 	('USR0000000000000', 'Consumer', 'PRD000001', 'PRD000001', 'Demo-Id', '013ea493-8fcc-4c68-b4b8-431a82a375bb', 'Demo', 'User', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', NULL, NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-12-16 20:57:29', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
-	('USR1513438024799', 'Consumer', 'PRD000001', 'PRD000001', 'Ananth-Id', '1aa2850a-6717-4664-9215-56a2bf52806e', 'Ananth', 'Balasubramanian', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', b'0', NULL, NULL, NULL, NULL, 'Activated', NULL, '5a84770b-81cd-442f-8e8f-848231f6b66e', '2020-03-03 21:33:59', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'USR1513438024799', '2020-03-03 22:31:17', b'0'),
+	('USR1513438024799', 'Consumer', 'PRD000001', 'PRD000001', 'Ananth-Id', '', 'Ananth', 'Balasubramanian', NULL, '$2a$10$EMrq/UijfjMbtrHgs5tLVOfK7.mJdlL22i/rydPDX6QWfDqfUfn.G', b'0', '2020-06-29 08:28:59', NULL, NULL, NULL, 'Activated', NULL, '8029f8a2-3e15-4a3f-a4c5-8c8383f037bc', '2020-06-29 09:43:30', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'USR1513438024799', '2020-06-29 09:43:30', b'0'),
 	('USR1513438024800', 'Employee', 'PRD000001', 'PRD000001', 'Tamil-Id', '486f11d5-4972-44b0-9bdc-50f7b572ce11', 'Tamil', 'Selvan', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', NULL, NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-12-16 20:57:29', 'Asia/Kolkata', 'PRDADM0001', '2017-12-16 20:57:33', 'PRDADM0001', '2018-01-30 23:47:50', b'1'),
 	('USR1513438024801', 'Employee', 'PRD000001', 'PRD000001', 'HariHaran-Id', 'ca7621f6-a0e0-425a-a1ca-e0c171e6b282', 'HariHaran', 'Thavaselvam', NULL, '$2a$10$7hnkWav9ZOLtz/Q2y.FLvuIyS3NFQ1J42jkV3SMbo9NRzi1P9m2fW', NULL, NULL, NULL, NULL, NULL, 'Activated', NULL, NULL, '2017-12-16 20:57:29', 'Asia/Kolkata', 'PRDADM0001', '2018-01-30 23:47:50', 'PRDADM0001', '2018-01-30 23:47:50', b'1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
@@ -1363,13 +1403,10 @@ CREATE TABLE IF NOT EXISTS `usersmedia` (
   PRIMARY KEY (`mediaId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table rezoom.usersmedia: ~4 rows (approximately)
+-- Dumping data for table rezoom.usersmedia: ~1 rows (approximately)
 DELETE FROM `usersmedia`;
 /*!40000 ALTER TABLE `usersmedia` DISABLE KEYS */;
 INSERT INTO `usersmedia` (`mediaId`, `employeeId`, `mediaType`, `emailId`, `mobileNo`, `phoneNo`, `whatsAppNo`) VALUES
-	('267831db-5195-48aa-8c09-c32d9e9f452a', '66195a76-db0a-4f5b-8dfc-5acd0deba6a4', 'Primary', 'eselfguru@gmail.com', '9677101120', NULL, NULL),
-	('284c3500-88c6-4dd9-867d-59d0854f2aa8', '7f3b966b-045b-43ae-a032-a9cbf38a5300', 'Primary', 'eselfguru1@gmail.com', '9677101121', NULL, NULL),
-	('44943f5e-f07c-440d-b0e3-53aedf5aac70', '634ee30d-ac3a-4fca-8d9c-fe723143520f', 'Primary', 'eselfguru2@gmail.com', '9677101122', NULL, NULL),
 	('UMEDIA00001', 'USR1513438024799', 'Primary', 'ananth.malbal@gmail.com', '9677101112', ' ', '9789875832');
 /*!40000 ALTER TABLE `usersmedia` ENABLE KEYS */;
 

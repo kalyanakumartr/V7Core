@@ -191,8 +191,8 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 		helper.setSubject(message.generateVTLSubject());
 		helper.setText(message.generateVTLMessage(), message.isTextHTML());
 
-		// Add Attachment`
-		// No Attachment for Predefined Messages Based Messages
+		// Add Message`
+		// No Message for Predefined Messages Based Messages
 		if (message.getMessageId() == null && attachmentDao.countByMessageId(message.getMessageId()) > 0)
 		{
 			List<EmailAttachments> attachmentList = attachmentDao.getByMessageId(message.getMessageId());

@@ -4,15 +4,15 @@ import java.security.InvalidKeyException;
 import java.util.concurrent.ExecutionException;
 
 import org.hbs.core.admin.OTPService;
-import org.hbs.core.beans.GenericKafkaProducer;
 import org.hbs.core.beans.PasswordFormBean;
 import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.path.IErrorAdmin;
 import org.hbs.core.dao.UserDao;
+import org.hbs.core.kafka.GenericKafkaProducer;
+import org.hbs.core.kafka.IKafkaConstants.ETopic;
 import org.hbs.core.security.resource.IPath.ETemplate;
 import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.security.resource.IPathBase.EReturn;
-import org.hbs.core.security.resource.IPathBase.ETopic;
 import org.hbs.core.util.CommonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +60,7 @@ public class OTPBoImpl implements OTPBo, IErrorAdmin
 				if (CommonValidator.isArrayFirstNotNull(otps))
 				{
 					ufBean.user.setOtp(otps[1]); // ["REZ123456"]
-					gKafkaProducer.sendMessage(ETopic.Internal, EMedia.SMS, ETemplate.SMS_OTP, ufBean);
+					gKafkaProducer.send(ETopic.Internal, EMedia.SMS, ETemplate.SMS_OTP, ufBean);
 					pfBean.messageCode = USER_SMS_OTP_GENERATE_SUCCESSFULLY;
 					pfBean.$OTPPrefix = otps[0]; // ["REZ"]
 					pfBean.userId = ufBean.user.getUserId();
