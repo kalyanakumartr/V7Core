@@ -22,10 +22,10 @@ import org.apache.commons.io.IOUtils;
 import org.hbs.core.beans.model.Producers;
 import org.hbs.core.kafka.IKafkaConstants;
 import org.hbs.core.kafka.KAFKAPartition;
-import org.hbs.core.security.resource.IPath.ETemplate;
 import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.CustomException;
+import org.hbs.extractor.beans.DataInTopicBean;
 import org.hbs.extractor.beans.InBoxReaderTopicBean;
 import org.hbs.extractor.beans.UIDMimeMessageBean;
 import org.hbs.extractor.beans.model.DataAttachments;
@@ -48,21 +48,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.mail.imap.IMAPFolder;
 
 @Service
-public class InBoxReaderIMAPDownloader extends InBoxReaderIMAPBase implements IKafkaConstants
+public class InBoxReaderIMAPConsumer extends InBoxReaderIMAPBase implements IKafkaConstants
 {
 
 	private static final long	serialVersionUID	= -3529623337510779624L;
 
 	@Autowired
 	private IncomingDao			incomingDao;
-	private final Logger		logger				= LoggerFactory.getLogger(InBoxReaderIMAPDownloader.class);
+	private final Logger		logger				= LoggerFactory.getLogger(InBoxReaderIMAPConsumer.class);
 
 	@KafkaListener(topicPartitions = @TopicPartition(topic = MESSAGE_TOPIC, partitions = { NORMAL, EXPEDITE }), groupId = MESSAGE_GROUP, clientIdPrefix = EMAIL)
 	public void consume(@Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition, String payload)
 	{
 		logger.info(String.format("#### -> Consumed message -> %s", payload));
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-		System.out.println(">>>>>>>>>>>>>>>>>>>" + new Date() + ">>>>>>>partition > " + partition);
+		System.out.println(">>>>>>>>>>>>>>>>>>>" + new Date() + ">>>>>>>flow > " + partition);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 		try
@@ -97,10 +97,13 @@ public class InBoxReaderIMAPDownloader extends InBoxReaderIMAPBase implements IK
 					incomingData.setProducer(new Producers(config.getProducerId()));
 					incomingDao.save(incomingData);
 
-					KAFKAPartition ePartition = PartitionFinder.getInstance().find(ETopic.DataExtract, incomingData.getPriority());
-
 					for (DataAttachments _DATT : incomingData.getAttachmentList())
-						gKafkaProducer.send(ETopic.DataExtract, ePartition, ETemplate.Default, _DATT.getDataInTopicBean());
+					{
+						DataInTopicBean inBean = _DATT.getDataInTopicBean();
+						KAFKAPartition ePartition = PartitionFinder.getInstance().find(ETopic.DataExtract, incomingData.getPriority(), inBean.getExtension());
+
+						gKafkaProducer.send(ETopic.DataExtract, ePartition, inBean);
+					}
 				}
 				logger.info(incomingData.getAttachmentList().toString());
 

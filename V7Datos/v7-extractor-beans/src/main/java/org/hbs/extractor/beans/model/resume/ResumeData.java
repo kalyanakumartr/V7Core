@@ -1,5 +1,6 @@
 package org.hbs.extractor.beans.model.resume;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hbs.core.util.CommonValidator;
 import org.hbs.core.util.EBusinessKey;
 import org.hbs.core.util.ICRUDBean;
 import org.hibernate.annotations.Fetch;
@@ -99,6 +101,12 @@ public class ResumeData implements ICRUDBean, EBusinessKey
 		return skillsCost;
 	}
 
+	public void setAddressList(_Address... addresses)
+	{
+		if (CommonValidator.isArrayFirstNotNull(addresses))
+			this.addressList = new LinkedHashSet<>(Arrays.asList(addresses));
+	}
+
 	public void setAddressList(Set<_Address> addressList)
 	{
 		this.addressList = addressList;
@@ -124,6 +132,13 @@ public class ResumeData implements ICRUDBean, EBusinessKey
 		this.professionalList = professionalList;
 	}
 
+	@SuppressWarnings("unchecked")
+	public void setQualificationList(_Qualification... qualifications)
+	{
+		if (CommonValidator.isArrayFirstNotNull(qualifications))
+			this.qualificationList = new LinkedHashSet<>(Arrays.asList(qualifications));
+	}
+
 	public void setQualificationList(Set<_Qualification> qualificationList)
 	{
 		this.qualificationList = qualificationList;
@@ -139,4 +154,19 @@ public class ResumeData implements ICRUDBean, EBusinessKey
 		this.skillsCost = skillsCost;
 	}
 
+	public void setMediaList(_Media... medias)
+	{
+		if (CommonValidator.isArrayFirstNotNull(medias))
+			this.mediaList = new LinkedHashSet<>(Arrays.asList(medias));
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setProfessionalList(_ProfessionalExperience... professional)
+	{
+		if (CommonValidator.isArrayFirstNotNull(professional))
+			this.professionalList = new LinkedHashSet<>(Arrays.asList(professional));
+		
+	}
+
+	
 }

@@ -15,7 +15,6 @@ import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.core.kafka.GenericKafkaProducer;
 import org.hbs.core.kafka.IKafkaConstants.ETopic;
 import org.hbs.core.kafka.KAFKAPartition;
-import org.hbs.core.security.resource.IPath.ETemplate;
 import org.hbs.core.util.CommonValidator;
 import org.hbs.extractor.beans.InBoxReaderTopicBean;
 import org.hbs.extractor.beans.model.EMessagePriority;
@@ -86,7 +85,7 @@ public abstract class InBoxReaderBaseImpl implements InboxReaderBase
 
 				KAFKAPartition partition = PartitionFinder.getInstance().find(ETopic.Message, EMessagePriority.getPriority(message));
 
-				gKafkaProducer.send(ETopic.Message, partition, ETemplate.Default, inBoxReaderBean);
+				gKafkaProducer.send(ETopic.Message, partition, inBoxReaderBean);
 
 				message.setFlag(Flag.SEEN, true);
 			}

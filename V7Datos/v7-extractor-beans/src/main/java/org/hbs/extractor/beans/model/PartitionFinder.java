@@ -3,9 +3,9 @@ package org.hbs.extractor.beans.model;
 import java.io.Serializable;
 
 import org.hbs.core.kafka.IKafkaConstants.EPartition;
-import org.hbs.core.kafka.IKafkaConstants.EStep;
 import org.hbs.core.kafka.IKafkaConstants.ETopic;
 import org.hbs.core.kafka.KAFKAPartition;
+import org.hbs.extractor.beans.model.IncomingData.EExtension;
 
 public class PartitionFinder implements Serializable
 {
@@ -28,10 +28,10 @@ public class PartitionFinder implements Serializable
 
 	public KAFKAPartition find(ETopic eTopic, EMessagePriority priority) throws Exception
 	{
-		return find(eTopic, priority, EStep.Default);
+		return find(eTopic, priority, EExtension.Invalid);
 	}
 
-	public KAFKAPartition find(ETopic eTopic, EMessagePriority priority, EStep eStep) throws Exception
+	public KAFKAPartition find(ETopic eTopic, EMessagePriority priority, EExtension extension) throws Exception
 	{
 		switch ( eTopic )
 		{
@@ -50,71 +50,56 @@ public class PartitionFinder implements Serializable
 			{
 				switch ( priority )
 				{
-
 					case Normal :
 					{
-						switch ( eStep )
+						switch ( extension )
 						{
-							case Default :
-								return EPartition.Data_In;
-							case Step1 :
-							case Step2 :
-							case Step3 :
-							case Step4 :
-							case Step5 :
-							case Step6 :
-							case Step7 :
-							case Step8 :
-							case Step9 :
-							case Step10 :
-							case Step11 :
-							case Step12 :
-							case Step13 :
-							case Step14 :
-							case Step15 :
-							case Step16 :
-							case Step17 :
-							case Step18 :
-							case Step19 :
-							case Step20 :
-								return EPartition.valueOf(eStep.name());
+							case Doc :
+							case Docx :
+								return EPartition.Document;
+							case ODT :
+								return EPartition.OpenOffice;
+							case XLS :
+							case XLSX :
+								return EPartition.Excel;
+							case PDF :
+								return EPartition.Pdf;
+							case HTML :
+								return EPartition.Html;
+							case Json :
+								return EPartition.Json;
+							case Csv :
+								return EPartition.Csv;
 							default :
-								throw new Exception("Not Able To Find Default Step For DataExtract");
+								throw new Exception("Not Able To Find Normal For DataExtract");
 						}
 					}
 					case Expedite :
 					{
-						switch ( eStep )
+						switch ( extension )
 						{
-							case Default :
-								return EPartition.Data_In_Expedite;
-							case Step1 :
-							case Step2 :
-							case Step3 :
-							case Step4 :
-							case Step5 :
-							case Step6 :
-							case Step7 :
-							case Step8 :
-							case Step9 :
-							case Step10 :
-							case Step11 :
-							case Step12 :
-							case Step13 :
-							case Step14 :
-							case Step15 :
-							case Step16 :
-							case Step17 :
-							case Step18 :
-							case Step19 :
-							case Step20 :
-								return EPartition.valueOf(eStep.name() + "_" + priority.name());
+							case Doc :
+							case Docx :
+								return EPartition.Document_Expedite;
+							case ODT :
+								return EPartition.OpenOffice_Expedite;
+							case XLS :
+							case XLSX :
+								return EPartition.Excel_Expedite;
+							case PDF :
+								return EPartition.Pdf_Expedite;
+							case HTML :
+								return EPartition.Html_Expedite;
+							case Json :
+								return EPartition.Json_Expedite;
+							case Csv :
+								return EPartition.Csv_Expedite;
 							default :
-								throw new Exception("Not Able To Find Default Step For DataExtract");
+								throw new Exception("Not Able To Find Expedite For DataExtract");
 						}
 					}
 					default :
-						throw new Exception("Not Able To Find Default Priority For DataExtract");
+						throw new Exception("Not Able To Find Init Priority For DataExtract");
 				}
 			}
 			default :

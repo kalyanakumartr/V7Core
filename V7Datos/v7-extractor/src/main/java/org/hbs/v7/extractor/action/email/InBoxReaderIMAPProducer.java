@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import com.sun.mail.imap.IMAPFolder;
 
 @Service
-public class InBoxReaderIMAP extends InBoxReaderIMAPBase implements InBoxReader
+public class InBoxReaderIMAPProducer extends InBoxReaderIMAPBase implements InBoxReader
 {
 
 	private static final long	serialVersionUID	= 2521396768665593925L;
@@ -31,7 +31,7 @@ public class InBoxReaderIMAP extends InBoxReaderIMAPBase implements InBoxReader
 	@Autowired
 	ExtractorBo					extractorBo;
 
-	private final Logger		logger				= LoggerFactory.getLogger(InBoxReaderIMAP.class);
+	private final Logger		logger				= LoggerFactory.getLogger(InBoxReaderIMAPProducer.class);
 
 	@SuppressWarnings("serial")
 	private SearchTerm createBaseSearchTerm()
@@ -64,8 +64,8 @@ public class InBoxReaderIMAP extends InBoxReaderIMAPBase implements InBoxReader
 		searchTerm = new AndTerm(searchTerm, minDateTerm);
 		searchTerm = new AndTerm(searchTerm, maxDateTerm);
 		searchTerm = new AndTerm(searchTerm, new FlagTerm(new Flags(Flags.Flag.SEEN), false)); // Read-Only-UnRead-Messages
-
-		return pushToQueue(producerId, imapFolder, (Message[]) imapFolder.search(searchTerm));
+		Message[] messages = (Message[]) imapFolder.search(searchTerm);
+		return pushToQueue(producerId, imapFolder, messages);
 	}
 
 	@Override

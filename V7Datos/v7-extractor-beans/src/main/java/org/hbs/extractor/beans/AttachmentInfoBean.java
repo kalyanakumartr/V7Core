@@ -44,7 +44,7 @@ public abstract class AttachmentInfoBean implements IConstProperty
 		this.compressed = compressed;
 	}
 
-	private String getFileFolderURL()
+	public String getFileFolderURL()
 	{
 		return fileFolderURL;
 	}
@@ -66,6 +66,12 @@ public abstract class AttachmentInfoBean implements IConstProperty
 		return new SevenZFile(new File(getOutputPath() + File.separator + getFileName()));
 	}
 
+	@JsonIgnore
+	public FileInputStream getInputStream() throws FileNotFoundException 
+	{
+		return new FileInputStream(getOutputFile());
+	}
+	
 	@JsonIgnore
 	public FileOutputStream getOutputStream() throws FileNotFoundException
 	{

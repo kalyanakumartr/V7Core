@@ -29,8 +29,6 @@ public class PasswordController implements IPasswordController
 {
 	private static final long	serialVersionUID	= 1355253953332836713L;
 
-	private static final String	UTF8ENCODER			= "UTF-8";
-
 	@Autowired
 	protected PasswordBo		passwordBo;
 

@@ -18,7 +18,7 @@ public class InBoxReaderEmailFactory implements Serializable
 	InBoxReaderPop3							$InBoxReaderPop3;
 
 	@Autowired
-	InBoxReaderIMAP							$InBoxReaderIMAP;
+	InBoxReaderIMAPProducer					$InBoxReaderIMAP;
 
 	private InBoxReaderEmailFactory()
 	{

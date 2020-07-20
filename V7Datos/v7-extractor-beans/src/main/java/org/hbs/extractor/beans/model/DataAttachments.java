@@ -24,7 +24,7 @@ public class DataAttachments extends CommonFileUpload implements IConstProperty
 
 	public enum EDataTrace implements EnumInterface
 	{
-		AdditionalDocuments, MainDocument, YetToTrace
+		AdditionalDocuments, MainDocument, YetToTrace, UnableToRead
 	}
 
 	private static final long	serialVersionUID	= 3340835331638013651L;
@@ -33,6 +33,7 @@ public class DataAttachments extends CommonFileUpload implements IConstProperty
 	protected IncomingData		incomingData;
 	protected EMessagePriority	priority			= EMessagePriority.Normal;
 	protected EDataTrace		trace				= EDataTrace.YetToTrace;
+	protected String			description;
 
 	public DataAttachments()
 	{
@@ -94,6 +95,17 @@ public class DataAttachments extends CommonFileUpload implements IConstProperty
 		this.trace = trace;
 	}
 
+	@Column(name = "description")
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
 	@Transient
 	public DataInTopicBean getDataInTopicBean()
 	{
@@ -102,6 +114,7 @@ public class DataAttachments extends CommonFileUpload implements IConstProperty
 		inBean.setExternal(false);
 		inBean.setFileFolderURL(this.getUploadFileFolderURL());
 		inBean.setFileName(this.getUploadFileName());
+		inBean.setPriority(this.getPriority());
 		return inBean;
 	}
 

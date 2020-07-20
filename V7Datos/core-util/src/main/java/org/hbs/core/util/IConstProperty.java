@@ -35,6 +35,7 @@ public interface IConstProperty extends Serializable
 	public String	DELETE			= " Delete ";
 	public String	SET				= " Set ";
 	public String	DOUBLE_EQUAL_TO	= "==";
+	public String	UTF8ENCODER			= "UTF-8";
 
 	public enum EPage implements EnumInterface
 	{
