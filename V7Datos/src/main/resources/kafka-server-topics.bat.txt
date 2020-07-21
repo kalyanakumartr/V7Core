@@ -7,6 +7,5 @@ start .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --repli
 ECHO ">>>>>>>>>>> 2 Partitons  - 0 Normal / 1 Expedite"
 start .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic MessageTopic
 
-
 ECHO ">>>>>>>>>>> 3 Partitons  - 0 Basic / 1 EmailExtract / 2 MobileNoExtract"
-start .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic DataExtractTopic
+start .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 14 --topic DataExtractTopic

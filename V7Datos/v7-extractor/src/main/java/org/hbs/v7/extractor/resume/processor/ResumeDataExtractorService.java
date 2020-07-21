@@ -7,8 +7,6 @@ import java.util.Map;
 import org.hbs.core.kafka.IKafkaConstants;
 import org.hbs.v7.beans.model.resume.ResumeData;
 
-import com.google.gson.Gson;
-
 public class ResumeDataExtractorService implements IKafkaConstants
 {
 	private static final long					serialVersionUID	= 7157231262042487975L;
