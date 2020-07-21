@@ -6,8 +6,8 @@ import java.io.StringWriter;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.hbs.extractor.beans.DataInTopicBean;
-import org.hbs.extractor.beans.model.DataAttachments.EDataTrace;
+import org.hbs.v7.beans.DataInTopicBean;
+import org.hbs.v7.beans.model.DataAttachments.EDataTrace;
 import org.hbs.v7.extractor.resume.processor.MediatorBean;
 import org.hbs.v7.extractor.resume.processor.ResumeDataExtractorService;
 

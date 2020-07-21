@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.hbs.core.kafka.IKafkaConstants;
-import org.hbs.extractor.beans.model.resume.ResumeData;
+import org.hbs.v7.beans.model.resume.ResumeData;
 
 import com.google.gson.Gson;
 
@@ -22,8 +22,10 @@ public class ResumeDataExtractorService implements IKafkaConstants
 			ResumeData rData = new ResumeData();
 			Map<EResumeOptions, Class<?>[]> rMap = EResumeOptions.getProcessors();
 			Object object = null;
+			System.out.println(">>>>>ResumeData>>STARTS>>>>>> >>>>>>>>>>> >>>>>>>>>>> >>>>>>>>> >>>>>>>>>>>>>> >>>>>>>>>>>>>");
 			for (EResumeOptions eOpt : rMap.keySet())
 			{
+				System.out.println(eOpt.name() + " >>>> " + eOpt.method);
 				for (Class<?> clazz : rMap.get(eOpt))
 				{
 					if (object == null || object.getClass() != clazz)
@@ -34,6 +36,7 @@ public class ResumeDataExtractorService implements IKafkaConstants
 
 					try
 					{
+						System.out.println(object.getClass().getSimpleName() + " >>>> ");
 						Method method = object.getClass().getMethod(eOpt.method, new Class[] { ResumeData.class });
 						method.invoke(object, rData);
 					}
@@ -44,8 +47,8 @@ public class ResumeDataExtractorService implements IKafkaConstants
 
 				}
 			}
-			
-			System.out.println(">>>>>>>ResumeData>>>>>> " + new Gson().toJson(rData));
+			System.out.println(">>>>>ResumeData>>END>>>>>> >>>>>>>>>>> >>>>>>>>>>> >>>>>>>>> >>>>>>>>>>>>>> >>>>>>>>>>>>>");
+			//System.out.println(">>>>>>>ResumeData>>>>>> " + new Gson().toJson(rData));
 		}
 		catch (Exception excep)
 		{

@@ -7,8 +7,8 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.hbs.extractor.beans.DataInTopicBean;
-import org.hbs.extractor.beans.model.DataAttachments.EDataTrace;
+import org.hbs.v7.beans.DataInTopicBean;
+import org.hbs.v7.beans.model.DataAttachments.EDataTrace;
 import org.hbs.v7.extractor.resume.processor.MediatorBean;
 import org.hbs.v7.extractor.resume.processor.ResumeDataExtractorService;
 

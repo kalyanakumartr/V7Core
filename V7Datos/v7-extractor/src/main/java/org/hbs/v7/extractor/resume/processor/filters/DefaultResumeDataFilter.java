@@ -1,12 +1,12 @@
 package org.hbs.v7.extractor.resume.processor.filters;
 
-import org.hbs.extractor.beans.model.resume.ResumeData;
-import org.hbs.extractor.beans.model.resume._Address;
-import org.hbs.extractor.beans.model.resume._Media;
-import org.hbs.extractor.beans.model.resume._PersonalInfo;
-import org.hbs.extractor.beans.model.resume._ProfessionalExperience;
-import org.hbs.extractor.beans.model.resume._Qualification;
-import org.hbs.extractor.beans.model.resume._SkillsAndCost;
+import org.hbs.v7.beans.model.resume.ResumeData;
+import org.hbs.v7.beans.model.resume._Address;
+import org.hbs.v7.beans.model.resume._Media;
+import org.hbs.v7.beans.model.resume._PersonalInfo;
+import org.hbs.v7.beans.model.resume._ProfessionalExperience;
+import org.hbs.v7.beans.model.resume._Qualification;
+import org.hbs.v7.beans.model.resume._SkillsAndCost;
 import org.hbs.v7.extractor.resume.processor.MediatorBean;
 
 public class DefaultResumeDataFilter extends ResumeDataFilterBase
@@ -24,6 +24,7 @@ public class DefaultResumeDataFilter extends ResumeDataFilterBase
 		_PersonalInfo personal = new _PersonalInfo();
 		_RD.setPersonal(personal);
 		System.out.println(">>>DefaultResumeDataFilter>>>>>>>getPersonalInfo>>>>>>mBean>>>> " );
+		
 	}
 
 	public void getSkillsAndCost(ResumeData _RD)

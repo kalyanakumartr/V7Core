@@ -13,6 +13,7 @@ public class MediatorBean implements Serializable
 {
 
 	private static final long	serialVersionUID	= 6909459362905584030L;
+	public String				content;
 	private XSSFSheet			excel;
 	private BodyContentHandler	openOffice;
 	private XWPFWordExtractor	word;

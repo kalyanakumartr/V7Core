@@ -43,7 +43,7 @@
 		</dependency>
 		<dependency>
 			<groupId>V7Datos</groupId>
-			<artifactId>v7-extractor-beans</artifactId>
+			<artifactId>v7-beans</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

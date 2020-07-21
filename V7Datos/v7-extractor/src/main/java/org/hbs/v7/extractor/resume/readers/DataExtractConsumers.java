@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.mail.MessagingException;
 
 import org.hbs.core.kafka.IKafkaConstants;
-import org.hbs.extractor.beans.DataInTopicBean;
+import org.hbs.v7.beans.DataInTopicBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -49,9 +49,14 @@ public class DataExtractConsumers implements IKafkaConstants
 	{
 		logger.info(String.format("##PersistentFileDataExtractor## -> Partition %d message -> %s", partition, payload));
 
+		System.out.println(">>>>>>>>>>>>>>>>>>>>...........STARTS..........>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println(">>>>>>>>>>pdfDataExtractor>>>>>>>>>>>>>>>>\n" + payload);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		DataInTopicBean inBean = new ObjectMapper().readValue(payload, DataInTopicBean.class);
 
 		PDFDataExtractor.getInstance(inBean).execute();
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>...........ENDS..........>>>>>>>>>>>>>>>>>>>>>>>>");
 
 	}
 

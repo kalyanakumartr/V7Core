@@ -4,8 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hbs.extractor.beans.DataInTopicBean;
-import org.hbs.extractor.beans.model.DataAttachments.EDataTrace;
+import org.hbs.v7.beans.DataInTopicBean;
+import org.hbs.v7.beans.model.DataAttachments.EDataTrace;
 import org.hbs.v7.extractor.resume.processor.MediatorBean;
 import org.hbs.v7.extractor.resume.processor.ResumeDataExtractorService;
 
