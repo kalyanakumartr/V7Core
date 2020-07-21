@@ -14,6 +14,7 @@ import org.hbs.core.security.resource.IPathBase.EMedia;
 import org.hbs.core.security.resource.IPathBase.EMediaMode;
 import org.hbs.v7.beans.model.resume.DataExtractorPattern;
 import org.hbs.v7.dao.IncomingDao;
+import org.hbs.v7.reader.action.email.InBoxReaderEmailFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -78,10 +79,15 @@ public class ExtractorBoImpl implements ExtractorBo
 	}
 
 	@Override
-	public long getLastEmailSentDate(String producerId)
+	public long getLastEmailSentDate(ConfigurationEmail config)
 	{
-		Long dateTime = incomingDao.getLastEmailSentDate(producerId);
-		return dateTime == null ? 0L : dateTime;
+		long dateTime = InBoxReaderEmailFactory.getInstance().getLastLookup(config);
+
+		if (dateTime == 0L)
+			dateTime = incomingDao.getLastEmailSentDate(config.getProducerId());
+
+		return dateTime;
+
 	}
 
 	@Override

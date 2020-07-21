@@ -1,6 +1,8 @@
 package org.hbs.v7.reader.action.email;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.v7.reader.action.core.InBoxReader;
@@ -19,6 +21,8 @@ public class InBoxReaderEmailFactory implements Serializable
 
 	@Autowired
 	InBoxReaderIMAPProducer					$InBoxReaderIMAP;
+
+	Map<String, Long>						lookupMap			= new HashMap<>();
 
 	private InBoxReaderEmailFactory()
 	{
@@ -47,6 +51,18 @@ public class InBoxReaderEmailFactory implements Serializable
 				return $InBoxReaderIMAP;
 
 		}
+	}
+	
+	public long getLastLookup(ConfigurationEmail config)
+	{
+		Long lastLookup = this.lookupMap.get(config.getConnectionId());
+		
+		return (lastLookup == null ? 0L : lastLookup);
+	}
+	
+	public void setLastLookup(ConfigurationEmail config, long lastTime)
+	{
+		this.lookupMap.put(config.getConnectionId(), lastTime);
 	}
 
 }

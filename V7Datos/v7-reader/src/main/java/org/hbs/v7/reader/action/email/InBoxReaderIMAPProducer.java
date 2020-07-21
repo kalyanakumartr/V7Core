@@ -65,7 +65,10 @@ public class InBoxReaderIMAPProducer extends InBoxReaderIMAPBase implements InBo
 		searchTerm = new AndTerm(searchTerm, maxDateTerm);
 		searchTerm = new AndTerm(searchTerm, new FlagTerm(new Flags(Flags.Flag.SEEN), false)); // Read-Only-UnRead-Messages
 		Message[] messages = (Message[]) imapFolder.search(searchTerm);
-		return pushToQueue(producerId, imapFolder, messages);
+		if (messages.length > 0)
+			return pushToQueue(producerId, imapFolder, messages);
+		else
+		return false;
 	}
 
 	@Override
@@ -83,8 +86,10 @@ public class InBoxReaderIMAPProducer extends InBoxReaderIMAPBase implements InBo
 				SearchTerm searchTerm = createBaseSearchTerm();
 				ReceivedDateTerm minDateTerm, maxDateTerm = null;
 
-				long lastDateTime = extractorBo.getLastEmailSentDate(config.getProducerId());
+				//Lookup Initiates Here
+				long lastDateTime = extractorBo.getLastEmailSentDate(config);
 				startTime = initDateTime = (lastDateTime == 0) ? new Date() : new Date(lastDateTime);
+				
 				if (config.reverseStart)
 				{
 					System.out.println(">>>>>>>>>>>>>>>>>>>>>Reverse Start Started<<<<<<<<<<<<<<<<<<<<<<<<<<<");
@@ -104,6 +109,7 @@ public class InBoxReaderIMAPProducer extends InBoxReaderIMAPBase implements InBo
 
 						startTime = endTime;
 					}
+
 					config.reverseStart = false;
 					extractorBo.updateProducerProperty(config);
 					System.out.println(">>>>>>>>>>>>>>>>>>>>>Reverse Start Completed<<<<<<<<<<<<<<<<<<<<<<<<<<");
@@ -115,19 +121,24 @@ public class InBoxReaderIMAPProducer extends InBoxReaderIMAPBase implements InBo
 					// Start with 5 Minutes earlier
 					startTime = (lastDateTime == 0) ? new Date(System.currentTimeMillis() - config.readEvery.getDateTime()) : new Date(lastDateTime);
 					endTime = new Date();
-
+					System.out.println(">>>>>>>>>>>>>>>>>>>>>startTime<<<<<<<<<<<<<<<<<<<<<<<<<<< " + startTime);
+					
+					boolean hasPushed = false;
 					do
 					{
 						minDateTerm = new ReceivedDateTerm(ComparisonTerm.GT, startTime);
 
 						maxDateTerm = new ReceivedDateTerm(ComparisonTerm.LE, endTime);
 
-						pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
+						hasPushed = pushToQueue(config.getProducerId(), imapFolder, searchTerm, minDateTerm, maxDateTerm);
 
 						startTime = config.readEvery.getForwardDate(startTime); // Forward_Going_By_5_minutes_Default
 
 					}
 					while ( startTime.getTime() < endTime.getTime() );
+					
+					if(!hasPushed)
+						InBoxReaderEmailFactory.getInstance().setLastLookup(config, endTime.getTime());
 
 					System.out.println(">>>>>>>>>>>>>>>>>>>>>Forward Start Completed<<<<<<<<<<<<<<<<<<<<<<<<<<");
 				}

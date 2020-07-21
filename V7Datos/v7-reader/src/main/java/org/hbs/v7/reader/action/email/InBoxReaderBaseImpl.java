@@ -74,27 +74,39 @@ public abstract class InBoxReaderBaseImpl implements InboxReaderBase
 
 	protected boolean pushToQueue(String producerId, UIDFolder _UIDFolder, Message... messages)
 	{
-		for (Message message : messages)
+		long sentDate = 0l;
+		try
 		{
-			try
+
+			for (Message message : messages)
 			{
+				try
+				{
 
-				InBoxReaderTopicBean inBoxReaderBean = new InBoxReaderTopicBean(message.getMessageNumber(), message.getSentDate(), config);
+					InBoxReaderTopicBean inBoxReaderBean = new InBoxReaderTopicBean(message.getMessageNumber(), message.getSentDate(), config);
 
-				System.out.println(">>> " + new Gson().toJson(inBoxReaderBean));
+					System.out.println(">>> " + new Gson().toJson(inBoxReaderBean));
 
-				KAFKAPartition partition = PartitionFinder.getInstance().find(ETopic.Message, EMessagePriority.getPriority(message));
+					KAFKAPartition partition = PartitionFinder.getInstance().find(ETopic.Message, EMessagePriority.getPriority(message));
 
-				gKafkaProducer.send(ETopic.Message, partition, inBoxReaderBean);
+					gKafkaProducer.send(ETopic.Message, partition, inBoxReaderBean);
 
-				message.setFlag(Flag.SEEN, true);
+					message.setFlag(Flag.SEEN, true);
+
+					sentDate = message.getSentDate().getTime();
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+
 			}
-			catch (Exception ex)
-			{
-				ex.printStackTrace();
-			}
+			return true;
 		}
-		return true;
+		finally
+		{
+			InBoxReaderEmailFactory.getInstance().setLastLookup(config, sentDate);
+		}
 	}
 
 	public ConfigurationEmail getConfig()
