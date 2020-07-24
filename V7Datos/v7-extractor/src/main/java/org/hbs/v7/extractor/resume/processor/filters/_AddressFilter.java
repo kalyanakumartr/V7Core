@@ -28,7 +28,7 @@ public class _AddressFilter implements Serializable
 		return filterFactory;
 	}
 
-	public void execute(MediatorBean mBean, ResumeData _RD)
+	public void getAddress(MediatorBean mBean, ResumeData _RD)
 	{
 		switch ( mBean.extension )
 		{

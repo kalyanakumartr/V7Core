@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 
 public interface EmailSenderBo
 {
+	EReturn testConnection(IMessages message) throws CustomException;
+	
 	EMessageStatus sendEmailByMessage(Authentication auth, String token, IMessages message);
 
 	EReturn sendEmailToUserOrGroup(Authentication auth, String token, MessageFormBean formBean) throws Exception;

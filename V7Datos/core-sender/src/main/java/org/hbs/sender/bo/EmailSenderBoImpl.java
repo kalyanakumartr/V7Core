@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -223,5 +224,22 @@ public class EmailSenderBoImpl extends BaseSenderBoImpl implements EmailSenderBo
 		// message.modifiedUserInfo(auth);
 		// messageDao.save(message);
 		// });
+	}
+
+	@Override
+	public EReturn testConnection(IMessages message) throws CustomException
+	{
+		
+		try
+		{
+			JavaMailSenderImpl mailSender = (JavaMailSenderImpl) ConfigurationHandler.getInstance().createEmailSender(message);
+			mailSender.testConnection();
+		}
+		catch (MessagingException excep)
+		{
+			excep.printStackTrace();
+			return EReturn.Failure;
+		}
+		return EReturn.Success;
 	}
 }

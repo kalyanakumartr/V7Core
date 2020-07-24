@@ -4,12 +4,17 @@ import java.util.Map;
 
 import org.apache.commons.collections4.map.LinkedMap;
 import org.hbs.core.util.EnumInterface;
-import org.hbs.v7.extractor.resume.processor.filters.DefaultResumeDataFilter;
-import org.hbs.v7.extractor.resume.processor.filters.GenderDataFilter;
+import org.hbs.v7.extractor.resume.processor.filters._AddressFilter;
+import org.hbs.v7.extractor.resume.processor.filters._MediaFilter;
+import org.hbs.v7.extractor.resume.processor.filters._PersonalInfoFilter;
+import org.hbs.v7.extractor.resume.processor.filters._PersonalInfoGenderFilter;
+import org.hbs.v7.extractor.resume.processor.filters._ProfessionalExperienceFilter;
+import org.hbs.v7.extractor.resume.processor.filters._QualificationFilter;
+import org.hbs.v7.extractor.resume.processor.filters._SkillsAndCostFilter;
 
 public enum EResumeOptions implements EnumInterface
 {
-	PersonalInfo("", "getPersonalInfo"), //
+	PersonalInfo("", "getPersonalInfo, getGender"), //
 	SkillsAndCost("", "getSkillsAndCost"), //
 	Address("", "getAddress"), //
 	Media("", "getMedia"), //
@@ -17,12 +22,12 @@ public enum EResumeOptions implements EnumInterface
 	ProfessionalExperience("", "getProfessionalExperience");
 
 	String	clazz;
-	String	method;
+	String	methods;
 
 	EResumeOptions(String clazz, String method)
 	{
 		this.clazz = clazz;
-		this.method = method;
+		this.methods = method;
 	}
 
 	EResumeOptions set(Class<?> clazz)
@@ -40,16 +45,28 @@ public enum EResumeOptions implements EnumInterface
 			{
 				case PersonalInfo :
 				{
-					optionList.put(eOpt, toArray(DefaultResumeDataFilter.class, GenderDataFilter.class));
+					optionList.put(eOpt, toArray(_PersonalInfoFilter.class, _PersonalInfoGenderFilter.class));
 					break;
 				}
-				case SkillsAndCost :
-				case Address :
-				case Media :
-				case Qualification :
+				case SkillsAndCost :{
+					optionList.put(eOpt, toArray(_SkillsAndCostFilter.class));
+					break;
+				}
+				case Address :{
+					optionList.put(eOpt, toArray(_AddressFilter.class));
+					break;
+				}
+				case Media :{
+					optionList.put(eOpt, toArray(_MediaFilter.class));
+					break;
+				}
+				case Qualification :{
+					optionList.put(eOpt, toArray(_QualificationFilter.class));
+					break;
+				}
 				case ProfessionalExperience :
 				{
-					optionList.put(eOpt, toArray(DefaultResumeDataFilter.class));
+					optionList.put(eOpt, toArray(_ProfessionalExperienceFilter.class));
 					break;
 				}
 			}

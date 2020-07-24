@@ -54,8 +54,21 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 				// logger.info("Inside UserBoImpl blockUser ::: ", ufBean.user.getUserId());
 				ufBean.user.setStatus(!ufBean.formUser.getStatus());// Negate Current Status
 				userDao.save(ufBean.user);
-				ufBean.clearForm();
-				ufBean.messageCode = USER_BLOCKED_SUCCESSFULLY;
+
+				try
+				{
+					gKafkaProducer.send(ETopic.Internal, EMedia.Email, ETemplate.User_Blocked_Admin, ufBean);
+				}
+				catch (Exception excep)
+				{
+					excep.printStackTrace();
+				}
+				finally
+				{
+					ufBean.clearForm();
+					ufBean.messageCode = USER_BLOCKED_SUCCESSFULLY;
+				}
+
 				return EReturn.Success;
 			}
 			finally
@@ -169,9 +182,9 @@ public class UserBoImpl extends UserBoComboBoxImpl implements UserBo, IErrorAdmi
 						ufBean.messageCode = USER_CREATED_SUCCESSFULLY;
 						return EReturn.Success;
 					}
-					catch (Exception ex)
+					catch (Exception excep)
 					{
-						ex.printStackTrace();
+						excep.printStackTrace();
 					}
 				}
 				throw new InvalidKeyException(USER_TOKEN_KEY_GENERATE_ISSUE);

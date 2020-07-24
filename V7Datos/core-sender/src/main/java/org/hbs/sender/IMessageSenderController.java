@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hbs.core.beans.ConfigurationFormBean;
 import org.hbs.core.beans.PasswordFormBean;
-import org.hbs.core.beans.UserFormBean;
 import org.hbs.core.beans.model.V7Messages;
 import org.hbs.core.beans.model.channel.IChannelMessages;
 import org.hbs.core.beans.model.clickatell.SMSCallBackFormBean;
@@ -20,19 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IMessageSenderController extends IPathSender
 {
-	@PostMapping
-	@RequestMapping(value = CREATE_USER_MAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize(HAS_ALL_AUTHORITY)
-	public ResponseEntity<?> createUserEmail(Authentication auth, String token, UserFormBean userFormBean);
-
 	@GetMapping
 	@RequestMapping(value = DOWNLOAD_ATTACHMENT, produces = MEDIA_TYPE_ZIP)
 	@PreAuthorize(HAS_ALL_AUTHORITY)
 	public ResponseEntity<?> downloadAttachment(Authentication auth, Long attachmentId, HttpServletResponse response);
-
-	@PostMapping
-	@RequestMapping(value = PASSWORD_RESET_MAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> passwordResetMail(Authentication auth, String token, UserFormBean userFormBean);
 
 	@PostMapping
 	@RequestMapping(value = SAVE_MESSAGE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,10 +42,6 @@ public interface IMessageSenderController extends IPathSender
 	@PostMapping
 	@RequestMapping(value = SEND_SMS_OTP, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> sendSMS_OTP(Authentication auth, PasswordFormBean pfForm);
-
-	@PostMapping
-	@RequestMapping(value = SEND_USER_BLOCK_MAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> sendUserBlockMail(Authentication auth, String token, UserFormBean userFormBean);
 
 	@PostMapping
 	@RequestMapping(value = SMS_STATUS_CALLBACK, produces = MediaType.APPLICATION_JSON_VALUE)

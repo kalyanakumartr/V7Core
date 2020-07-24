@@ -6,29 +6,29 @@ import org.hbs.v7.beans.model.resume.ResumeData;
 import org.hbs.v7.beans.model.resume._PersonalInfo;
 import org.hbs.v7.extractor.resume.processor.MediatorBean;
 
-public class _PersonalInfoFilter implements Serializable
+public class _PersonalInfoGenderFilter implements Serializable
 {
 	/**
 	 * 
 	 */
-	private static final long			serialVersionUID	= -3930496576019385191L;
-	private static _PersonalInfoFilter	filterFactory		= null;
+	private static final long					serialVersionUID	= -3930496576019385191L;
+	private static _PersonalInfoGenderFilter	filterFactory		= null;
 
-	private _PersonalInfoFilter()
+	private _PersonalInfoGenderFilter()
 	{
 
 	}
 
-	public static _PersonalInfoFilter getInstance()
+	public static _PersonalInfoGenderFilter getInstance()
 	{
 		if (filterFactory == null)
 		{
-			filterFactory = new _PersonalInfoFilter();
+			filterFactory = new _PersonalInfoGenderFilter();
 		}
 		return filterFactory;
 	}
 
-	public void getPersonalInfo(MediatorBean mBean, ResumeData _RD)
+	public void getGender(MediatorBean mBean, ResumeData _RD)
 	{
 		switch ( mBean.extension )
 		{

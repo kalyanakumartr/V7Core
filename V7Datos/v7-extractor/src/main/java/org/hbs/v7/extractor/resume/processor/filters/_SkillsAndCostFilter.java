@@ -1,10 +1,12 @@
 package org.hbs.v7.extractor.resume.processor.filters;
 
+import java.io.Serializable;
+
 import org.hbs.v7.beans.model.resume.ResumeData;
 import org.hbs.v7.beans.model.resume._SkillsAndCost;
 import org.hbs.v7.extractor.resume.processor.MediatorBean;
 
-public class _SkillsAndCostFilter implements _IFilter
+public class _SkillsAndCostFilter implements Serializable
 {
 	/**
 	 * 
@@ -26,7 +28,7 @@ public class _SkillsAndCostFilter implements _IFilter
 		return filterFactory;
 	}
 
-	public void execute(MediatorBean mBean, ResumeData _RD)
+	public void getSkillsAndCost(MediatorBean mBean, ResumeData _RD)
 	{
 		switch ( mBean.extension )
 		{

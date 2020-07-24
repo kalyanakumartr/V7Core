@@ -1,10 +1,12 @@
 package org.hbs.v7.extractor.resume.processor.filters;
 
+import java.io.Serializable;
+
 import org.hbs.v7.beans.model.resume.ResumeData;
 import org.hbs.v7.beans.model.resume._ProfessionalExperience;
 import org.hbs.v7.extractor.resume.processor.MediatorBean;
 
-public class _ProfessionalExperienceFilter implements _IFilter
+public class _ProfessionalExperienceFilter implements Serializable
 {
 	private static final long						serialVersionUID	= 3501477198627339L;
 	private static _ProfessionalExperienceFilter	filterFactory		= null;
@@ -23,7 +25,7 @@ public class _ProfessionalExperienceFilter implements _IFilter
 		return filterFactory;
 	}
 
-	public void execute(MediatorBean mBean, ResumeData _RD)
+	public void getProfessionalExperience(MediatorBean mBean, ResumeData _RD)
 	{
 		switch ( mBean.extension )
 		{
