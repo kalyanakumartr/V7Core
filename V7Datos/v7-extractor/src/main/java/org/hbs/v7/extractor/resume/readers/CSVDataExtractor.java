@@ -32,7 +32,7 @@ public class CSVDataExtractor extends DataExtractorBase implements IDataExtracto
 		try
 		{
 			CSVParser csvParser = new CSVParser(new FileReader(inBean.getOutputFile()), CSVFormat.DEFAULT);
-			MediatorBean mediatorBean = new MediatorBean();
+			MediatorBean mediatorBean = new MediatorBean(inBean.getExtension());
 			mediatorBean.setCsv(csvParser);
 			return mediatorBean;
 

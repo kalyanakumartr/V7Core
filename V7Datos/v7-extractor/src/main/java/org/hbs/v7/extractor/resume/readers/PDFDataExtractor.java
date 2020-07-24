@@ -40,8 +40,8 @@ public class PDFDataExtractor extends DataExtractorBase implements IDataExtracto
 
 			pdfparser = new PDFParser();
 			pdfparser.parse(inBean.getInputStream(), handler, metadata, pcontext);
-			MediatorBean mediatorBean = new MediatorBean();
-			mediatorBean.setPdf(handler);
+			MediatorBean mediatorBean = new MediatorBean(inBean.getExtension());
+			mediatorBean.content = handler.toString();
 			return mediatorBean; 
 		}
 		catch (Exception excep)

@@ -41,8 +41,8 @@ public class OpenOfficeDataExtractor extends DataExtractorBase implements IDataE
 			openDocument = new OpenDocumentParser();
 			openDocument.parse(inBean.getInputStream(), handler, metadata, pcontext);
 
-			MediatorBean mediatorBean = new MediatorBean();
-			mediatorBean.setOpenOffice(handler);
+			MediatorBean mediatorBean = new MediatorBean(inBean.getExtension());
+			mediatorBean.content = handler.toString();
 			return mediatorBean;
 		}
 		catch (Exception excep)

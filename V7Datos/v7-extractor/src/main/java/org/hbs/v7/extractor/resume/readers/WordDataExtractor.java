@@ -26,14 +26,15 @@ public class WordDataExtractor extends DataExtractorBase implements IDataExtract
 		ResumeDataExtractorService.getInstance().execute(read(inBean));
 	}
 
+	@SuppressWarnings("resource")
 	public MediatorBean read(DataInTopicBean inBean)
 	{
 		XWPFDocument document = null;
 		try
 		{
 			document = new XWPFDocument(inBean.getInputStream());
-			MediatorBean mediatorBean = new MediatorBean();
-			mediatorBean.setWord(new XWPFWordExtractor(document));
+			MediatorBean mediatorBean = new MediatorBean(inBean.getExtension());
+			mediatorBean.content = new XWPFWordExtractor(document).getText();
 			return mediatorBean; 
 		}
 		catch (Exception excep)

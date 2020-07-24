@@ -4,8 +4,7 @@ import java.io.Serializable;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
-import org.apache.tika.sax.BodyContentHandler;
+import org.hbs.v7.beans.model.IncomingData.EExtension;
 import org.json.simple.JSONObject;
 import org.jsoup.nodes.Document;
 
@@ -15,12 +14,15 @@ public class MediatorBean implements Serializable
 	private static final long	serialVersionUID	= 6909459362905584030L;
 	public String				content;
 	private XSSFSheet			excel;
-	private BodyContentHandler	openOffice;
-	private XWPFWordExtractor	word;
 	private Document			html;
 	private CSVParser			csv;
-	private BodyContentHandler	pdf;
 	private JSONObject			json;
+	public EExtension			extension;
+
+	public MediatorBean(EExtension extension)
+	{
+		this.extension = extension;
+	}
 
 	public JSONObject jsonInstance()
 	{
@@ -30,12 +32,9 @@ public class MediatorBean implements Serializable
 		}
 		finally
 		{
-			this.word = null;
 			this.excel = null;
-			this.pdf = null;
 			this.csv = null;
 			this.html = null;
-			this.openOffice = null;
 		}
 	}
 
@@ -47,12 +46,9 @@ public class MediatorBean implements Serializable
 		}
 		finally
 		{
-			this.word = null;
 			this.excel = null;
-			this.pdf = null;
 			this.html = null;
 			this.json = null;
-			this.openOffice = null;
 		}
 	}
 
@@ -64,46 +60,9 @@ public class MediatorBean implements Serializable
 		}
 		finally
 		{
-			this.word = null;
-			this.pdf = null;
 			this.csv = null;
 			this.html = null;
 			this.json = null;
-			this.openOffice = null;
-		}
-	}
-
-	public BodyContentHandler openOfficeInstance()
-	{
-		try
-		{
-			return this.openOffice;
-		}
-		finally
-		{
-			this.word = null;
-			this.excel = null;
-			this.pdf = null;
-			this.csv = null;
-			this.html = null;
-			this.json = null;
-		}
-	}
-
-	public XWPFWordExtractor wordInstance()
-	{
-		try
-		{
-			return this.word;
-		}
-		finally
-		{
-			this.excel = null;
-			this.pdf = null;
-			this.csv = null;
-			this.html = null;
-			this.json = null;
-			this.openOffice = null;
 		}
 	}
 
@@ -115,29 +74,9 @@ public class MediatorBean implements Serializable
 		}
 		finally
 		{
-			this.word = null;
-			this.excel = null;
-			this.pdf = null;
-			this.csv = null;
-			this.json = null;
-			this.openOffice = null;
-		}
-	}
-
-	public BodyContentHandler pdfInstance()
-	{
-		try
-		{
-			return this.pdf;
-		}
-		finally
-		{
-			this.word = null;
 			this.excel = null;
 			this.csv = null;
-			this.html = null;
 			this.json = null;
-			this.openOffice = null;
 		}
 	}
 
@@ -146,24 +85,9 @@ public class MediatorBean implements Serializable
 		this.excel = excel;
 	}
 
-	public void setOpenOffice(BodyContentHandler openOffice)
-	{
-		this.openOffice = openOffice;
-	}
-
-	public void setWord(XWPFWordExtractor word)
-	{
-		this.word = word;
-	}
-
 	public void setHtml(Document html)
 	{
 		this.html = html;
-	}
-
-	public void setPdf(BodyContentHandler pdf)
-	{
-		this.pdf = pdf;
 	}
 
 	public void setCsv(CSVParser csv)

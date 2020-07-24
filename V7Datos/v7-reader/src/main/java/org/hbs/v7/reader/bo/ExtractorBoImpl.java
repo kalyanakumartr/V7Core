@@ -36,25 +36,27 @@ public class ExtractorBoImpl implements ExtractorBo
 	@Override
 	public List<IConfiguration> getConfigurationList(EMedia eMedia, EMediaMode eMediaMode)
 	{
-		List<Object[]> objectList = producerPropertyDao.getProperty(eMedia, eMediaMode);
-
 		switch ( eMedia )
 		{
 			case Email :
 			{
-				return constructConfigList(objectList, ConfigurationEmail.class);
+				if (InBoxReaderEmailFactory.getInstance().getConfigList().isEmpty())
+				{
+					InBoxReaderEmailFactory.getInstance().setConfigList(constructConfigList(producerPropertyDao.getProperty(eMedia, eMediaMode), ConfigurationEmail.class));
+				}
+				return InBoxReaderEmailFactory.getInstance().getConfigList();
 			}
 			case SMS :
 			{
-				return constructConfigList(objectList, ConfigurationSMS.class);
+				return constructConfigList(producerPropertyDao.getProperty(eMedia, eMediaMode), ConfigurationSMS.class);
 			}
 			case Web :
 			{
-				return constructConfigList(objectList, ConfigurationWeb.class);
+				return constructConfigList(producerPropertyDao.getProperty(eMedia, eMediaMode), ConfigurationWeb.class);
 			}
 			case WhatsApp :
 			{
-				return constructConfigList(objectList, ConfigurationWeb.class);
+				return constructConfigList(producerPropertyDao.getProperty(eMedia, eMediaMode), ConfigurationWeb.class);
 			}
 			default :
 				break;

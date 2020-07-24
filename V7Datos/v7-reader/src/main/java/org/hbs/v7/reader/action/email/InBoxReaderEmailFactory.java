@@ -1,9 +1,12 @@
 package org.hbs.v7.reader.action.email;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.hbs.core.beans.model.IConfiguration;
 import org.hbs.core.beans.model.channel.ConfigurationEmail;
 import org.hbs.v7.reader.action.core.InBoxReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class InBoxReaderEmailFactory implements Serializable
 
 	Map<String, Long>						lookupMap			= new HashMap<>();
 
+	List<IConfiguration>					configList			= new ArrayList<IConfiguration>();
+
 	private InBoxReaderEmailFactory()
 	{
 
@@ -38,31 +43,41 @@ public class InBoxReaderEmailFactory implements Serializable
 		return readerFactory;
 	}
 
-	public InBoxReader reader(ConfigurationEmail config)
+	public InBoxReader reader(ConfigurationEmail configuration)
 	{
-		switch ( config.getSource() )
+		switch ( configuration.getSource() )
 		{
 			case Gmail_Pop3 :
-				$InBoxReaderPop3.config = config;
+				$InBoxReaderPop3.config = configuration;
 				return $InBoxReaderPop3;
 			case Gmail_IMAP :
 			default :
-				$InBoxReaderIMAP.config = config;
+				$InBoxReaderIMAP.config = configuration;
 				return $InBoxReaderIMAP;
 
 		}
 	}
-	
+
 	public long getLastLookup(ConfigurationEmail config)
 	{
 		Long lastLookup = this.lookupMap.get(config.getConnectionId());
-		
+
 		return (lastLookup == null ? 0L : lastLookup);
 	}
-	
+
 	public void setLastLookup(ConfigurationEmail config, long lastTime)
 	{
 		this.lookupMap.put(config.getConnectionId(), lastTime);
+	}
+
+	public List<IConfiguration> getConfigList()
+	{
+		return configList;
+	}
+
+	public void setConfigList(List<IConfiguration> configList)
+	{
+		this.configList = configList;
 	}
 
 }

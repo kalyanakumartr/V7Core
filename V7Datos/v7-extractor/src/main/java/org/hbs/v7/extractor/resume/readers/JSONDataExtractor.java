@@ -36,7 +36,7 @@ public class JSONDataExtractor extends DataExtractorBase implements IDataExtract
 
 			// A JSON object. Key value pairs are unordered. JSONObject supports java.util.Map
 			// interface.
-			MediatorBean mediatorBean = new MediatorBean();
+			MediatorBean mediatorBean = new MediatorBean(inBean.getExtension());
 			mediatorBean.setJson((JSONObject)object);
 			return mediatorBean; 
 

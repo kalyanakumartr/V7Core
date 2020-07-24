@@ -31,7 +31,7 @@ public class ExcelDataExtractor extends DataExtractorBase implements IDataExtrac
 		try
 		{
 			book = new XSSFWorkbook(inBean.getInputStream());
-			MediatorBean mediatorBean = new MediatorBean();
+			MediatorBean mediatorBean = new MediatorBean(inBean.getExtension());
 			mediatorBean.setExcel(book.getSheetAt(0));
 			return mediatorBean;
 		}

@@ -36,14 +36,15 @@
 	<modules>
 		<module>core-util</module>
 		<module>core-beans</module>
+		<module>v7-beans</module>
 		<module>v7-reader</module>
 		<module>v7-extractor</module>
-		<module>v7-beans</module>
 		<module>core-admin</module>
 		<module>core-oauth</module>
 		<module>core-eureka</module>
 		<module>core-sender</module>
 
+		
 	</modules>
 	<groupId>V7Datos</groupId>
 	<artifactId>V7Datos</artifactId>

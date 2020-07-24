@@ -29,7 +29,7 @@ public class HTMLDataExtractor extends DataExtractorBase implements IDataExtract
 	{
 		try
 		{
-			MediatorBean mediatorBean = new MediatorBean();
+			MediatorBean mediatorBean = new MediatorBean(inBean.getExtension());
 			mediatorBean.setHtml(Jsoup.parse(inBean.getOutputFile(), UTF8ENCODER));
 			return mediatorBean;
 		}
